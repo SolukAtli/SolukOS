@@ -22,7 +22,8 @@ SolukOS is a personal Termux customization project designed to create a Linux-in
 git clone https://github.com/SolukAtli/SolukOS.git
 cd SolukOS
 chmod +x install.sh
-./install.sh```
+./install.sh
+```
 
 🛠️ Included Components
 SolukOS
@@ -31,13 +32,13 @@ SolukOS
 └── LICENSE
 
 🗺️ Roadmap
-[x] Custom Zsh environment
-[x] Terminal theme
-[x] Installation script
-[ ] More customization options
-[ ] Security learning tools
-[ ] Interactive setup menu
-[ ] Configuration backup system
+- [x] Custom Zsh environment
+- [x] Terminal theme
+- [x] Installation script
+- [ ] More customization options
+- [ ] Security learning tools
+- [ ] Interactive setup menu
+- [ ] Configuration backup system
 
 ⚠️ Disclaimer
 SolukOS is created for cybersecurity education, Linux learning and personal terminal customization.
