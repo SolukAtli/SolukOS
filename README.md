@@ -1,5 +1,5 @@
 # 🌫️ SolukOS
-
+hükümsüz 
 A lightweight and customizable cybersecurity-focused Termux environment.
 
 nano README.md
@@ -26,7 +26,13 @@ chmod +x install.sh
 ```
 
 🛠️ Included Components
-SolukOS
+SolukOS## 🛠️ Included Components
+
+Project structure:
+
+- `install.sh` → Main installation script
+- `README.md` → Project documentation
+- `LICENSE` → Open source license
 ├── install.sh
 ├── README.md
 └── LICENSE
