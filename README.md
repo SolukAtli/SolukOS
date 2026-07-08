@@ -25,17 +25,11 @@ chmod +x install.sh
 ./install.sh
 ```
 
-🛠️ Included Components
-SolukOS## 🛠️ Included Components
+## 🛠️ Included Components
 
-Project structure:
-
-- `install.sh` → Main installation script
-- `README.md` → Project documentation
-- `LICENSE` → Open source license
-├── install.sh
-├── README.md
-└── LICENSE
+- `install.sh` — Main installation script
+- `README.md` — Project documentation
+- `LICENSE` — Open source license
 
 🗺️ Roadmap
 - [x] Custom Zsh environment
