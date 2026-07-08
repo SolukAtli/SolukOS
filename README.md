@@ -2,7 +2,8 @@
 
 A lightweight and customizable cybersecurity-focused Termux environment.
 
-## 📌 About
+nano README.md
+ ## 📌 About
 
 SolukOS is a personal Termux customization project designed to create a Linux-inspired terminal environment for cybersecurity learning, Linux practice and customization.
 
@@ -21,12 +22,14 @@ SolukOS is a personal Termux customization project designed to create a Linux-in
 git clone https://github.com/SolukAtli/SolukOS.git
 cd SolukOS
 chmod +x install.sh
-./install.sh
+./install.sh```
+
 🛠️ Included Components
 SolukOS
 ├── install.sh
 ├── README.md
 └── LICENSE
+
 🗺️ Roadmap
 [x] Custom Zsh environment
 [x] Terminal theme
@@ -35,8 +38,10 @@ SolukOS
 [ ] Security learning tools
 [ ] Interactive setup menu
 [ ] Configuration backup system
+
 ⚠️ Disclaimer
 SolukOS is created for cybersecurity education, Linux learning and personal terminal customization.
 Always use security tools responsibly.
+
 📜 Version
 Current version: v0.1
