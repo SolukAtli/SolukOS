@@ -1,0 +1,13 @@
+clear
+
+echo ""
+cat ~/SolukOS/assets/banner.txt
+echo ""
+echo "[ SolukOS ] Terminal initialized."
+echo ""
+
+PROMPT='%F{250}┌──(Soluk㉿Termux)-[%~]
+└─$ %f'
+
+alias ll='ls -la'
+alias update='pkg update && pkg upgrade'

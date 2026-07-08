@@ -1,59 +1,43 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# ==========================
-# SolukOS v0.1 Installer
-# ==========================
-
 clear
 
-echo "Installing SolukOS..."
+VERSION="0.2"
 
-# Update packages
-pkg update -y
-
-# Install required packages
-pkg install -y zsh
-
-# Create Termux config folder
-mkdir -p ~/.termux
-
-# SolukOS color theme
-cat > ~/.termux/colors.properties << 'EOF'
-background=#232323
-foreground=#bdbdbd
-cursor=#d0d0d0
-EOF
-
-# SolukOS ZSH configuration
-cat > ~/.zshrc << 'EOF'
-clear
-
-echo ""
-echo "███████╗ ██████╗ ██╗     ██╗   ██╗██╗  ██╗"
-echo "██╔════╝██╔═══██╗██║     ██║   ██║██║ ██╔╝"
-echo "███████╗██║   ██║██║     ██║   ██║█████╔╝ "
-echo "╚════██║██║   ██║██║     ██║   ██║██╔═██╗ "
-echo "███████║╚██████╔╝███████╗╚██████╔╝██║  ██╗"
-echo "╚══════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═╝"
-echo ""
-echo "[ SolukOS ] Terminal initialized."
+echo "=============================="
+echo "        SolukOS v$VERSION"
+echo "=============================="
 echo ""
 
-PROMPT='%F{250}┌──(Soluk㉿Termux)-[%~]
-└─$ %f'
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-alias ll='ls -la'
-alias update='pkg update && pkg upgrade'
-EOF
+echo "[*] Checking system..."
 
-# Set zsh as default shell
-chsh -s zsh
-
-# Reload settings
-termux-reload-settings 2>/dev/null || true
+command -v git >/dev/null && echo "✓ Git" || echo "✗ Git missing"
+command -v zsh >/dev/null && echo "✓ Zsh" || echo "• Zsh will be installed"
+command -v nano >/dev/null && echo "✓ Nano" || echo "• Nano will be installed"
 
 echo ""
-echo "=========================="
-echo " SolukOS installed!"
+
+echo "[*] Installing packages..."
+bash "$BASE_DIR/scripts/packages.sh"
+
+echo ""
+
+echo "[*] Applying theme..."
+bash "$BASE_DIR/scripts/theme.sh"
+
+echo ""
+
+echo "[*] Configuring Zsh..."
+bash "$BASE_DIR/scripts/zsh.sh"
+
+echo ""
+
+mkdir -p ~/.solukos
+cp "$BASE_DIR/assets/banner.txt" ~/.solukos/banner.txt
+
+echo "=============================="
+echo " SolukOS v$VERSION installed!"
 echo " Restart Termux."
-echo "=========================="
+echo "=============================="
