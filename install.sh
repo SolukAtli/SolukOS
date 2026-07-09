@@ -38,6 +38,10 @@ mkdir -p ~/.solukos
 cp "$BASE_DIR/assets/banner.txt" ~/.solukos/banner.txt
 
 echo "=============================="
-echo " SolukOS v$VERSION installed!"
-echo " Restart Termux."
+echo " SolukOS v0.2 installed!"
+echo " Starting SolukOS..."
 echo "=============================="
+
+sleep 2
+
+exec zsh
