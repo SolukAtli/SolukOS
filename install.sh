@@ -63,7 +63,7 @@ case $choice in
 
 if [ -f "$BASE_DIR/soluk" ]; then
 
-    cp "$BASE_DIR/soluk" /data/data/com.termux/files/usr/bin/soluk
+    cp "$BASE_DIR/bin/soluk" /data/data/com.termux/files/usr/bin/soluk
     chmod +x /data/data/com.termux/files/usr/bin/soluk
 
     echo "Soluk command installed."
