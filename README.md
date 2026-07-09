@@ -26,12 +26,13 @@ cd SolukOS
 chmod +x install.sh
 ./install.sh
 ```
-🛠️ Included Components
-`install.sh` — Main installation script
-`scripts/` — Installation modules
-`config/` — Configuration files
-`assets/` — Visual assets
-`docs/` — Documentation
+## 🛠️ Included Components
+
+- `install.sh` — Main installation script
+- `scripts/` — Installation modules
+- `config/` — Configuration files
+- `assets/` — Visual assets
+- `docs/` — Documentation
 
 🗺️ Roadmap
 - [x] Custom Zsh environment
