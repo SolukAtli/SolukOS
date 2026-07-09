@@ -20,7 +20,7 @@ The project combines terminal customization, package management, plugin support 
 - 📋 Package database support
 - 🚀 Modular architecture
 
-#₺ 🚀 Installation
+## 🚀 Installation
 
 ```git clone https://github.com/SolukAtli/SolukOS.git
 cd SolukOS
