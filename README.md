@@ -32,6 +32,8 @@ chmod +x install.sh
 
 - soluk version
 - soluk doctor
+- soluk reload
+- soluk help
 
 - soluk pkg list
 - soluk pkg searce `<package>`
