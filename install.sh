@@ -59,6 +59,21 @@ case $choice in
     cp "$BASE_DIR/assets/banner.txt" ~/.solukos/banner.txt
     echo "$BASE_DIR" > ~/.solukos/install_path
 
+# Installing Soluk command
+
+if [ -f "$BASE_DIR/soluk" ]; then
+
+    cp "$BASE_DIR/soluk" /data/data/com.termux/files/usr/bin/soluk
+    chmod +x /data/data/com.termux/files/usr/bin/soluk
+
+    echo "Soluk command installed."
+
+else
+
+    echo "Soluk command file not found."
+
+fi
+
 echo ""
 echo "=============================="
 echo " SolukOS Installation Complete"
