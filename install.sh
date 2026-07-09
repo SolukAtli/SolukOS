@@ -2,6 +2,11 @@
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+while true
+do
+
+clear
+
 echo "=============================="
 echo "        SolukOS v0.3"
 echo "=============================="
@@ -81,3 +86,8 @@ exec zsh
     echo "Invalid option."
     ;;
 esac
+echo ""
+read -p "Press Enter to continue..."
+clear
+
+done
