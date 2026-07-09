@@ -19,6 +19,11 @@ command -v nano >/dev/null && echo "✓ Nano" || echo "• Nano will be installe
 
 echo ""
 
+echo "[*] Creating backup..."
+bash "$BASE_DIR/scripts/backup.sh"
+
+echo ""
+
 echo "[*] Installing packages..."
 bash "$BASE_DIR/scripts/packages.sh"
 
