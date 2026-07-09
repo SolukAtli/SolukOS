@@ -2,6 +2,12 @@
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+LOG_FILE="$HOME/.solukos/logs/install.log"
+
+mkdir -p "$(dirname "$LOG_FILE")"
+
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] Installation started" >> "$LOG_FILE"
+
 while true
 do
 
@@ -65,6 +71,8 @@ echo " Zsh     : Configured"
 echo ""
 echo " Enjoy SolukOS."
 echo "=============================="
+
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] Installation completed" >> "$LOG_FILE"
 
 sleep 3
 exec zsh

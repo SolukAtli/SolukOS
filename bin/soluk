@@ -20,7 +20,8 @@ do
     echo "[3] Settings"
     echo "[4] About"
     echo "[5] Update SolukOS"
-    echo "[6] Exit"
+    echo "[6] Log Manager"
+    echo "[7] Exit"
     echo ""
 
     read -p "Choice: " choice
@@ -28,7 +29,7 @@ do
     case $choice in
 
     1)
-        bash "$BASE_DIR/scripts/info.sh" "$BASE_DIR"
+        bash "$BASE_DIR/scripts/info.sh"
         ;;
 
     2)
@@ -48,6 +49,10 @@ do
         ;;
 
     6)
+        bash "$BASE_DIR/scripts/log_manager.sh"
+        ;;
+
+    7)
         echo "Goodbye."
         exit 0
         ;;
@@ -60,5 +65,4 @@ do
 
     echo ""
     read -p "Press Enter to continue..."
-
 done

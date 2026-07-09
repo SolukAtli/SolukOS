@@ -1,5 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+LOG_FILE="$HOME/.solukos/logs/backup.log"
+
+mkdir -p "$(dirname "$LOG_FILE")"
+
 BACKUP_DIR="$HOME/.solukos/backups"
 
 clear
@@ -28,9 +32,11 @@ if [ ! -d "$BACKUP" ]; then
     exit 1
 fi
 
+BACKUP_NAME=$(basename "$BACKUP")
+
 echo ""
 echo "Selected:"
-echo "$BACKUP"
+echo "$BACKUP_NAME"
 echo ""
 
 read -p "Continue restore? (y/n): " CONFIRM
@@ -58,4 +64,7 @@ if [ -f "$BACKUP/version" ]; then
 fi
 
 echo ""
+
 echo "[+] Restore completed."
+
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] Restore completed: $BACKUP_NAME" >> "$LOG_FILE"

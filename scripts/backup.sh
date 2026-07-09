@@ -1,39 +1,28 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 BACKUP_DIR="$HOME/.solukos/backups"
+LOG_FILE="$HOME/.solukos/logs/backup.log"
+
+mkdir -p "$BACKUP_DIR"
+mkdir -p "$(dirname "$LOG_FILE")"
 
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
-TARGET="$BACKUP_DIR/backup-$DATE"
+BACKUP_PATH="$BACKUP_DIR/backup-$DATE"
 
-mkdir -p "$TARGET"
+mkdir -p "$BACKUP_PATH"
+
+
+cp "$HOME/.zshrc" "$BACKUP_PATH/zshrc" 2>/dev/null
+cp "$HOME/.solukos/banner.txt" "$BACKUP_PATH/banner.txt" 2>/dev/null
+cp "$HOME/.solukos/theme" "$BACKUP_PATH/theme" 2>/dev/null
+
+
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] Backup created: $BACKUP_PATH" >> "$LOG_FILE"
+
 
 echo "=============================="
-echo "       SolukOS Backup"
+echo "      Backup Complete"
 echo "=============================="
-echo ""
-
-echo "[*] Creating backup..."
-
-# Zsh config
-if [ -f "$HOME/.zshrc" ]; then
-    cp "$HOME/.zshrc" "$TARGET/zshrc"
-    echo "[✓] Zsh configuration"
-fi
-
-# SolukOS banner
-if [ -f "$HOME/.solukos/banner.txt" ]; then
-    cp "$HOME/.solukos/banner.txt" "$TARGET/banner.txt"
-    echo "[✓] Banner"
-fi
-
-# Version
-if [ -f "$HOME/.solukos/version" ]; then
-    cp "$HOME/.solukos/version" "$TARGET/version"
-    echo "[✓] Version"
-fi
-
-echo ""
-echo "[+] Backup completed."
 echo ""
 echo "Location:"
-echo "$TARGET"
+echo "$BACKUP_PATH"
