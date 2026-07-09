@@ -80,7 +80,7 @@ v1.0.0
 
 - [ ] First Stable Release
 
-#₺ ⚠️ Disclaimer
+## ⚠️ Disclaimer
 
 SolukOS is intended for Linux learning, scripting practice, terminal customization and cybersecurity education.
 
