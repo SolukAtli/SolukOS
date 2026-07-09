@@ -7,11 +7,11 @@ do
     clear
 
     echo "=============================="
-    echo "          Settings"
+    echo "      SolukOS Settings"
     echo "=============================="
     echo ""
-    echo "[1] Show Install Path"
-    echo "[2] Show Version"
+    echo "[1] Change Banner"
+    echo "[2] Reset Config"
     echo "[3] Back"
     echo ""
 
@@ -20,21 +20,11 @@ do
     case $choice in
 
     1)
-        clear
-        echo "=============================="
-        echo "       Install Path"
-        echo "=============================="
-        echo ""
-        echo "$BASE_DIR"
+        bash "$BASE_DIR/scripts/settings/banner.sh"
         ;;
 
     2)
-        clear
-        echo "=============================="
-        echo "          Version"
-        echo "=============================="
-        echo ""
-        echo "SolukOS v0.4-dev"
+        bash "$BASE_DIR/scripts/settings/reset.sh"
         ;;
 
     3)
