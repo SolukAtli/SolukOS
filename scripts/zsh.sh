@@ -16,3 +16,6 @@ cp config/zshrc ~/.zshrc
 
 echo "[+] Zsh configuration applied."
 
+grep -qxF 'exec zsh' ~/.bashrc || echo 'exec zsh' >> ~/.bashrc
+
+echo "[+] Zsh will start automatically."
