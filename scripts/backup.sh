@@ -1,10 +1,39 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-echo "[+] Checking existing Zsh configuration..."
+BACKUP_DIR="$HOME/.solukos/backups"
 
-if [ -f ~/.zshrc ]; then
-    cp ~/.zshrc ~/.zshrc.solukos.backup
-    echo "[+] Backup created: ~/.zshrc.solukos.backup"
-else
-    echo "[+] No existing .zshrc found."
+DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+TARGET="$BACKUP_DIR/backup-$DATE"
+
+mkdir -p "$TARGET"
+
+echo "=============================="
+echo "       SolukOS Backup"
+echo "=============================="
+echo ""
+
+echo "[*] Creating backup..."
+
+# Zsh config
+if [ -f "$HOME/.zshrc" ]; then
+    cp "$HOME/.zshrc" "$TARGET/zshrc"
+    echo "[✓] Zsh configuration"
 fi
+
+# SolukOS banner
+if [ -f "$HOME/.solukos/banner.txt" ]; then
+    cp "$HOME/.solukos/banner.txt" "$TARGET/banner.txt"
+    echo "[✓] Banner"
+fi
+
+# Version
+if [ -f "$HOME/.solukos/version" ]; then
+    cp "$HOME/.solukos/version" "$TARGET/version"
+    echo "[✓] Version"
+fi
+
+echo ""
+echo "[+] Backup completed."
+echo ""
+echo "Location:"
+echo "$TARGET"

@@ -1,0 +1,64 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+BASE_DIR="$(cat ~/.solukos/install_path 2>/dev/null)"
+
+if [ -z "$BASE_DIR" ]; then
+    echo "SolukOS installation path not found."
+    exit 1
+fi
+
+while true
+do
+    clear
+
+    echo "=============================="
+    echo "      SolukOS Manager"
+    echo "=============================="
+    echo ""
+    echo "[1] System Info"
+    echo "[2] Backup Manager"
+    echo "[3] Settings"
+    echo "[4] About"
+    echo "[5] Update SolukOS"
+    echo "[6] Exit"
+    echo ""
+
+    read -p "Choice: " choice
+
+    case $choice in
+
+    1)
+        bash "$BASE_DIR/scripts/info.sh" "$BASE_DIR"
+        ;;
+
+    2)
+        bash "$BASE_DIR/scripts/backup_manager.sh"
+        ;;
+
+    3)
+        bash "$BASE_DIR/scripts/settings.sh" "$BASE_DIR"
+        ;;
+
+    4)
+        bash "$BASE_DIR/scripts/about.sh"
+        ;;
+
+    5)
+        bash "$BASE_DIR/scripts/update.sh" "$BASE_DIR"
+        ;;
+
+    6)
+        echo "Goodbye."
+        exit 0
+        ;;
+
+    *)
+        echo "Invalid option."
+        ;;
+
+    esac
+
+    echo ""
+    read -p "Press Enter to continue..."
+
+done

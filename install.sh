@@ -51,6 +51,7 @@ case $choice in
 
     mkdir -p ~/.solukos
     cp "$BASE_DIR/assets/banner.txt" ~/.solukos/banner.txt
+    echo "$BASE_DIR" > ~/.solukos/install_path
 
 echo ""
 echo "=============================="
