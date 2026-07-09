@@ -21,7 +21,8 @@ do
     echo "[4] About"
     echo "[5] Update SolukOS"
     echo "[6] Log Manager"
-    echo "[7] Exit"
+    echo "[7] Plugin Manager"
+    echo "[8] Exit"
     echo ""
 
     read -p "Choice: " choice
@@ -53,6 +54,10 @@ do
         ;;
 
     7)
+        bash "$BASE_DIR/scripts/plugin_manager.sh"
+        ;;
+
+    8)
         echo "Goodbye."
         exit 0
         ;;

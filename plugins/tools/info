@@ -1,0 +1,5 @@
+Name=SolukOS Tools
+Version=1.0
+Author=SolukOS
+Description=Basic system utility tools
+Permission=system,storage,network
