@@ -1,5 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+BASE_DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
+
 echo "[+] Setting up Zsh..."
 
 if command -v zsh >/dev/null 2>&1
@@ -12,10 +14,6 @@ fi
 
 echo "[+] Copying SolukOS Zsh configuration..."
 
-cp config/zshrc ~/.zshrc
+cp "$BASE_DIR/config/zshrc" ~/.zshrc
 
 echo "[+] Zsh configuration applied."
-
-grep -qxF 'exec zsh' ~/.bashrc || echo 'exec zsh' >> ~/.bashrc
-
-echo "[+] Zsh will start automatically."

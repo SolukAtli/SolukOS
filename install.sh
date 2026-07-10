@@ -3,8 +3,15 @@
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 LOG_FILE="$HOME/.solukos/logs/install.log"
+VERSION_FILE="$BASE_DIR/VERSION"
 
 mkdir -p "$(dirname "$LOG_FILE")"
+
+if [ -f "$VERSION_FILE" ]; then
+    VERSION=$(cat "$VERSION_FILE")
+else
+    VERSION="unknown"
+fi
 
 echo "[$(date +"%Y-%m-%d %H:%M:%S")] Installation started" >> "$LOG_FILE"
 
@@ -14,7 +21,7 @@ do
 clear
 
 echo "=============================="
-echo "        SolukOS v0.3"
+echo "        SolukOS v$VERSION"
 echo "=============================="
 echo ""
 echo "[1] Full Install"
@@ -53,10 +60,11 @@ case $choice in
     echo ""
 
     echo "[*] Configuring Zsh..."
-    bash "$BASE_DIR/scripts/zsh.sh"
+    bash "$BASE_DIR/scripts/zsh.sh" "$BASE_DIR"
 
     mkdir -p ~/.solukos
     cp "$BASE_DIR/assets/banner.txt" ~/.solukos/banner.txt
+    echo "$VERSION" > ~/.solukos/version
     echo "$BASE_DIR" > ~/.solukos/install_path
 
 # Installing Soluk command
@@ -79,7 +87,7 @@ echo "=============================="
 echo " SolukOS Installation Complete"
 echo "=============================="
 echo ""
-echo " Version : v0.3"
+echo " Version : v$VERSION"
 echo " Backup  : Created"
 echo " Theme   : Applied"
 echo " Zsh     : Configured"
@@ -115,3 +123,4 @@ read -p "Press Enter to continue..."
 clear
 
 done
+

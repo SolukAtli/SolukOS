@@ -1,23 +1,16 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-TERMUX_DIR="$HOME/.termux"
+SOLUK_DIR="$HOME/.solukos"
+THEME_FILE="$SOLUK_DIR/theme"
 
-mkdir -p "$TERMUX_DIR"
+mkdir -p "$SOLUK_DIR"
 
-echo "=============================="
-echo "      SolukOS Theme"
-echo "=============================="
-echo ""
+echo "[+] Applying SolukOS theme..."
 
-cat > "$TERMUX_DIR/colors.properties" << EOF
-background=#202020
-foreground=#d0d0d0
-cursor=#aaaaaa
-EOF
+if [ ! -f "$THEME_FILE" ]; then
+    echo "default" > "$THEME_FILE"
+fi
 
-cat > "$TERMUX_DIR/termux.properties" << EOF
-bell-character=ignore
-EOF
+THEME=$(cat "$THEME_FILE")
 
-echo "[✓] Dark gray theme applied."
-echo "[!] Restart Termux to apply changes."
+echo "[+] Theme set to: $THEME"

@@ -1,68 +1,134 @@
+package managerıda şöyle yapıcam
+
 #!/data/data/com.termux/files/usr/bin/bash
 
-DB="$HOME/SolukOS/packages/database.txt"
+DB_FILE="$HOME/SolukOS/packages/database.txt"
 
-search_package() {
-read -p "Package: " QUERY
-grep -i "$QUERY" "$DB" || echo "Not found"
-}
-
-install_package() {
-read -p "Install: " PKG
-INFO=$(grep "^$PKG|" "$DB")
-[ -z "$INFO" ] && echo "Not found" && return
-IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
-
-if [ "$TYPE" = "native" ]; then
-pkg install "$NAME" -y
-elif [ "$TYPE" = "plugin" ]; then
-echo "Plugin install coming soon"
-else
-echo "Manual install required"
+if [ ! -f "$DB_FILE" ]; then
+echo "[!] Package database not found: $DB_FILE"
+exit 1
 fi
-}
 
 while true
 do
 clear
 
-echo "=== SolukOS Package Manager ==="
-echo "[1] List"
-echo "[2] Search"
-echo "[3] Check"
-echo "[4] Install"
-echo "[5] Back"
+echo "=============================="  
+echo "      Package Manager"  
+echo "=============================="  
+echo ""  
+echo "[1] List Packages"  
+echo "[2] Search Package"  
+echo "[3] Package Info"  
+echo "[4] Install Package"  
+echo "[5] Remove Package"  
+echo "[6] Check Installed Status"  
+echo "[7] Back"  
+echo ""  
 
-read -p "Choice: " choice
+read -p "Choice: " choice  
 
-case "$choice" in
+case $choice in  
 
-1)
-cat "$DB"
-;;
+1)  
+    clear  
+    echo "Available Packages:"  
+    echo ""  
+    cat "$DB_FILE"  
+    ;;  
 
-2)
-search_package
-;;
+2)  
+    read -p "Search term: " term  
+    clear  
+    echo "Results for '$term':"  
+    echo ""  
+    grep -i "$term" "$DB_FILE"  
+    ;;  
 
-3)
-while IFS="|" read -r NAME CATEGORY TYPE STATUS
-do
-command -v "$NAME" >/dev/null 2>&1 &&
-echo "[✓] $NAME" ||
-echo "[ ] $NAME"
-done < "$DB"
-;;
+3)  
+    read -p "Package name: " pkgname  
+    clear  
+    INFO=$(grep "^$pkgname|" "$DB_FILE")  
 
-4)
-install_package
-;;
+    if [ -z "$INFO" ]; then  
+        echo "[!] Package not found."  
+    else  
+        IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"  
+        echo "Name: $NAME"  
+        echo "Category: $CATEGORY"  
+        echo "Type: $TYPE"  
+        echo "Status: $STATUS"  
+    fi  
+    ;;  
 
-5)
-exit 0
-;;
+4)  
+    read -p "Package name: " pkgname  
+    clear  
+    INFO=$(grep "^$pkgname|" "$DB_FILE")  
 
-esac
+    if [ -z "$INFO" ]; then  
+        echo "[!] Package not found."  
+    else  
+        IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"  
 
-read -p "Press Enter..."
+        if [ "$TYPE" = "native" ]; then  
+            pkg install "$NAME" -y  
+        elif [ "$TYPE" = "plugin" ]; then  
+            echo "[i] '$NAME' is a plugin. Use Plugin Manager (menu option 7) to install it."  
+        else  
+            echo "[!] '$NAME' is an external tool. Manual installation required."  
+        fi  
+    fi  
+    ;;  
+
+5)  
+    read -p "Package name: " pkgname  
+    clear  
+    INFO=$(grep "^$pkgname|" "$DB_FILE")  
+
+    if [ -z "$INFO" ]; then  
+        echo "[!] Package not found."  
+    else  
+        IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"  
+
+        if [ "$TYPE" = "native" ]; then  
+            pkg uninstall "$NAME" -y  
+        elif [ "$TYPE" = "plugin" ]; then  
+            echo "[i] '$NAME' is a plugin. Use Plugin Manager (menu option 7) to remove it."  
+        else  
+            echo "[!] Manual removal required for '$NAME'."  
+        fi  
+    fi  
+    ;;  
+
+6)  
+    clear  
+    echo "Checking installed status..."  
+    echo ""  
+
+    while IFS="|" read -r NAME CATEGORY TYPE STATUS  
+    do  
+        [ -z "$NAME" ] && continue  
+
+        if command -v "$NAME" >/dev/null 2>&1; then  
+            echo "[✓] $NAME"  
+        else  
+            echo "[ ] $NAME"  
+        fi  
+    done < "$DB_FILE"  
+    ;;  
+
+7)  
+    break  
+    ;;  
+
+*)  
+    echo "Invalid option."  
+    ;;  
+
+esac  
+
+echo ""  
+read -p "Press Enter to continue..."
+
 done
