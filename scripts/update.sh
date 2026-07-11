@@ -36,9 +36,28 @@ git pull
 
 if [ $? -eq 0 ]; then
     echo ""
-    soluk_ok "Update completed."
+    echo "[*] Refreshing soluk command..."
 
-    echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update completed successfully (v$VERSION)" >> "$LOG_FILE"
+    if [ -f "$BASE_DIR/bin/soluk" ]; then
+        cp "$BASE_DIR/bin/soluk" /data/data/com.termux/files/usr/bin/soluk
+        chmod +x /data/data/com.termux/files/usr/bin/soluk
+    fi
+
+    chmod +x "$BASE_DIR"/scripts/*.sh 2>/dev/null
+    chmod +x "$BASE_DIR"/scripts/lib/*.sh 2>/dev/null
+    chmod +x "$BASE_DIR"/scripts/settings/*.sh 2>/dev/null
+    chmod +x "$BASE_DIR"/scripts/package/*.sh 2>/dev/null
+    chmod +x "$BASE_DIR"/plugins/*/plugin.sh 2>/dev/null
+    chmod +x "$BASE_DIR"/plugins/installed/*/plugin.sh 2>/dev/null
+
+    soluk_ok "soluk command refreshed."
+
+    NEW_VERSION=$(cat "$VERSION_FILE" 2>/dev/null)
+
+    echo ""
+    soluk_ok "Update completed (v$NEW_VERSION)."
+
+    echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update completed successfully (v$NEW_VERSION)" >> "$LOG_FILE"
 else
     echo ""
     soluk_warn "Update failed."
