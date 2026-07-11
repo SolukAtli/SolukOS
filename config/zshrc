@@ -1,12 +1,16 @@
 clear
 
 echo ""
-cat ~/SolukOS/assets/banner.txt
+awk '{
+    c[0]=96; c[1]=36; c[2]=94; c[3]=34; c[4]=39; c[5]=97
+    idx = (NR-1) % 6
+    printf "\033[1;%sm%s\033[0m\n", c[idx], $0
+}' ~/SolukOS/assets/banner.txt
 echo ""
 echo "[ SolukOS ] Terminal initialized."
 echo ""
 
-PROMPT='%F{250}┌──(Soluk㉿Termux)-[%~]
+PROMPT='%F{75}┌──(%F{117}Soluk%F{75}㉿%F{117}Termux%F{75})-[%F{255}%~%F{75}]
 └─$ %f'
 
 alias ll='ls -la'
