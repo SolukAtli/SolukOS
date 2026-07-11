@@ -6,22 +6,43 @@
 #   soluk_header "Title"
 #   choice=$(soluk_menu "Label" "Option 1" "Option 2" "Back")
 #   soluk_banner "$BASE_DIR"
+#
+# Colors here are the *basic* ANSI slots (0-15). Termux remaps those 16
+# slots via ~/.termux/colors.properties (see scripts/theme.sh), so the
+# actual on-screen tones follow whatever palette is applied there - by
+# default a muted / pale ("soluk") blue-gray theme.
 
 SOLUK_RESET="\033[0m"
 SOLUK_BOLD="\033[1m"
 SOLUK_CYAN="\033[36m"
 SOLUK_BCYAN="\033[96m"
+SOLUK_BLUE="\033[34m"
 SOLUK_GREEN="\033[32m"
 SOLUK_RED="\033[31m"
 SOLUK_YELLOW="\033[33m"
 SOLUK_GRAY="\033[90m"
 
+# Centered, bordered title box (a small "banner" for menu screens).
 soluk_header()
 {
     local title="$1"
-    echo -e "${SOLUK_CYAN}══════════════════════════════${SOLUK_RESET}"
-    echo -e "${SOLUK_BOLD}${SOLUK_BCYAN}  ${title}${SOLUK_RESET}"
-    echo -e "${SOLUK_CYAN}══════════════════════════════${SOLUK_RESET}"
+    local cols
+    cols=$(tput cols 2>/dev/null)
+    [ -z "$cols" ] && cols=50
+
+    local text=" ${title} "
+    local len=${#text}
+    local pad=$(( (cols - len - 2) / 2 ))
+    [ "$pad" -lt 0 ] && pad=0
+    local indent
+    indent=$(printf '%*s' "$pad" "")
+
+    local border
+    border=$(printf '─%.0s' $(seq 1 "$len"))
+
+    echo -e "${indent}${SOLUK_GRAY}╭${border}╮${SOLUK_RESET}"
+    echo -e "${indent}${SOLUK_GRAY}│${SOLUK_RESET}${SOLUK_BOLD}${SOLUK_BCYAN}${text}${SOLUK_RESET}${SOLUK_GRAY}│${SOLUK_RESET}"
+    echo -e "${indent}${SOLUK_GRAY}╰${border}╯${SOLUK_RESET}"
     echo ""
 }
 
@@ -40,20 +61,12 @@ soluk_warn()
     echo -e "${SOLUK_YELLOW}[!]${SOLUK_RESET} $1"
 }
 
-# Prints assets/banner.txt with a cyan/blue "mist" gradient (matches
-# the "Soluk" = pale/misty branding).
+# Prints assets/banner.txt centered and framed (delegates to print_banner.sh
+# so zshrc and ui.sh always render it identically).
 soluk_banner()
 {
-    local base_dir="$1"
-    local banner_file="${base_dir}/assets/banner.txt"
-    [ -f "$banner_file" ] || banner_file="$HOME/.solukos/banner.txt"
-    [ -f "$banner_file" ] || return 0
-
-    awk '{
-        c[0]=96; c[1]=36; c[2]=94; c[3]=34; c[4]=39; c[5]=97
-        idx = (NR-1) % 6
-        printf "\033[1;%sm%s\033[0m\n", c[idx], $0
-    }' "$banner_file"
+    local base_dir="${1:-$BASE_DIR}"
+    bash "${base_dir}/scripts/lib/print_banner.sh" "$base_dir"
 }
 
 # Returns 0 if the installed fzf supports the pos() bind action (>=0.35.0).
@@ -94,6 +107,7 @@ soluk_menu()
             binds="${binds%,}"
         fi
 
+        # Muted palette: uses basic slots 4 (blue), 6 (cyan), 8 (gray), 15 (pale white)
         local result
         if [ -n "$binds" ]; then
             result=$(printf '%s\n' "${numbered[@]}" | fzf \
@@ -101,7 +115,7 @@ soluk_menu()
                 --height="~70%" \
                 --border=rounded \
                 --reverse \
-                --color="fg+:white,bg+:24,hl:51,hl+:51,pointer:39,prompt:39,border:39,header:39" \
+                --color="fg+:15,bg+:8,hl:6,hl+:6,pointer:4,prompt:4,border:4,header:4" \
                 --bind "$binds")
         else
             result=$(printf '%s\n' "${numbered[@]}" | fzf \
@@ -109,7 +123,7 @@ soluk_menu()
                 --height="~70%" \
                 --border=rounded \
                 --reverse \
-                --color="fg+:white,bg+:24,hl:51,hl+:51,pointer:39,prompt:39,border:39,header:39")
+                --color="fg+:15,bg+:8,hl:6,hl+:6,pointer:4,prompt:4,border:4,header:4")
         fi
 
         echo "${result#*) }"
