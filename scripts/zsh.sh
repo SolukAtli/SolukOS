@@ -12,6 +12,22 @@ else
     pkg install -y zsh
 fi
 
+mkdir -p ~/.zsh
+
+if [ ! -d ~/.zsh/zsh-autosuggestions ]; then
+    echo "[+] Installing zsh-autosuggestions..."
+    git clone --quiet https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+else
+    echo "[+] zsh-autosuggestions already installed."
+fi
+
+if [ ! -d ~/.zsh/zsh-syntax-highlighting ]; then
+    echo "[+] Installing zsh-syntax-highlighting..."
+    git clone --quiet https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
+else
+    echo "[+] zsh-syntax-highlighting already installed."
+fi
+
 echo "[+] Copying SolukOS Zsh configuration..."
 
 cp "$BASE_DIR/config/zshrc" ~/.zshrc

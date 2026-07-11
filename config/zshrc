@@ -12,8 +12,6 @@ PROMPT='%F{250}┌──(Soluk㉿Termux)-[%~]
 alias ll='ls -la'
 alias update='pkg update && pkg upgrade'
 
-# SolukOS Autosuggestions
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# SolukOS Syntax Highlighting
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# SolukOS zsh plugins (dosya yoksa sessizce atlar, hata vermez)
+[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
