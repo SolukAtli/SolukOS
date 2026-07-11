@@ -3,42 +3,46 @@
 BASE_DIR="$(cat ~/.solukos/install_path 2>/dev/null)"
 
 if [ -z "$BASE_DIR" ]; then
-echo "SolukOS installation path not found."
-exit 1
+    echo "SolukOS installation path not found."
+    exit 1
 fi
 
+source "$BASE_DIR/scripts/lib/ui.sh"
+
 if [ "$1" = "version" ]; then
-echo "SolukOS v0.6.1"
-exit 0
+    echo "SolukOS v0.6.1"
+    exit 0
 fi
 
 if [ "$1" = "help" ]; then
-echo "=============================="
-echo "       SolukOS Help"
-echo "=============================="
-echo ""
-echo "System:"
-echo "  soluk version"
-echo "  soluk doctor"
-echo "  soluk reload"
-echo "  soluk help"
-echo ""
-echo "Packages:"
-echo "  soluk pkg list"
-echo "  soluk pkg search <name>"
-echo "  soluk pkg info <name>"
-echo "  soluk pkg install <name>"
-echo "  soluk pkg remove <name>"
-echo ""
-exit 0
+    echo "=============================="
+    echo "       SolukOS Help"
+    echo "=============================="
+    echo ""
+    echo "System:"
+    echo "  soluk version"
+    echo "  soluk doctor"
+    echo "  soluk reload"
+    echo "  soluk help"
+    echo ""
+    echo "Packages:"
+    echo "  soluk pkg list"
+    echo "  soluk pkg search <name>"
+    echo "  soluk pkg info <name>"
+    echo "  soluk pkg install <name>"
+    echo "  soluk pkg remove <name>"
+    echo ""
+    exit 0
 fi
 
 if [ "$1" = "doctor" ]; then
-echo "=== SolukOS Doctor ==="
-[ -d "$HOME/SolukOS" ] && echo "[✓] SolukOS directory" || echo "[ ] SolukOS directory"
-[ -f "$HOME/SolukOS/packages/database.txt" ] && echo "[✓] Package database" || echo "[ ] Package database"
-[ -f "$HOME/SolukOS/scripts/package/package_manager.sh" ] && echo "[✓] Package Manager" || echo "[ ] Package Manager"
-exit 0
+    echo "=== SolukOS Doctor ==="
+    [ -d "$BASE_DIR" ] && echo "[✓] SolukOS directory" || echo "[ ] SolukOS directory"
+    [ -f "$BASE_DIR/packages/database.txt" ] && echo "[✓] Package database" || echo "[ ] Package database"
+    [ -f "$BASE_DIR/scripts/package/package_manager.sh" ] && echo "[✓] Package Manager" || echo "[ ] Package Manager"
+    [ -f "$BASE_DIR/scripts/lib/ui.sh" ] && echo "[✓] UI library" || echo "[ ] UI library"
+    command -v fzf >/dev/null 2>&1 && echo "[✓] fzf (modern menu)" || echo "[ ] fzf (modern menu) - pkg install fzf"
+    exit 0
 fi
 
 if [ "$1" = "reload" ]; then
@@ -47,63 +51,65 @@ fi
 
 if [ "$1" = "pkg" ]; then
 
+DB_FILE="$BASE_DIR/packages/database.txt"
+
 case "$2" in
 
 list)
-cat "$HOME/SolukOS/packages/database.txt"
-exit 0
-;;
+    cat "$DB_FILE"
+    exit 0
+    ;;
 
 search)
-grep -i "$3" "$HOME/SolukOS/packages/database.txt"
-exit 0
-;;
+    grep -i "$3" "$DB_FILE"
+    exit 0
+    ;;
 
 info)
-INFO=$(grep "^$3|" "$HOME/SolukOS/packages/database.txt")
-[ -z "$INFO" ] && echo "Package not found" && exit 1
-IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
-echo "Name: $NAME"
-echo "Category: $CATEGORY"
-echo "Type: $TYPE"
-echo "Status: $STATUS"
-exit 0
-;;
+    INFO=$(grep "^$3|" "$DB_FILE")
+    [ -z "$INFO" ] && echo "Package not found" && exit 1
+    IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+    echo "Name: $NAME"
+    echo "Category: $CATEGORY"
+    echo "Type: $TYPE"
+    echo "Status: $STATUS"
+    exit 0
+    ;;
 
 install)
-INFO=$(grep "^$3|" "$HOME/SolukOS/packages/database.txt")
-[ -z "$INFO" ] && echo "Package not found" && exit 1
-IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+    INFO=$(grep "^$3|" "$DB_FILE")
+    [ -z "$INFO" ] && echo "Package not found" && exit 1
+    IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
 
-if [ "$TYPE" = "native" ]; then
-pkg install "$NAME" -y
-elif [ "$TYPE" = "plugin" ]; then
-echo "Plugin installer coming soon"
-else
-echo "Manual install required"
-fi
-exit 0
-;;
+    if [ "$TYPE" = "native" ]; then
+        pkg install "$NAME" -y
+    elif [ "$TYPE" = "plugin" ]; then
+        echo "Plugin installer coming soon"
+    else
+        echo "Manual install required"
+    fi
+    exit 0
+    ;;
 
 remove)
-INFO=$(grep "^$3|" "$HOME/SolukOS/packages/database.txt")
-[ -z "$INFO" ] && echo "Package not found" && exit 1
-IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+    INFO=$(grep "^$3|" "$DB_FILE")
+    [ -z "$INFO" ] && echo "Package not found" && exit 1
+    IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
 
-if [ "$TYPE" = "native" ]; then
-pkg uninstall "$NAME" -y
-elif [ "$TYPE" = "plugin" ]; then
-echo "Plugin removal coming soon"
-else
-echo "Manual removal required"
-fi
-exit 0
-;;
+    if [ "$TYPE" = "native" ]; then
+        pkg uninstall "$NAME" -y
+    elif [ "$TYPE" = "plugin" ]; then
+        echo "Plugin removal coming soon"
+    else
+        echo "Manual removal required"
+    fi
+    exit 0
+    ;;
 
 check)
-bash "$HOME/SolukOS/scripts/package/package_manager.sh"
-exit 0
-;;
+    bash "$BASE_DIR/scripts/package/package_manager.sh" "$BASE_DIR"
+    exit 0
+    ;;
 
 esac
 
@@ -111,38 +117,34 @@ fi
 
 while true
 do
-clear
+    clear
 
-echo "=============================="
-echo "      SolukOS Manager"
-echo "=============================="
-echo ""
-echo "[1] System Info"
-echo "[2] Backup Manager"
-echo "[3] Settings"
-echo "[4] About"
-echo "[5] Update SolukOS"
-echo "[6] Log Manager"
-echo "[7] Plugin Manager"
-echo "[8] Package Manager"
-echo "[9] Exit"
-echo ""
+    soluk_header "SolukOS Manager"
 
-read -p "Choice: " choice
+    choice=$(soluk_menu "SolukOS" \
+        "System Info" \
+        "Backup Manager" \
+        "Settings" \
+        "About" \
+        "Update SolukOS" \
+        "Log Manager" \
+        "Plugin Manager" \
+        "Package Manager" \
+        "Exit")
 
-case "$choice" in
-1) bash "$BASE_DIR/scripts/info.sh" ;;
-2) bash "$BASE_DIR/scripts/backup_manager.sh" ;;
-3) bash "$BASE_DIR/scripts/settings.sh" "$BASE_DIR" ;;
-4) bash "$BASE_DIR/scripts/about.sh" ;;
-5) bash "$BASE_DIR/scripts/update.sh" "$BASE_DIR" ;;
-6) bash "$BASE_DIR/scripts/log_manager.sh" ;;
-7) bash "$BASE_DIR/scripts/plugin_manager.sh" ;;
-8) bash "$BASE_DIR/scripts/package/package_manager.sh" ;;
-9) echo "Goodbye."; exit 0 ;;
-*) echo "Invalid option." ;;
-esac
+    case "$choice" in
+        "System Info")     bash "$BASE_DIR/scripts/info.sh" "$BASE_DIR" ;;
+        "Backup Manager")  bash "$BASE_DIR/scripts/backup_manager.sh" "$BASE_DIR" ;;
+        "Settings")        bash "$BASE_DIR/scripts/settings.sh" "$BASE_DIR" ;;
+        "About")           bash "$BASE_DIR/scripts/about.sh" "$BASE_DIR" ;;
+        "Update SolukOS")  bash "$BASE_DIR/scripts/update.sh" "$BASE_DIR" ;;
+        "Log Manager")     bash "$BASE_DIR/scripts/log_manager.sh" "$BASE_DIR" ;;
+        "Plugin Manager")  bash "$BASE_DIR/scripts/plugin_manager.sh" "$BASE_DIR" ;;
+        "Package Manager") bash "$BASE_DIR/scripts/package/package_manager.sh" "$BASE_DIR" ;;
+        "Exit"|"")         echo "Goodbye."; exit 0 ;;
+        *)                 echo "Invalid option." ;;
+    esac
 
-echo ""
-read -p "Press Enter to continue..."
+    echo ""
+    read -p "Press Enter to continue..."
 done

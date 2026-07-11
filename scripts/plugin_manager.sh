@@ -1,32 +1,29 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-PLUGIN_DIR="$HOME/SolukOS/plugins"
+BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
+PLUGIN_DIR="$BASE_DIR/plugins"
 INSTALLED_DIR="$PLUGIN_DIR/installed"
+
+source "$BASE_DIR/scripts/lib/ui.sh"
 
 mkdir -p "$INSTALLED_DIR"
 
 while true
 do
     clear
+    soluk_header "Plugin Manager"
 
-    echo "=============================="
-    echo "       Plugin Manager"
-    echo "=============================="
-    echo ""
+    choice=$(soluk_menu "Plugin Manager" \
+        "List Plugins" \
+        "Plugin Info" \
+        "Run Plugin" \
+        "Install Plugin" \
+        "Remove Plugin" \
+        "Back")
 
-    echo "[1] List Plugins"
-    echo "[2] Plugin Info"
-    echo "[3] Run Plugin"
-    echo "[4] Install Plugin"
-    echo "[5] Remove Plugin"
-    echo "[6] Back"
-    echo ""
+    case "$choice" in
 
-    read -p "Choice: " choice
-
-    case $choice in
-
-    1)
+    "List Plugins")
         clear
         echo "Installed Plugins:"
         echo ""
@@ -35,7 +32,6 @@ do
         do
             if [ -d "$PLUGIN" ]; then
                 NAME=$(basename "$PLUGIN")
-
                 echo "$NAME"
 
                 if [ -f "$PLUGIN/info" ]; then
@@ -47,24 +43,21 @@ do
         done
         ;;
 
-
-    2)
+    "Plugin Info")
         read -p "Plugin name: " plugin
 
         if [ -f "$INSTALLED_DIR/$plugin/info" ]; then
             echo ""
             cat "$INSTALLED_DIR/$plugin/info"
         else
-            echo "[!] Plugin info not found."
+            soluk_warn "Plugin info not found."
         fi
         ;;
 
-
-    3)
+    "Run Plugin")
         read -p "Plugin name: " plugin
 
         if [ -f "$INSTALLED_DIR/$plugin/plugin.sh" ]; then
-
             echo ""
             echo "Plugin information:"
             echo ""
@@ -74,56 +67,48 @@ do
             fi
 
             echo ""
-
             read -p "Run plugin? (y/n): " confirm
 
             if [ "$confirm" = "y" ]; then
-                bash "$INSTALLED_DIR/$plugin/plugin.sh"
+                bash "$INSTALLED_DIR/$plugin/plugin.sh" "$BASE_DIR"
             else
                 echo "Cancelled."
             fi
-
         else
-            echo "[!] Plugin not found."
+            soluk_warn "Plugin not found."
         fi
         ;;
 
-
-    4)
+    "Install Plugin")
         echo "Available plugins:"
         echo ""
-
-        ls "$PLUGIN_DIR"
-
+        ls "$PLUGIN_DIR" | grep -v '^installed$'
         echo ""
 
         read -p "Plugin name: " plugin
 
         if [ -d "$PLUGIN_DIR/$plugin" ]; then
             cp -r "$PLUGIN_DIR/$plugin" "$INSTALLED_DIR/"
-            echo "[+] Plugin installed."
+            soluk_ok "Plugin installed."
         else
-            echo "[!] Plugin not found."
+            soluk_warn "Plugin not found."
         fi
         ;;
 
-
-    5)
+    "Remove Plugin")
         read -p "Plugin name: " plugin
 
         if [ -d "$INSTALLED_DIR/$plugin" ]; then
             rm -rf "$INSTALLED_DIR/$plugin"
-            echo "[+] Plugin removed."
+            soluk_ok "Plugin removed."
         else
-            echo "[!] Plugin not found."
+            soluk_warn "Plugin not found."
         fi
         ;;
 
-
-    6)
+    "Back"|"")
         break
         ;;
-
 
     *)
         echo "Invalid option."

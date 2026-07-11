@@ -1,76 +1,75 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 LOG_DIR="$HOME/.solukos/logs"
+
+source "$BASE_DIR/scripts/lib/ui.sh"
 
 while true
 do
     clear
+    soluk_header "Log Manager"
 
-    echo "=============================="
-    echo "        Log Manager"
-    echo "=============================="
-    echo ""
+    choice=$(soluk_menu "Log Manager" \
+        "View System Log" \
+        "View Backup Log" \
+        "View Update Log" \
+        "View Install Log" \
+        "Clear Logs" \
+        "Export Logs" \
+        "Back")
 
-    echo "[1] View System Log"
-    echo "[2] View Backup Log"
-    echo "[3] View Update Log"
-    echo "[4] View Install Log"
-    echo "[5] Clear Logs"
-    echo "[6] Export Logs"
-    echo "[7] Back"
-    echo ""
+    case "$choice" in
 
-    read -p "Choice: " choice
-
-    case $choice in
-
-    1)
+    "View System Log")
         clear
         cat "$LOG_DIR/system.log" 2>/dev/null || echo "No system logs."
         ;;
 
-    2)
+    "View Backup Log")
         clear
         cat "$LOG_DIR/backup.log" 2>/dev/null || echo "No backup logs."
         ;;
 
-    3)
+    "View Update Log")
         clear
         cat "$LOG_DIR/update.log" 2>/dev/null || echo "No update logs."
         ;;
 
-    4)
+    "View Install Log")
         clear
         cat "$LOG_DIR/install.log" 2>/dev/null || echo "No install logs."
         ;;
 
-    5)
+    "Clear Logs")
         rm -f "$LOG_DIR"/*.log
-        echo "[+] Logs cleared."
+        soluk_ok "Logs cleared."
         ;;
 
-    6)
+    "Export Logs")
         mkdir -p "$HOME/.solukos/exports"
 
         FILE="$HOME/.solukos/exports/solukos-logs-$(date +%Y-%m-%d_%H-%M-%S).txt"
 
-        echo "==============================" > "$FILE"
-        echo "        SolukOS Logs" >> "$FILE"
-        echo "==============================" >> "$FILE"
-        echo "" >> "$FILE"
+        {
+            echo "=============================="
+            echo "        SolukOS Logs"
+            echo "=============================="
+            echo ""
 
-        for LOG in "$LOG_DIR"/*.log
-        do
-            echo "===== $(basename "$LOG") =====" >> "$FILE"
-            cat "$LOG" >> "$FILE" 2>/dev/null
-            echo "" >> "$FILE"
-        done
+            for LOG in "$LOG_DIR"/*.log
+            do
+                echo "===== $(basename "$LOG") ====="
+                cat "$LOG" 2>/dev/null
+                echo ""
+            done
+        } > "$FILE"
 
-        echo "[+] Logs exported:"
+        soluk_ok "Logs exported:"
         echo "$FILE"
         ;;
 
-    7)
+    "Back"|"")
         break
         ;;
 

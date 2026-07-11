@@ -5,6 +5,6 @@ echo "[+] Installing required packages..."
 pkg update -y
 pkg upgrade -y
 
-pkg install -y zsh git nano
+pkg install -y zsh git nano fzf
 
 echo "[+] Packages installed."

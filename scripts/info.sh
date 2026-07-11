@@ -2,12 +2,10 @@
 
 BASE_DIR="$1"
 
-clear
+source "$BASE_DIR/scripts/lib/ui.sh"
 
-echo "=============================="
-echo "       System Information"
-echo "=============================="
-echo ""
+clear
+soluk_header "System Information"
 
 VERSION=$(cat ~/.solukos/version 2>/dev/null)
 echo "Version : $VERSION"

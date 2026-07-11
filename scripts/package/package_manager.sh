@@ -1,134 +1,130 @@
-package managerıda şöyle yapıcam
-
 #!/data/data/com.termux/files/usr/bin/bash
 
-DB_FILE="$HOME/SolukOS/packages/database.txt"
+BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
+DB_FILE="$BASE_DIR/packages/database.txt"
+
+source "$BASE_DIR/scripts/lib/ui.sh"
 
 if [ ! -f "$DB_FILE" ]; then
-echo "[!] Package database not found: $DB_FILE"
-exit 1
+    echo "[!] Package database not found: $DB_FILE"
+    exit 1
 fi
 
 while true
 do
-clear
+    clear
+    soluk_header "Package Manager"
 
-echo "=============================="  
-echo "      Package Manager"  
-echo "=============================="  
-echo ""  
-echo "[1] List Packages"  
-echo "[2] Search Package"  
-echo "[3] Package Info"  
-echo "[4] Install Package"  
-echo "[5] Remove Package"  
-echo "[6] Check Installed Status"  
-echo "[7] Back"  
-echo ""  
+    choice=$(soluk_menu "Package Manager" \
+        "List Packages" \
+        "Search Package" \
+        "Package Info" \
+        "Install Package" \
+        "Remove Package" \
+        "Check Installed Status" \
+        "Back")
 
-read -p "Choice: " choice  
+    case "$choice" in
 
-case $choice in  
+    "List Packages")
+        clear
+        echo "Available Packages:"
+        echo ""
+        cat "$DB_FILE"
+        ;;
 
-1)  
-    clear  
-    echo "Available Packages:"  
-    echo ""  
-    cat "$DB_FILE"  
-    ;;  
+    "Search Package")
+        read -p "Search term: " term
+        clear
+        echo "Results for '$term':"
+        echo ""
+        grep -i "$term" "$DB_FILE"
+        ;;
 
-2)  
-    read -p "Search term: " term  
-    clear  
-    echo "Results for '$term':"  
-    echo ""  
-    grep -i "$term" "$DB_FILE"  
-    ;;  
+    "Package Info")
+        read -p "Package name: " pkgname
+        clear
+        INFO=$(grep "^$pkgname|" "$DB_FILE")
 
-3)  
-    read -p "Package name: " pkgname  
-    clear  
-    INFO=$(grep "^$pkgname|" "$DB_FILE")  
+        if [ -z "$INFO" ]; then
+            soluk_warn "Package not found."
+        else
+            IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+            echo "Name: $NAME"
+            echo "Category: $CATEGORY"
+            echo "Type: $TYPE"
+            echo "Status: $STATUS"
+        fi
+        ;;
 
-    if [ -z "$INFO" ]; then  
-        echo "[!] Package not found."  
-    else  
-        IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"  
-        echo "Name: $NAME"  
-        echo "Category: $CATEGORY"  
-        echo "Type: $TYPE"  
-        echo "Status: $STATUS"  
-    fi  
-    ;;  
+    "Install Package")
+        read -p "Package name: " pkgname
+        clear
+        INFO=$(grep "^$pkgname|" "$DB_FILE")
 
-4)  
-    read -p "Package name: " pkgname  
-    clear  
-    INFO=$(grep "^$pkgname|" "$DB_FILE")  
+        if [ -z "$INFO" ]; then
+            soluk_warn "Package not found."
+        else
+            IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
 
-    if [ -z "$INFO" ]; then  
-        echo "[!] Package not found."  
-    else  
-        IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"  
+            if [ "$TYPE" = "native" ]; then
+                pkg install "$NAME" -y
+            elif [ "$TYPE" = "plugin" ]; then
+                echo "[i] '$NAME' is a plugin. Use Plugin Manager to install it."
+            else
+                soluk_warn "'$NAME' is an external tool. Manual installation required."
+            fi
+        fi
+        ;;
 
-        if [ "$TYPE" = "native" ]; then  
-            pkg install "$NAME" -y  
-        elif [ "$TYPE" = "plugin" ]; then  
-            echo "[i] '$NAME' is a plugin. Use Plugin Manager (menu option 7) to install it."  
-        else  
-            echo "[!] '$NAME' is an external tool. Manual installation required."  
-        fi  
-    fi  
-    ;;  
+    "Remove Package")
+        read -p "Package name: " pkgname
+        clear
+        INFO=$(grep "^$pkgname|" "$DB_FILE")
 
-5)  
-    read -p "Package name: " pkgname  
-    clear  
-    INFO=$(grep "^$pkgname|" "$DB_FILE")  
+        if [ -z "$INFO" ]; then
+            soluk_warn "Package not found."
+        else
+            IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
 
-    if [ -z "$INFO" ]; then  
-        echo "[!] Package not found."  
-    else  
-        IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"  
+            if [ "$TYPE" = "native" ]; then
+                pkg uninstall "$NAME" -y
+            elif [ "$TYPE" = "plugin" ]; then
+                echo "[i] '$NAME' is a plugin. Use Plugin Manager to remove it."
+            else
+                soluk_warn "Manual removal required for '$NAME'."
+            fi
+        fi
+        ;;
 
-        if [ "$TYPE" = "native" ]; then  
-            pkg uninstall "$NAME" -y  
-        elif [ "$TYPE" = "plugin" ]; then  
-            echo "[i] '$NAME' is a plugin. Use Plugin Manager (menu option 7) to remove it."  
-        else  
-            echo "[!] Manual removal required for '$NAME'."  
-        fi  
-    fi  
-    ;;  
+    "Check Installed Status")
+        clear
+        echo "Checking installed status..."
+        echo ""
 
-6)  
-    clear  
-    echo "Checking installed status..."  
-    echo ""  
+        while IFS="|" read -r NAME CATEGORY TYPE STATUS
+        do
+            [ -z "$NAME" ] && continue
 
-    while IFS="|" read -r NAME CATEGORY TYPE STATUS  
-    do  
-        [ -z "$NAME" ] && continue  
+            if command -v "$NAME" >/dev/null 2>&1; then
+                soluk_ok "$NAME"
+            else
+                soluk_fail "$NAME"
+            fi
+        done < "$DB_FILE"
+        ;;
 
-        if command -v "$NAME" >/dev/null 2>&1; then  
-            echo "[✓] $NAME"  
-        else  
-            echo "[ ] $NAME"  
-        fi  
-    done < "$DB_FILE"  
-    ;;  
+    "Back"|"")
+        break
+        ;;
 
-7)  
-    break  
-    ;;  
+    *)
+        echo "Invalid option."
+        ;;
 
-*)  
-    echo "Invalid option."  
-    ;;  
+    esac
 
-esac  
-
-echo ""  
-read -p "Press Enter to continue..."
+    echo ""
+    read -p "Press Enter to continue..."
 
 done

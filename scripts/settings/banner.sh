@@ -1,13 +1,12 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+BASE_DIR="$1"
 BANNER_FILE="$HOME/.solukos/banner.txt"
 
-clear
+source "$BASE_DIR/scripts/lib/ui.sh"
 
-echo "=============================="
-echo "       Change Banner"
-echo "=============================="
-echo ""
+clear
+soluk_header "Change Banner"
 
 echo "Current banner:"
 echo "----------------"
@@ -27,5 +26,4 @@ echo ""
 cat > "$BANNER_FILE"
 
 echo ""
-echo "[+] Banner updated."
-
+soluk_ok "Banner updated."

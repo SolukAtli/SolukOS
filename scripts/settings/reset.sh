@@ -1,13 +1,12 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+BASE_DIR="$1"
 SOLUK_DIR="$HOME/.solukos"
 
-clear
+source "$BASE_DIR/scripts/lib/ui.sh"
 
-echo "=============================="
-echo "       Reset Config"
-echo "=============================="
-echo ""
+clear
+soluk_header "Reset Config"
 
 echo "This will reset SolukOS settings."
 echo ""
@@ -15,10 +14,10 @@ echo ""
 read -p "Create backup first? (y/n): " BACKUP
 
 if [ "$BACKUP" = "y" ]; then
-    if [ -f "$HOME/SolukOS/scripts/backup.sh" ]; then
-        bash "$HOME/SolukOS/scripts/backup.sh"
+    if [ -f "$BASE_DIR/scripts/backup.sh" ]; then
+        bash "$BASE_DIR/scripts/backup.sh"
     else
-        echo "[!] Backup script not found."
+        soluk_warn "Backup script not found."
     fi
 fi
 
@@ -31,19 +30,17 @@ if [ "$CONFIRM" != "y" ]; then
     exit 0
 fi
 
-
 # Reset theme
+mkdir -p "$SOLUK_DIR"
 echo "default" > "$SOLUK_DIR/theme"
 
-
 # Reset banner
-if [ -f "$HOME/SolukOS/assets/banner.txt" ]; then
-    cp "$HOME/SolukOS/assets/banner.txt" "$SOLUK_DIR/banner.txt"
-    echo "[✓] Banner restored"
+if [ -f "$BASE_DIR/assets/banner.txt" ]; then
+    cp "$BASE_DIR/assets/banner.txt" "$SOLUK_DIR/banner.txt"
+    soluk_ok "Banner restored"
 else
-    echo "[!] Original banner not found"
+    soluk_warn "Original banner not found"
 fi
 
-
 echo ""
-echo "[+] Config reset completed."
+soluk_ok "Config reset completed."

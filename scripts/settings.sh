@@ -2,32 +2,29 @@
 
 BASE_DIR="$1"
 
+source "$BASE_DIR/scripts/lib/ui.sh"
+
 while true
 do
     clear
+    soluk_header "SolukOS Settings"
 
-    echo "=============================="
-    echo "      SolukOS Settings"
-    echo "=============================="
-    echo ""
-    echo "[1] Change Banner"
-    echo "[2] Reset Config"
-    echo "[3] Back"
-    echo ""
+    choice=$(soluk_menu "Settings" \
+        "Change Banner" \
+        "Reset Config" \
+        "Back")
 
-    read -p "Choice: " choice
+    case "$choice" in
 
-    case $choice in
-
-    1)
-        bash "$BASE_DIR/scripts/settings/banner.sh"
+    "Change Banner")
+        bash "$BASE_DIR/scripts/settings/banner.sh" "$BASE_DIR"
         ;;
 
-    2)
-        bash "$BASE_DIR/scripts/settings/reset.sh"
+    "Reset Config")
+        bash "$BASE_DIR/scripts/settings/reset.sh" "$BASE_DIR"
         ;;
 
-    3)
+    "Back"|"")
         break
         ;;
 

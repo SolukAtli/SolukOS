@@ -1,11 +1,11 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-clear
+BASE_DIR="$1"
 
-echo "=============================="
-echo "          About"
-echo "=============================="
-echo ""
+source "$BASE_DIR/scripts/lib/ui.sh"
+
+clear
+soluk_header "About"
 
 VERSION=$(cat ~/.solukos/version 2>/dev/null)
 

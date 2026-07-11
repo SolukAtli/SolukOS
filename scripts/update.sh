@@ -12,12 +12,7 @@ if [ -z "$BASE_DIR" ]; then
     exit 1
 fi
 
-clear
-
-echo "=============================="
-echo "      SolukOS Update"
-echo "=============================="
-echo ""
+source "$BASE_DIR/scripts/lib/ui.sh"
 
 if [ -f "$VERSION_FILE" ]; then
     VERSION=$(cat "$VERSION_FILE")
@@ -25,33 +20,28 @@ else
     VERSION="unknown"
 fi
 
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update started (v$VERSION)" >> "$LOG_FILE"
+
+clear
+soluk_header "Updating SolukOS"
+
 echo "Current version: v$VERSION"
 echo ""
 
-echo "[1/3] Updating Termux packages..."
-pkg update -y
-pkg upgrade -y
-
-echo ""
-echo "[2/3] Updating SolukOS..."
-
 cd "$BASE_DIR" || exit 1
+
+echo "[*] Checking updates..."
 
 git pull
 
-echo ""
-echo "[3/3] Checking SolukOS packages..."
+if [ $? -eq 0 ]; then
+    echo ""
+    soluk_ok "Update completed."
 
-if [ -f "$BASE_DIR/packages/database.txt" ]; then
-    echo "[✓] Package database OK"
+    echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update completed successfully (v$VERSION)" >> "$LOG_FILE"
 else
-    echo "[!] Package database missing"
+    echo ""
+    soluk_warn "Update failed."
+
+    echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update failed" >> "$LOG_FILE"
 fi
-
-echo ""
-
-echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update completed" >> "$LOG_FILE"
-
-echo "=============================="
-echo " Update completed."
-echo "=============================="

@@ -1,5 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
+
+source "$BASE_DIR/scripts/lib/ui.sh"
+
 NETWORK_TOOLS="nmap netcat traceroute"
 WEB_TOOLS="sqlmap nikto curl"
 INFO_TOOLS="whois dnsutils openssl"
@@ -18,9 +22,9 @@ check_tools()
     do
         if command -v "$TOOL" >/dev/null 2>&1
         then
-            echo "[✓] $TOOL installed"
+            soluk_ok "$TOOL installed"
         else
-            echo "[ ] $TOOL missing"
+            soluk_fail "$TOOL missing"
         fi
     done
 }
@@ -32,7 +36,7 @@ install_profile()
     do
         if command -v "$TOOL" >/dev/null 2>&1
         then
-            echo "[✓] $TOOL already installed"
+            soluk_ok "$TOOL already installed"
         else
             echo "[+] Installing $TOOL"
             pkg install "$TOOL" -y
@@ -44,112 +48,84 @@ install_profile()
 while true
 do
     clear
+    soluk_header "SolukOS Security Toolkit"
 
-    echo "=============================="
-    echo "   SolukOS Security Toolkit"
-    echo "=============================="
-    echo ""
+    choice=$(soluk_menu "Security Toolkit" \
+        "Network Tools" \
+        "Web Analysis Tools" \
+        "Information Tools" \
+        "System Tools" \
+        "Check All Tools" \
+        "Install Missing Tools" \
+        "Install All Tools" \
+        "Security Setup" \
+        "Back")
 
-    echo "[1] Network Tools"
-    echo "[2] Web Analysis Tools"
-    echo "[3] Information Tools"
-    echo "[4] System Tools"
-    echo "[5] Check All Tools"
-    echo "[6] Install Missing Tools"
-    echo "[7] Install All Tools"
-    echo "[8] Security Setup"
-    echo "[9] Back"
-    echo ""
+    case "$choice" in
 
-    read -p "Choice: " choice
-
-
-    case $choice in
-
-    1)
+    "Network Tools")
         clear
         echo "Network Tools"
         echo ""
         check_tools "$NETWORK_TOOLS"
         ;;
 
-    2)
+    "Web Analysis Tools")
         clear
         echo "Web Analysis Tools"
         echo ""
         check_tools "$WEB_TOOLS"
         ;;
 
-    3)
+    "Information Tools")
         clear
         echo "Information Tools"
         echo ""
         check_tools "$INFO_TOOLS"
         ;;
 
-    4)
+    "System Tools")
         clear
         echo "System Tools"
         echo ""
         check_tools "$SYSTEM_TOOLS"
         ;;
 
-    5)
+    "Check All Tools")
         clear
         echo "Checking all tools..."
         echo ""
         check_tools "$ALL_TOOLS"
         ;;
 
-    6)
+    "Install Missing Tools")
         clear
         echo "Installing missing tools..."
         echo ""
         install_profile "$ALL_TOOLS"
         ;;
 
-    7)
+    "Install All Tools")
         clear
         echo "Installing Full Toolkit..."
         echo ""
         install_profile "$FULL_TOOLS"
         ;;
 
-    8)
+    "Security Setup")
         clear
+        soluk_header "Security Setup"
 
-        echo "=============================="
-        echo "     Security Setup"
-        echo "=============================="
-        echo ""
+        setup=$(soluk_menu "Security Setup" "Minimal Install" "Standard Install" "Full Install" "Back")
 
-        echo "[1] Minimal Install"
-        echo "[2] Standard Install"
-        echo "[3] Full Install"
-        echo "[4] Back"
-        echo ""
-
-        read -p "Choice: " setup
-
-        case $setup in
-
-        1)
-            install_profile "$MINIMAL_TOOLS"
-            ;;
-
-        2)
-            install_profile "$STANDARD_TOOLS"
-            ;;
-
-        3)
-            install_profile "$FULL_TOOLS"
-            ;;
-
+        case "$setup" in
+            "Minimal Install")  install_profile "$MINIMAL_TOOLS" ;;
+            "Standard Install") install_profile "$STANDARD_TOOLS" ;;
+            "Full Install")     install_profile "$FULL_TOOLS" ;;
         esac
         ;;
 
-
-    9)
+    "Back"|"")
         break
         ;;
 

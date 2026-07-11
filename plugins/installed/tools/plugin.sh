@@ -1,42 +1,36 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
+
+source "$BASE_DIR/scripts/lib/ui.sh"
+
 clear
 
 while true
 do
-    echo "=============================="
-    echo "       SolukOS Tools"
-    echo "=============================="
-    echo ""
+    soluk_header "SolukOS Tools"
 
-    echo "[1] System Info"
-    echo "[2] Storage Info"
-    echo "[3] Network Info"
-    echo "[4] Termux Info"
-    echo "[5] Exit"
-    echo ""
+    choice=$(soluk_menu "Tools" "System Info" "Storage Info" "Network Info" "Termux Info" "Exit")
 
-    read -p "Choice: " choice
+    case "$choice" in
 
-    case $choice in
-
-    1)
+    "System Info")
         uname -a
         ;;
 
-    2)
+    "Storage Info")
         df -h "$HOME"
         ;;
 
-    3)
+    "Network Info")
         ip addr
         ;;
 
-    4)
+    "Termux Info")
         termux-info
         ;;
 
-    5)
+    "Exit"|"")
         break
         ;;
 
