@@ -19,6 +19,9 @@ The project combines terminal customization, package management, plugin support 
 - 🩺 System diagnostics ("doctor")
 - 📋 Package database support
 - 🚀 Modular architecture
+- 💡 fzf-powered menus and shell history/file search
+- ⚡ Smart navigation with zoxide, modern `ls`/`cat` via eza and bat
+- 🖼️ `soluk fetch` system summary screen
 
 ## 🚀 Installation
 
@@ -33,10 +36,11 @@ chmod +x install.sh
 - soluk version
 - soluk doctor
 - soluk reload
+- soluk fetch
 - soluk help
 
 - soluk pkg list
-- soluk pkg searce `<package>`
+- soluk pkg search `<package>`
 - soluk pkg info `<package>`
 - soluk pkg install `<package>`
 - soluk pkg remove `<package>`
@@ -67,10 +71,14 @@ v0.6.1
 
 v0.7.0
 
-- [ ] Help Command
-- [ ] Update Command
+- [x] Help Command
+- [x] Update Command
+- [x] Improved Diagnostics
+- [x] zsh-autosuggestions / zsh-syntax-highlighting
+- [x] fzf history & file search (CTRL+R / CTRL+T / ALT+C)
+- [x] zoxide, bat, eza
+- [x] soluk fetch
 - [ ] Plugin Enable/Disable
-- [ ] Improved Diagnostics
 
 v0.8.0
 
@@ -90,4 +98,4 @@ Users are responsible for ensuring that all activities are lawful and authorized
 
 ## 📜 Version
 
-Current Version: v0.6.1
+Current Version: v0.7.0

@@ -10,7 +10,9 @@ fi
 source "$BASE_DIR/scripts/lib/ui.sh"
 
 if [ "$1" = "version" ]; then
-    echo "SolukOS v0.6.1"
+    VERSION_STR=$(cat "$BASE_DIR/VERSION" 2>/dev/null)
+    [ -z "$VERSION_STR" ] && VERSION_STR="unknown"
+    echo "SolukOS v$VERSION_STR"
     exit 0
 fi
 
@@ -23,6 +25,7 @@ if [ "$1" = "help" ]; then
     echo "  soluk version"
     echo "  soluk doctor"
     echo "  soluk reload"
+    echo "  soluk fetch"
     echo "  soluk help"
     echo ""
     echo "Packages:"
@@ -37,16 +40,53 @@ fi
 
 if [ "$1" = "doctor" ]; then
     echo "=== SolukOS Doctor ==="
-    [ -d "$BASE_DIR" ] && echo "[✓] SolukOS directory" || echo "[ ] SolukOS directory"
-    [ -f "$BASE_DIR/packages/database.txt" ] && echo "[✓] Package database" || echo "[ ] Package database"
-    [ -f "$BASE_DIR/scripts/package/package_manager.sh" ] && echo "[✓] Package Manager" || echo "[ ] Package Manager"
-    [ -f "$BASE_DIR/scripts/lib/ui.sh" ] && echo "[✓] UI library" || echo "[ ] UI library"
-    command -v fzf >/dev/null 2>&1 && echo "[✓] fzf (modern menu)" || echo "[ ] fzf (modern menu) - pkg install fzf"
+    [ -d "$BASE_DIR" ] && soluk_ok "SolukOS directory" || soluk_fail "SolukOS directory"
+    [ -f "$BASE_DIR/packages/database.txt" ] && soluk_ok "Package database" || soluk_fail "Package database"
+    [ -f "$BASE_DIR/scripts/package/package_manager.sh" ] && soluk_ok "Package Manager" || soluk_fail "Package Manager"
+    [ -f "$BASE_DIR/scripts/lib/ui.sh" ] && soluk_ok "UI library" || soluk_fail "UI library"
+    command -v fzf >/dev/null 2>&1 && soluk_ok "fzf (modern menu)" || soluk_fail "fzf (modern menu) - pkg install fzf"
+    command -v zoxide >/dev/null 2>&1 && soluk_ok "zoxide" || soluk_fail "zoxide - pkg install zoxide"
+    command -v bat >/dev/null 2>&1 && soluk_ok "bat" || soluk_fail "bat - pkg install bat"
+    command -v eza >/dev/null 2>&1 && soluk_ok "eza" || soluk_fail "eza - pkg install eza"
+    [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && soluk_ok "zsh-autosuggestions" || soluk_fail "zsh-autosuggestions - soluk update ile kurulur"
+    [ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && soluk_ok "zsh-syntax-highlighting" || soluk_fail "zsh-syntax-highlighting - soluk update ile kurulur"
     exit 0
 fi
 
 if [ "$1" = "reload" ]; then
     exec zsh
+fi
+
+if [ "$1" = "fetch" ]; then
+    clear
+    soluk_banner "$BASE_DIR"
+
+    VERSION_STR=$(cat "$BASE_DIR/VERSION" 2>/dev/null)
+    [ -z "$VERSION_STR" ] && VERSION_STR="unknown"
+
+    UPTIME_STR=$(awk '{printf "%dh %dm", ($1/3600), ((($1)%3600)/60)}' /proc/uptime 2>/dev/null)
+    [ -z "$UPTIME_STR" ] && UPTIME_STR="unknown"
+
+    STORAGE_STR=$(df -h "$HOME" 2>/dev/null | awk 'NR==2{print $3" / "$2" used"}')
+    [ -z "$STORAGE_STR" ] && STORAGE_STR="unknown"
+
+    PKG_COUNT=$(grep -c '|' "$BASE_DIR/packages/database.txt" 2>/dev/null)
+    [ -z "$PKG_COUNT" ] && PKG_COUNT=0
+
+    row()
+    {
+        printf "  ${SOLUK_BOLD}${SOLUK_BCYAN}%-9s${SOLUK_RESET} %s\n" "$1" "$2"
+    }
+
+    row "OS"       "SolukOS v$VERSION_STR"
+    row "Host"     "Termux (Android)"
+    row "Kernel"   "$(uname -r 2>/dev/null)"
+    row "Shell"    "${SHELL##*/}"
+    row "Uptime"   "$UPTIME_STR"
+    row "Storage"  "$STORAGE_STR"
+    row "Packages" "$PKG_COUNT (soluk db)"
+    echo ""
+    exit 0
 fi
 
 if [ "$1" = "pkg" ]; then
