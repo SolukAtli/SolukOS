@@ -15,18 +15,26 @@ do
     case "$choice" in
 
     "System Info")
+        clear
+        soluk_header "System Info"
         uname -a
         ;;
 
     "Storage Info")
+        clear
+        soluk_header "Storage Info"
         df -h "$HOME"
         ;;
 
     "Network Info")
+        clear
+        soluk_header "Network Info"
         ip addr
         ;;
 
     "Termux Info")
+        clear
+        soluk_header "Termux Info"
         termux-info
         ;;
 

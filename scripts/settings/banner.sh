@@ -8,17 +8,17 @@ source "$BASE_DIR/scripts/lib/ui.sh"
 clear
 soluk_header "Change Banner"
 
-echo "Current banner:"
-echo "----------------"
+echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Current banner${SOLUK_RESET}"
+echo ""
 
 if [ -f "$BANNER_FILE" ]; then
     cat "$BANNER_FILE"
 else
-    echo "No banner found."
+    soluk_warn "No banner found."
 fi
 
 echo ""
-echo "----------------"
+echo -e "${SOLUK_GRAY}────────────────────────────${SOLUK_RESET}"
 echo "Enter new banner."
 echo "Finish with CTRL+D"
 echo ""

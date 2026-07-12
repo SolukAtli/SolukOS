@@ -22,6 +22,7 @@ The project combines terminal customization, package management, plugin support 
 - 💡 fzf-powered menus and shell history/file search
 - ⚡ Smart navigation with zoxide, modern `ls`/`cat` via eza and bat
 - 🖼️ `soluk fetch` system summary screen
+- 🎨 Consistent, colorized UI across every menu and screen
 
 ## 🚀 Installation
 
@@ -33,17 +34,28 @@ chmod +x install.sh
 
 ## 💻 Available Commands
 
+Running `soluk` with no arguments opens the interactive Manager menu. Unknown commands print an error instead of opening the menu.
+
+**System**
 - soluk version
 - soluk doctor
 - soluk reload
 - soluk fetch
 - soluk help
 
+**Packages**
 - soluk pkg list
 - soluk pkg search `<package>`
 - soluk pkg info `<package>`
 - soluk pkg install `<package>`
 - soluk pkg remove `<package>`
+- soluk pkg check
+
+**Shell tools** (built into your terminal, no `soluk` prefix)
+- `z <folder>` — jump to a frequent directory (zoxide)
+- `ll` / `lt` — list files with icons (eza)
+- `cat <file>` — preview a file, highlighted (bat)
+- `Ctrl+R` / `Ctrl+T` / `Alt+C` — search history / files / cd (fzf)
 
 ## 🛠 Project Structure
 
@@ -78,6 +90,7 @@ v0.7.0
 - [x] fzf history & file search (CTRL+R / CTRL+T / ALT+C)
 - [x] zoxide, bat, eza
 - [x] soluk fetch
+- [x] Consistent colorized UI across all menus
 - [ ] Plugin Enable/Disable
 
 v0.8.0

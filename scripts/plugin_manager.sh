@@ -25,30 +25,39 @@ do
 
     "List Plugins")
         clear
-        echo "Installed Plugins:"
-        echo ""
+        soluk_header "Installed Plugins"
 
+        FOUND=0
         for PLUGIN in "$INSTALLED_DIR"/*
         do
             if [ -d "$PLUGIN" ]; then
+                FOUND=1
                 NAME=$(basename "$PLUGIN")
-                echo "$NAME"
+                echo -e "${SOLUK_BOLD}${SOLUK_BCYAN}${NAME}${SOLUK_RESET}"
 
                 if [ -f "$PLUGIN/info" ]; then
-                    grep "Description=" "$PLUGIN/info"
+                    DESC=$(grep "Description=" "$PLUGIN/info" | cut -d= -f2-)
+                    echo -e "  ${SOLUK_GRAY}${DESC}${SOLUK_RESET}"
                 fi
 
                 echo ""
             fi
         done
+
+        [ "$FOUND" = "0" ] && soluk_warn "No plugins installed."
         ;;
 
     "Plugin Info")
         read -p "Plugin name: " plugin
+        clear
+        soluk_header "Plugin Info"
 
         if [ -f "$INSTALLED_DIR/$plugin/info" ]; then
-            echo ""
-            cat "$INSTALLED_DIR/$plugin/info"
+            while IFS="=" read -r KEY VALUE
+            do
+                [ -z "$KEY" ] && continue
+                soluk_row "$KEY" "$VALUE"
+            done < "$INSTALLED_DIR/$plugin/info"
         else
             soluk_warn "Plugin info not found."
         fi
@@ -58,15 +67,18 @@ do
         read -p "Plugin name: " plugin
 
         if [ -f "$INSTALLED_DIR/$plugin/plugin.sh" ]; then
-            echo ""
-            echo "Plugin information:"
-            echo ""
+            clear
+            soluk_header "$plugin"
 
             if [ -f "$INSTALLED_DIR/$plugin/info" ]; then
-                cat "$INSTALLED_DIR/$plugin/info"
+                while IFS="=" read -r KEY VALUE
+                do
+                    [ -z "$KEY" ] && continue
+                    soluk_row "$KEY" "$VALUE"
+                done < "$INSTALLED_DIR/$plugin/info"
+                echo ""
             fi
 
-            echo ""
             read -p "Run plugin? (y/n): " confirm
 
             if [ "$confirm" = "y" ]; then
@@ -80,9 +92,16 @@ do
         ;;
 
     "Install Plugin")
-        echo "Available plugins:"
-        echo ""
-        ls "$PLUGIN_DIR" | grep -v '^installed$'
+        clear
+        soluk_header "Install Plugin"
+
+        echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Available plugins${SOLUK_RESET}"
+        for P in "$PLUGIN_DIR"/*
+        do
+            NAME=$(basename "$P")
+            [ "$NAME" = "installed" ] && continue
+            [ -d "$P" ] && echo -e "  ${SOLUK_BCYAN}${NAME}${SOLUK_RESET}"
+        done
         echo ""
 
         read -p "Plugin name: " plugin

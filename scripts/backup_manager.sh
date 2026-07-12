@@ -20,21 +20,23 @@ do
     case "$choice" in
 
     "Create Backup")
-        bash "$BASE_DIR/scripts/backup.sh"
+        bash "$BASE_DIR/scripts/backup.sh" "$BASE_DIR"
         ;;
 
     "Restore Backup")
-        bash "$BASE_DIR/scripts/restore.sh"
+        bash "$BASE_DIR/scripts/restore.sh" "$BASE_DIR"
         ;;
 
     "List Backups")
         clear
         soluk_header "Available Backups"
 
-        if [ -d "$BACKUP_DIR" ]; then
-            ls -1 "$BACKUP_DIR"
+        if [ -d "$BACKUP_DIR" ] && [ -n "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]; then
+            for B in "$BACKUP_DIR"/*; do
+                echo -e "  ${SOLUK_BCYAN}$(basename "$B")${SOLUK_RESET}"
+            done
         else
-            echo "No backups found."
+            soluk_warn "No backups found."
         fi
         ;;
 
@@ -42,7 +44,13 @@ do
         clear
         soluk_header "Delete Backup"
 
-        ls -1 "$BACKUP_DIR" 2>/dev/null
+        if [ -d "$BACKUP_DIR" ] && [ -n "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]; then
+            for B in "$BACKUP_DIR"/*; do
+                echo -e "  ${SOLUK_BCYAN}$(basename "$B")${SOLUK_RESET}"
+            done
+        else
+            soluk_warn "No backups found."
+        fi
 
         echo ""
         read -p "Backup name: " NAME

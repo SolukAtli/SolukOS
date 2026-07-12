@@ -10,36 +10,52 @@ fi
 source "$BASE_DIR/scripts/lib/ui.sh"
 
 if [ "$1" = "version" ]; then
+    clear
+    soluk_header "SolukOS Version"
+
     VERSION_STR=$(cat "$BASE_DIR/VERSION" 2>/dev/null)
     [ -z "$VERSION_STR" ] && VERSION_STR="unknown"
-    echo "SolukOS v$VERSION_STR"
+
+    echo -e "  ${SOLUK_BOLD}${SOLUK_YELLOW}v${VERSION_STR}${SOLUK_RESET}"
+    echo ""
     exit 0
 fi
 
 if [ "$1" = "help" ]; then
-    echo "=============================="
-    echo "       SolukOS Help"
-    echo "=============================="
+    clear
+    soluk_header "SolukOS Help"
+
+    echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Usage${SOLUK_RESET}"
+    echo -e "  soluk                     Open the interactive Manager menu"
     echo ""
-    echo "System:"
-    echo "  soluk version"
-    echo "  soluk doctor"
-    echo "  soluk reload"
-    echo "  soluk fetch"
-    echo "  soluk help"
+    echo -e "${SOLUK_BOLD}${SOLUK_CYAN}System${SOLUK_RESET}"
+    echo -e "  soluk version             Show installed version"
+    echo -e "  soluk doctor              Check installation health"
+    echo -e "  soluk fetch               Show system summary"
+    echo -e "  soluk reload              Reload the shell"
+    echo -e "  soluk help                Show this help message"
     echo ""
-    echo "Packages:"
-    echo "  soluk pkg list"
-    echo "  soluk pkg search <name>"
-    echo "  soluk pkg info <name>"
-    echo "  soluk pkg install <name>"
-    echo "  soluk pkg remove <name>"
+    echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Packages${SOLUK_RESET}"
+    echo -e "  soluk pkg list            List all known packages"
+    echo -e "  soluk pkg search <name>   Search the package database"
+    echo -e "  soluk pkg info <name>     Show package details"
+    echo -e "  soluk pkg install <name>  Install a package"
+    echo -e "  soluk pkg remove <name>   Remove a package"
+    echo -e "  soluk pkg check           Open the Package Manager menu"
+    echo ""
+    echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Shell tools${SOLUK_RESET} ${SOLUK_GRAY}(built into your terminal)${SOLUK_RESET}"
+    echo -e "  z <folder>                Jump to a frequent directory (zoxide)"
+    echo -e "  ll / lt                   List files with icons (eza)"
+    echo -e "  cat <file>                Preview a file, highlighted (bat)"
+    echo -e "  Ctrl+R / Ctrl+T / Alt+C   Search history / files / cd (fzf)"
     echo ""
     exit 0
 fi
 
 if [ "$1" = "doctor" ]; then
-    echo "=== SolukOS Doctor ==="
+    clear
+    soluk_header "SolukOS Doctor"
+
     [ -d "$BASE_DIR" ] && soluk_ok "SolukOS directory" || soluk_fail "SolukOS directory"
     [ -f "$BASE_DIR/packages/database.txt" ] && soluk_ok "Package database" || soluk_fail "Package database"
     [ -f "$BASE_DIR/scripts/package/package_manager.sh" ] && soluk_ok "Package Manager" || soluk_fail "Package Manager"
@@ -50,6 +66,7 @@ if [ "$1" = "doctor" ]; then
     command -v eza >/dev/null 2>&1 && soluk_ok "eza" || soluk_fail "eza - pkg install eza"
     [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && soluk_ok "zsh-autosuggestions" || soluk_fail "zsh-autosuggestions - soluk update ile kurulur"
     [ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && soluk_ok "zsh-syntax-highlighting" || soluk_fail "zsh-syntax-highlighting - soluk update ile kurulur"
+    echo ""
     exit 0
 fi
 
@@ -73,18 +90,13 @@ if [ "$1" = "fetch" ]; then
     PKG_COUNT=$(grep -c '|' "$BASE_DIR/packages/database.txt" 2>/dev/null)
     [ -z "$PKG_COUNT" ] && PKG_COUNT=0
 
-    row()
-    {
-        printf "  ${SOLUK_BOLD}${SOLUK_BCYAN}%-9s${SOLUK_RESET} %s\n" "$1" "$2"
-    }
-
-    row "OS"       "SolukOS v$VERSION_STR"
-    row "Host"     "Termux (Android)"
-    row "Kernel"   "$(uname -r 2>/dev/null)"
-    row "Shell"    "${SHELL##*/}"
-    row "Uptime"   "$UPTIME_STR"
-    row "Storage"  "$STORAGE_STR"
-    row "Packages" "$PKG_COUNT (soluk db)"
+    soluk_row "OS"       "SolukOS v$VERSION_STR"
+    soluk_row "Host"     "Termux (Android)"
+    soluk_row "Kernel"   "$(uname -r 2>/dev/null)"
+    soluk_row "Shell"    "${SHELL##*/}"
+    soluk_row "Uptime"   "$UPTIME_STR"
+    soluk_row "Storage"  "$STORAGE_STR"
+    soluk_row "Packages" "$PKG_COUNT (soluk db)"
     echo ""
     exit 0
 fi
@@ -151,8 +163,20 @@ check)
     exit 0
     ;;
 
+*)
+    echo -e "${SOLUK_RED}[✗] Unknown pkg command:${SOLUK_RESET} $2"
+    echo "Usage: soluk pkg {list|search|info|install|remove|check} ..."
+    exit 1
+    ;;
+
 esac
 
+fi
+
+if [ -n "$1" ]; then
+    echo -e "${SOLUK_RED}[✗] Unknown command:${SOLUK_RESET} $1"
+    echo "Run 'soluk help' to see available commands."
+    exit 1
 fi
 
 while true
@@ -181,8 +205,17 @@ do
         "Log Manager")     bash "$BASE_DIR/scripts/log_manager.sh" "$BASE_DIR" ;;
         "Plugin Manager")  bash "$BASE_DIR/scripts/plugin_manager.sh" "$BASE_DIR" ;;
         "Package Manager") bash "$BASE_DIR/scripts/package/package_manager.sh" "$BASE_DIR" ;;
-        "Exit"|"")         echo "Goodbye."; exit 0 ;;
-        *)                 echo "Invalid option." ;;
+        "Exit"|"")
+            clear
+            soluk_banner "$BASE_DIR"
+            echo ""
+            echo -e "${SOLUK_GRAY}[ SolukOS ] Menu closed.${SOLUK_RESET}"
+            echo ""
+            exit 0
+            ;;
+        *)
+            echo "Invalid option."
+            ;;
     esac
 
     echo ""

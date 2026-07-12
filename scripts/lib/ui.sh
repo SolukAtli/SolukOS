@@ -61,6 +61,19 @@ soluk_warn()
     echo -e "${SOLUK_YELLOW}[!]${SOLUK_RESET} $1"
 }
 
+# Neutral info line, e.g. "[i] '<name>' is a plugin".
+soluk_info()
+{
+    echo -e "${SOLUK_CYAN}[i]${SOLUK_RESET} $1"
+}
+
+# A single "  Label   value" row, label bold/cyan, value plain.
+# Usage: soluk_row "Label" "value"
+soluk_row()
+{
+    printf "  ${SOLUK_BOLD}${SOLUK_BCYAN}%-10s${SOLUK_RESET} %s\n" "$1" "$2"
+}
+
 # Prints assets/banner.txt centered and framed (delegates to print_banner.sh
 # so zshrc and ui.sh always render it identically).
 soluk_banner()

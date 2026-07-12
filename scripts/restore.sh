@@ -1,20 +1,19 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 LOG_FILE="$HOME/.solukos/logs/backup.log"
 
 mkdir -p "$(dirname "$LOG_FILE")"
 
+source "$BASE_DIR/scripts/lib/ui.sh"
+
 BACKUP_DIR="$HOME/.solukos/backups"
 
 clear
+soluk_header "SolukOS Restore"
 
-echo "=============================="
-echo "      SolukOS Restore"
-echo "=============================="
-echo ""
-
-if [ ! -d "$BACKUP_DIR" ]; then
-    echo "[!] No backups found."
+if [ ! -d "$BACKUP_DIR" ] || [ -z "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]; then
+    soluk_warn "No backups found."
     exit 1
 fi
 
@@ -28,15 +27,14 @@ select BACKUP in "$BACKUP_DIR"/*; do
 done
 
 if [ ! -d "$BACKUP" ]; then
-    echo "[!] Invalid backup."
+    soluk_warn "Invalid backup."
     exit 1
 fi
 
 BACKUP_NAME=$(basename "$BACKUP")
 
 echo ""
-echo "Selected:"
-echo "$BACKUP_NAME"
+soluk_row "Selected" "$BACKUP_NAME"
 echo ""
 
 read -p "Continue restore? (y/n): " CONFIRM
@@ -50,21 +48,20 @@ echo ""
 
 if [ -f "$BACKUP/zshrc" ]; then
     cp "$BACKUP/zshrc" "$HOME/.zshrc"
-    echo "[✓] Zsh restored"
+    soluk_ok "Zsh restored"
 fi
 
 if [ -f "$BACKUP/banner.txt" ]; then
     cp "$BACKUP/banner.txt" "$HOME/.solukos/banner.txt"
-    echo "[✓] Banner restored"
+    soluk_ok "Banner restored"
 fi
 
 if [ -f "$BACKUP/version" ]; then
     cp "$BACKUP/version" "$HOME/.solukos/version"
-    echo "[✓] Version restored"
+    soluk_ok "Version restored"
 fi
 
 echo ""
-
-echo "[+] Restore completed."
+soluk_ok "Restore completed."
 
 echo "[$(date +"%Y-%m-%d %H:%M:%S")] Restore completed: $BACKUP_NAME" >> "$LOG_FILE"

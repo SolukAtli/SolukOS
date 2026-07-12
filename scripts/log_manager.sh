@@ -23,22 +23,26 @@ do
 
     "View System Log")
         clear
-        cat "$LOG_DIR/system.log" 2>/dev/null || echo "No system logs."
+        soluk_header "System Log"
+        cat "$LOG_DIR/system.log" 2>/dev/null || soluk_warn "No system logs."
         ;;
 
     "View Backup Log")
         clear
-        cat "$LOG_DIR/backup.log" 2>/dev/null || echo "No backup logs."
+        soluk_header "Backup Log"
+        cat "$LOG_DIR/backup.log" 2>/dev/null || soluk_warn "No backup logs."
         ;;
 
     "View Update Log")
         clear
-        cat "$LOG_DIR/update.log" 2>/dev/null || echo "No update logs."
+        soluk_header "Update Log"
+        cat "$LOG_DIR/update.log" 2>/dev/null || soluk_warn "No update logs."
         ;;
 
     "View Install Log")
         clear
-        cat "$LOG_DIR/install.log" 2>/dev/null || echo "No install logs."
+        soluk_header "Install Log"
+        cat "$LOG_DIR/install.log" 2>/dev/null || soluk_warn "No install logs."
         ;;
 
     "Clear Logs")
@@ -65,8 +69,8 @@ do
             done
         } > "$FILE"
 
-        soluk_ok "Logs exported:"
-        echo "$FILE"
+        soluk_ok "Logs exported"
+        soluk_row "File" "$FILE"
         ;;
 
     "Back"|"")

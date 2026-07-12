@@ -38,7 +38,7 @@ install_profile()
         then
             soluk_ok "$TOOL already installed"
         else
-            echo "[+] Installing $TOOL"
+            soluk_info "Installing $TOOL"
             pkg install "$TOOL" -y
         fi
     done
@@ -65,50 +65,43 @@ do
 
     "Network Tools")
         clear
-        echo "Network Tools"
-        echo ""
+        soluk_header "Network Tools"
         check_tools "$NETWORK_TOOLS"
         ;;
 
     "Web Analysis Tools")
         clear
-        echo "Web Analysis Tools"
-        echo ""
+        soluk_header "Web Analysis Tools"
         check_tools "$WEB_TOOLS"
         ;;
 
     "Information Tools")
         clear
-        echo "Information Tools"
-        echo ""
+        soluk_header "Information Tools"
         check_tools "$INFO_TOOLS"
         ;;
 
     "System Tools")
         clear
-        echo "System Tools"
-        echo ""
+        soluk_header "System Tools"
         check_tools "$SYSTEM_TOOLS"
         ;;
 
     "Check All Tools")
         clear
-        echo "Checking all tools..."
-        echo ""
+        soluk_header "Checking All Tools"
         check_tools "$ALL_TOOLS"
         ;;
 
     "Install Missing Tools")
         clear
-        echo "Installing missing tools..."
-        echo ""
+        soluk_header "Installing Missing Tools"
         install_profile "$ALL_TOOLS"
         ;;
 
     "Install All Tools")
         clear
-        echo "Installing Full Toolkit..."
-        echo ""
+        soluk_header "Installing Full Toolkit"
         install_profile "$FULL_TOOLS"
         ;;
 
@@ -119,9 +112,9 @@ do
         setup=$(soluk_menu "Security Setup" "Minimal Install" "Standard Install" "Full Install" "Back")
 
         case "$setup" in
-            "Minimal Install")  install_profile "$MINIMAL_TOOLS" ;;
-            "Standard Install") install_profile "$STANDARD_TOOLS" ;;
-            "Full Install")     install_profile "$FULL_TOOLS" ;;
+            "Minimal Install")  clear; soluk_header "Minimal Install";  install_profile "$MINIMAL_TOOLS" ;;
+            "Standard Install") clear; soluk_header "Standard Install"; install_profile "$STANDARD_TOOLS" ;;
+            "Full Install")     clear; soluk_header "Full Install";     install_profile "$FULL_TOOLS" ;;
         esac
         ;;
 

@@ -15,7 +15,7 @@ read -p "Create backup first? (y/n): " BACKUP
 
 if [ "$BACKUP" = "y" ]; then
     if [ -f "$BASE_DIR/scripts/backup.sh" ]; then
-        bash "$BASE_DIR/scripts/backup.sh"
+        bash "$BASE_DIR/scripts/backup.sh" "$BASE_DIR"
     else
         soluk_warn "Backup script not found."
     fi

@@ -6,7 +6,7 @@ DB_FILE="$BASE_DIR/packages/database.txt"
 source "$BASE_DIR/scripts/lib/ui.sh"
 
 if [ ! -f "$DB_FILE" ]; then
-    echo "[!] Package database not found: $DB_FILE"
+    soluk_warn "Package database not found: $DB_FILE"
     exit 1
 fi
 
@@ -28,38 +28,38 @@ do
 
     "List Packages")
         clear
-        echo "Available Packages:"
-        echo ""
+        soluk_header "Available Packages"
         cat "$DB_FILE"
         ;;
 
     "Search Package")
         read -p "Search term: " term
         clear
-        echo "Results for '$term':"
-        echo ""
+        soluk_header "Results for '$term'"
         grep -i "$term" "$DB_FILE"
         ;;
 
     "Package Info")
         read -p "Package name: " pkgname
         clear
+        soluk_header "Package Info"
         INFO=$(grep "^$pkgname|" "$DB_FILE")
 
         if [ -z "$INFO" ]; then
             soluk_warn "Package not found."
         else
             IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
-            echo "Name: $NAME"
-            echo "Category: $CATEGORY"
-            echo "Type: $TYPE"
-            echo "Status: $STATUS"
+            soluk_row "Name"     "$NAME"
+            soluk_row "Category" "$CATEGORY"
+            soluk_row "Type"     "$TYPE"
+            soluk_row "Status"   "$STATUS"
         fi
         ;;
 
     "Install Package")
         read -p "Package name: " pkgname
         clear
+        soluk_header "Install Package"
         INFO=$(grep "^$pkgname|" "$DB_FILE")
 
         if [ -z "$INFO" ]; then
@@ -70,7 +70,7 @@ do
             if [ "$TYPE" = "native" ]; then
                 pkg install "$NAME" -y
             elif [ "$TYPE" = "plugin" ]; then
-                echo "[i] '$NAME' is a plugin. Use Plugin Manager to install it."
+                soluk_info "'$NAME' is a plugin. Use Plugin Manager to install it."
             else
                 soluk_warn "'$NAME' is an external tool. Manual installation required."
             fi
@@ -80,6 +80,7 @@ do
     "Remove Package")
         read -p "Package name: " pkgname
         clear
+        soluk_header "Remove Package"
         INFO=$(grep "^$pkgname|" "$DB_FILE")
 
         if [ -z "$INFO" ]; then
@@ -90,7 +91,7 @@ do
             if [ "$TYPE" = "native" ]; then
                 pkg uninstall "$NAME" -y
             elif [ "$TYPE" = "plugin" ]; then
-                echo "[i] '$NAME' is a plugin. Use Plugin Manager to remove it."
+                soluk_info "'$NAME' is a plugin. Use Plugin Manager to remove it."
             else
                 soluk_warn "Manual removal required for '$NAME'."
             fi
@@ -99,8 +100,7 @@ do
 
     "Check Installed Status")
         clear
-        echo "Checking installed status..."
-        echo ""
+        soluk_header "Installed Status"
 
         while IFS="|" read -r NAME CATEGORY TYPE STATUS
         do

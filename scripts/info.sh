@@ -8,7 +8,10 @@ clear
 soluk_header "System Information"
 
 VERSION=$(cat ~/.solukos/version 2>/dev/null)
-echo "Version : $VERSION"
-echo "Shell   : $SHELL"
-echo "User    : $(id -un)"
-echo "Install : $BASE_DIR"
+[ -z "$VERSION" ] && VERSION=$(cat "$BASE_DIR/VERSION" 2>/dev/null)
+
+soluk_row "Version" "v$VERSION"
+soluk_row "Shell"   "$SHELL"
+soluk_row "User"    "$(id -un)"
+soluk_row "Install" "$BASE_DIR"
+echo ""
