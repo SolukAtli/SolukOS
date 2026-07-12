@@ -18,6 +18,7 @@ do
         "Plugin Info" \
         "Run Plugin" \
         "Install Plugin" \
+        "Install from Git" \
         "Remove Plugin" \
         "Back")
 
@@ -111,6 +112,52 @@ do
             soluk_ok "Plugin installed."
         else
             soluk_warn "Plugin not found."
+        fi
+        ;;
+
+    "Install from Git")
+        clear
+        soluk_header "Install from Git"
+
+        if ! command -v git >/dev/null 2>&1; then
+            soluk_warn "git bulunamadi. 'pkg install git' ile kurup tekrar dene."
+        else
+            soluk_warn "Sadece guvendigin kaynaklardan eklenti kur - plugin.sh dogrudan calisir."
+            echo ""
+            read -p "Git URL: " GIT_URL
+
+            if [ -z "$GIT_URL" ]; then
+                soluk_warn "URL girilmedi."
+            else
+                NAME=$(basename "$GIT_URL" .git)
+
+                if [ -z "$NAME" ] || [ "$NAME" = "/" ]; then
+                    soluk_warn "Gecersiz URL."
+                elif [ -d "$INSTALLED_DIR/$NAME" ]; then
+                    soluk_warn "'$NAME' zaten kurulu. Once kaldirip tekrar dene."
+                else
+                    TMP_DIR="$HOME/.solukos/tmp/plugin_$$"
+                    rm -rf "$TMP_DIR"
+                    mkdir -p "$TMP_DIR"
+
+                    soluk_info "Cloning $GIT_URL ..."
+
+                    if git clone --depth 1 "$GIT_URL" "$TMP_DIR" >/dev/null 2>&1; then
+                        if [ -f "$TMP_DIR/plugin.sh" ]; then
+                            rm -rf "$TMP_DIR/.git"
+                            mv "$TMP_DIR" "$INSTALLED_DIR/$NAME"
+                            chmod +x "$INSTALLED_DIR/$NAME/plugin.sh"
+                            soluk_ok "Plugin installed: $NAME"
+                        else
+                            soluk_warn "Repo icinde plugin.sh bulunamadi, kurulum iptal edildi."
+                            rm -rf "$TMP_DIR"
+                        fi
+                    else
+                        soluk_warn "Klonlama basarisiz. URL'yi ve internet baglantisini kontrol et."
+                        rm -rf "$TMP_DIR"
+                    fi
+                fi
+            fi
         fi
         ;;
 

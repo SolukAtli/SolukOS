@@ -13,7 +13,7 @@ The project combines terminal customization, package management, plugin support 
 - 🐧 Linux-style terminal experience
 - 🌫️ Custom SolukOS branding
 - 📦 Built-in package management
-- 🧩 Plugin system
+- 🧩 Plugin system with a git-based remote installer
 - ⚙️ SolukOS command-line interface
 - 🔍 Package search and information tools
 - 🩺 System diagnostics ("doctor")
@@ -63,6 +63,11 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - Matrix — classic black/green hacker terminal
 - Nord — cool blue-gray minimalist palette
 
+**Plugin Manager → Install from Git**
+- Clones any git repo containing a `plugin.sh` into your installed plugins
+- Rejects repos without a `plugin.sh`, strips `.git` after cloning
+- ⚠️ Only install plugins from sources you trust — `plugin.sh` runs directly
+
 ## 🛠 Project Structure
 
 - SolukOS/
@@ -98,6 +103,7 @@ v0.7.0
 - [x] soluk fetch
 - [x] Consistent colorized UI across all menus
 - [x] Theme Manager
+- [x] Git-based remote Plugin Installer
 - [ ] Plugin Enable/Disable
 
 v0.8.0
