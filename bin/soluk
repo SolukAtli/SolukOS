@@ -137,6 +137,8 @@ install)
         pkg install "$NAME" -y
     elif [ "$TYPE" = "plugin" ]; then
         echo "Plugin installer coming soon"
+    elif [ "$TYPE" = "external" ]; then
+        bash "$BASE_DIR/scripts/package/external_install.sh" install "$NAME"
     else
         echo "Manual install required"
     fi
@@ -152,6 +154,8 @@ remove)
         pkg uninstall "$NAME" -y
     elif [ "$TYPE" = "plugin" ]; then
         echo "Plugin removal coming soon"
+    elif [ "$TYPE" = "external" ]; then
+        bash "$BASE_DIR/scripts/package/external_install.sh" remove "$NAME"
     else
         echo "Manual removal required"
     fi

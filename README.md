@@ -24,6 +24,7 @@ The project combines terminal customization, package management, plugin support 
 - 🖼️ `soluk fetch` system summary screen
 - 🎨 Consistent, colorized UI across every menu and screen
 - 🎭 Theme Manager (Soluk, Matrix, Nord) via Settings
+- 🕵️ Automated install for external security tools not in Termux repos (sqlmap, nikto)
 
 ## 🚀 Installation
 
@@ -62,6 +63,10 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - Soluk (default) — muted grays, desaturated blue/gold
 - Matrix — classic black/green hacker terminal
 - Nord — cool blue-gray minimalist palette
+
+**Package Manager → Install Package** (`sqlmap`, `nikto`)
+- Not in the Termux repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `$PREFIX/bin`
+- Works the same from `soluk pkg install sqlmap`, the Package Manager menu, or Security Toolkit's "Install All Tools"
 
 **Plugin Manager → Install from Git**
 - Clones any git repo containing a `plugin.sh` into your installed plugins
@@ -104,6 +109,7 @@ v0.7.0
 - [x] Consistent colorized UI across all menus
 - [x] Theme Manager
 - [x] Git-based remote Plugin Installer
+- [x] Automated install for sqlmap / nikto
 - [ ] Plugin Enable/Disable
 
 v0.8.0

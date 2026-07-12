@@ -71,6 +71,8 @@ do
                 pkg install "$NAME" -y
             elif [ "$TYPE" = "plugin" ]; then
                 soluk_info "'$NAME' is a plugin. Use Plugin Manager to install it."
+            elif [ "$TYPE" = "external" ]; then
+                bash "$BASE_DIR/scripts/package/external_install.sh" install "$NAME"
             else
                 soluk_warn "'$NAME' is an external tool. Manual installation required."
             fi
@@ -92,6 +94,8 @@ do
                 pkg uninstall "$NAME" -y
             elif [ "$TYPE" = "plugin" ]; then
                 soluk_info "'$NAME' is a plugin. Use Plugin Manager to remove it."
+            elif [ "$TYPE" = "external" ]; then
+                bash "$BASE_DIR/scripts/package/external_install.sh" remove "$NAME"
             else
                 soluk_warn "Manual removal required for '$NAME'."
             fi

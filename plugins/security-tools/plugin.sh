@@ -38,8 +38,15 @@ install_profile()
         then
             soluk_ok "$TOOL already installed"
         else
-            soluk_info "Installing $TOOL"
-            pkg install "$TOOL" -y
+            case "$TOOL" in
+            sqlmap|nikto)
+                bash "$BASE_DIR/scripts/package/external_install.sh" install "$TOOL"
+                ;;
+            *)
+                soluk_info "Installing $TOOL"
+                pkg install "$TOOL" -y
+                ;;
+            esac
         fi
     done
 }
