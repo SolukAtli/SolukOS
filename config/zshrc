@@ -3,7 +3,7 @@ clear
 echo ""
 bash ~/SolukOS/scripts/lib/print_banner.sh ~/SolukOS
 echo ""
-echo "[ SolukOS ] Terminal initialized."
+printf '\033[90m[ \033[0m\033[1m\033[96mSolukOS\033[0m\033[90m ] Terminal initialized.\033[0m\n'
 echo ""
 
 PROMPT='%F{8}┌──(%F{6}Soluk%F{8}㉿%F{6}Termux%F{8})-[%F{7}%~%F{8}]

@@ -22,7 +22,7 @@ if [ "$1" = "version" ]; then
 fi
 
 if [ "$1" = "help" ]; then
-    clear
+    echo ""
     soluk_header "SolukOS Help"
 
     echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Usage${SOLUK_RESET}"
@@ -53,7 +53,7 @@ if [ "$1" = "help" ]; then
 fi
 
 if [ "$1" = "doctor" ]; then
-    clear
+    echo ""
     soluk_header "SolukOS Doctor"
 
     [ -d "$BASE_DIR" ] && soluk_ok "SolukOS directory" || soluk_fail "SolukOS directory"
@@ -209,7 +209,7 @@ do
             clear
             soluk_banner "$BASE_DIR"
             echo ""
-            echo -e "${SOLUK_GRAY}[ SolukOS ] Menu closed.${SOLUK_RESET}"
+            echo -e "${SOLUK_GRAY}[ ${SOLUK_RESET}${SOLUK_BOLD}${SOLUK_BCYAN}SolukOS${SOLUK_RESET}${SOLUK_GRAY} ] Menu closed.${SOLUK_RESET}"
             echo ""
             exit 0
             ;;
