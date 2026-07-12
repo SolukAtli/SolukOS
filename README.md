@@ -23,6 +23,7 @@ The project combines terminal customization, package management, plugin support 
 - ⚡ Smart navigation with zoxide, modern `ls`/`cat` via eza and bat
 - 🖼️ `soluk fetch` system summary screen
 - 🎨 Consistent, colorized UI across every menu and screen
+- 🎭 Theme Manager (Soluk, Matrix, Nord) via Settings
 
 ## 🚀 Installation
 
@@ -56,6 +57,11 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - `ll` / `lt` — list files with icons (eza)
 - `cat <file>` — preview a file, highlighted (bat)
 - `Ctrl+R` / `Ctrl+T` / `Alt+C` — search history / files / cd (fzf)
+
+**Settings → Theme Manager**
+- Soluk (default) — muted grays, desaturated blue/gold
+- Matrix — classic black/green hacker terminal
+- Nord — cool blue-gray minimalist palette
 
 ## 🛠 Project Structure
 
@@ -91,6 +97,7 @@ v0.7.0
 - [x] zoxide, bat, eza
 - [x] soluk fetch
 - [x] Consistent colorized UI across all menus
+- [x] Theme Manager
 - [ ] Plugin Enable/Disable
 
 v0.8.0

@@ -30,9 +30,11 @@ if [ "$CONFIRM" != "y" ]; then
     exit 0
 fi
 
-# Reset theme
+# Reset theme (write + actually re-apply the colors, not just the file)
 mkdir -p "$SOLUK_DIR"
-echo "default" > "$SOLUK_DIR/theme"
+echo "soluk" > "$SOLUK_DIR/theme"
+bash "$BASE_DIR/scripts/theme.sh"
+soluk_ok "Theme reset to Soluk (default)"
 
 # Reset banner
 if [ -f "$BASE_DIR/assets/banner.txt" ]; then

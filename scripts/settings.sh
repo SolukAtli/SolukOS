@@ -10,11 +10,16 @@ do
     soluk_header "SolukOS Settings"
 
     choice=$(soluk_menu "Settings" \
+        "Theme Manager" \
         "Change Banner" \
         "Reset Config" \
         "Back")
 
     case "$choice" in
+
+    "Theme Manager")
+        bash "$BASE_DIR/scripts/settings/theme.sh" "$BASE_DIR"
+        ;;
 
     "Change Banner")
         bash "$BASE_DIR/scripts/settings/banner.sh" "$BASE_DIR"
