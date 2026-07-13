@@ -8,6 +8,7 @@
 
 BASE_DIR="$(cat ~/.solukos/install_path 2>/dev/null)"
 source "$BASE_DIR/scripts/lib/ui.sh"
+[ -f "$BASE_DIR/scripts/logger.sh" ] && source "$BASE_DIR/scripts/logger.sh"
 
 ACTION="$1"
 NAME="$2"
@@ -54,6 +55,7 @@ WRAPPER
         fi
 
         soluk_ok "Type '$name' to run it."
+        command -v log >/dev/null 2>&1 && log "External tool installed: $name"
     else
         soluk_warn "Clone failed. Check the URL and your internet connection."
         rm -rf "$TOOLS_DIR/$name"
@@ -91,6 +93,7 @@ remove_git_tool()
     rm -rf "$TOOLS_DIR/$name"
     rm -f "$BIN_DIR/$name"
     soluk_ok "$name removed."
+    command -v log >/dev/null 2>&1 && log "External tool removed: $name"
 }
 
 case "$NAME" in

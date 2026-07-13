@@ -25,6 +25,7 @@ The project combines terminal customization, package management, plugin support 
 - 🎨 Consistent, colorized UI across every menu and screen
 - 🎭 Theme Manager (Soluk, Matrix, Nord) via Settings
 - 🕵️ Automated install for external security tools not in Termux repos (sqlmap, nikto)
+- 🛡️ Confirmation prompt before uninstalling, auto-synced zsh config on update, real system logging
 
 ## 🚀 Installation
 

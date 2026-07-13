@@ -5,6 +5,7 @@ PLUGIN_DIR="$BASE_DIR/plugins"
 INSTALLED_DIR="$PLUGIN_DIR/installed"
 
 source "$BASE_DIR/scripts/lib/ui.sh"
+[ -f "$BASE_DIR/scripts/logger.sh" ] && source "$BASE_DIR/scripts/logger.sh"
 
 mkdir -p "$INSTALLED_DIR"
 
@@ -110,6 +111,7 @@ do
         if [ -d "$PLUGIN_DIR/$plugin" ]; then
             cp -r "$PLUGIN_DIR/$plugin" "$INSTALLED_DIR/"
             soluk_ok "Plugin installed."
+            command -v log >/dev/null 2>&1 && log "Plugin installed: $plugin"
         else
             soluk_warn "Plugin not found."
         fi
@@ -148,6 +150,7 @@ do
                             mv "$TMP_DIR" "$INSTALLED_DIR/$NAME"
                             chmod +x "$INSTALLED_DIR/$NAME/plugin.sh"
                             soluk_ok "Plugin installed: $NAME"
+                            command -v log >/dev/null 2>&1 && log "Plugin installed from git: $NAME ($GIT_URL)"
                         else
                             soluk_warn "Repo icinde plugin.sh bulunamadi, kurulum iptal edildi."
                             rm -rf "$TMP_DIR"
@@ -167,6 +170,7 @@ do
         if [ -d "$INSTALLED_DIR/$plugin" ]; then
             rm -rf "$INSTALLED_DIR/$plugin"
             soluk_ok "Plugin removed."
+            command -v log >/dev/null 2>&1 && log "Plugin removed: $plugin"
         else
             soluk_warn "Plugin not found."
         fi

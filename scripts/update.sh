@@ -52,6 +52,13 @@ if [ $? -eq 0 ]; then
 
     soluk_ok "soluk command refreshed."
 
+    if [ -f "$BASE_DIR/config/zshrc" ] && ! diff -q "$BASE_DIR/config/zshrc" "$HOME/.zshrc" >/dev/null 2>&1; then
+        mkdir -p "$HOME/.solukos/backups"
+        cp "$HOME/.zshrc" "$HOME/.solukos/backups/zshrc-pre-update-$(date +%Y-%m-%d_%H-%M-%S)" 2>/dev/null
+        cp "$BASE_DIR/config/zshrc" "$HOME/.zshrc"
+        soluk_ok "Zsh config refreshed (old one backed up)."
+    fi
+
     NEW_VERSION=$(cat "$VERSION_FILE" 2>/dev/null)
 
     echo ""

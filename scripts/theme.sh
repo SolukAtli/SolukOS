@@ -4,6 +4,9 @@ SOLUK_DIR="$HOME/.solukos"
 THEME_FILE="$SOLUK_DIR/theme"
 TERMUX_DIR="$HOME/.termux"
 
+SELF_DIR="$(cd "$(dirname "$0")" && pwd)"
+[ -f "$SELF_DIR/logger.sh" ] && source "$SELF_DIR/logger.sh"
+
 mkdir -p "$SOLUK_DIR"
 mkdir -p "$TERMUX_DIR"
 
@@ -106,3 +109,5 @@ else
 fi
 
 echo "[+] Theme set to: $THEME"
+
+command -v log >/dev/null 2>&1 && log "Theme set to: $THEME"

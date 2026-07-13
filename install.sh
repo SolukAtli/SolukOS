@@ -106,7 +106,7 @@ exec zsh
     ;;
 
 3)
-    bash "$BASE_DIR/scripts/uninstall.sh"
+    bash "$BASE_DIR/scripts/uninstall.sh" "$BASE_DIR"
     ;;
 
 4)
