@@ -3,11 +3,13 @@
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 PLUGIN_DIR="$BASE_DIR/plugins"
 INSTALLED_DIR="$PLUGIN_DIR/installed"
+DISABLED_DIR="$PLUGIN_DIR/disabled"
 
 source "$BASE_DIR/scripts/lib/ui.sh"
 [ -f "$BASE_DIR/scripts/logger.sh" ] && source "$BASE_DIR/scripts/logger.sh"
 
 mkdir -p "$INSTALLED_DIR"
+mkdir -p "$DISABLED_DIR"
 
 while true
 do
@@ -20,6 +22,8 @@ do
         "Run Plugin" \
         "Install Plugin" \
         "Install from Git" \
+        "Disable Plugin" \
+        "Enable Plugin" \
         "Remove Plugin" \
         "Back")
 
@@ -46,6 +50,16 @@ do
             fi
         done
 
+        for PLUGIN in "$DISABLED_DIR"/*
+        do
+            if [ -d "$PLUGIN" ]; then
+                FOUND=1
+                NAME=$(basename "$PLUGIN")
+                echo -e "${SOLUK_GRAY}${NAME} (disabled)${SOLUK_RESET}"
+                echo ""
+            fi
+        done
+
         [ "$FOUND" = "0" ] && soluk_warn "No plugins installed."
         ;;
 
@@ -60,6 +74,13 @@ do
                 [ -z "$KEY" ] && continue
                 soluk_row "$KEY" "$VALUE"
             done < "$INSTALLED_DIR/$plugin/info"
+        elif [ -f "$DISABLED_DIR/$plugin/info" ]; then
+            soluk_warn "This plugin is currently disabled."
+            while IFS="=" read -r KEY VALUE
+            do
+                [ -z "$KEY" ] && continue
+                soluk_row "$KEY" "$VALUE"
+            done < "$DISABLED_DIR/$plugin/info"
         else
             soluk_warn "Plugin info not found."
         fi
@@ -68,7 +89,9 @@ do
     "Run Plugin")
         read -p "Plugin name: " plugin
 
-        if [ -f "$INSTALLED_DIR/$plugin/plugin.sh" ]; then
+        if [ -f "$DISABLED_DIR/$plugin/plugin.sh" ]; then
+            soluk_warn "'$plugin' is disabled. Enable it first (Plugin Manager -> Enable Plugin)."
+        elif [ -f "$INSTALLED_DIR/$plugin/plugin.sh" ]; then
             clear
             soluk_header "$plugin"
 
@@ -102,6 +125,7 @@ do
         do
             NAME=$(basename "$P")
             [ "$NAME" = "installed" ] && continue
+            [ "$NAME" = "disabled" ] && continue
             [ -d "$P" ] && echo -e "  ${SOLUK_BCYAN}${NAME}${SOLUK_RESET}"
         done
         echo ""
@@ -164,11 +188,47 @@ do
         fi
         ;;
 
+    "Disable Plugin")
+        read -p "Plugin name: " plugin
+        clear
+        soluk_header "Disable Plugin"
+
+        if [ -d "$INSTALLED_DIR/$plugin" ]; then
+            mv "$INSTALLED_DIR/$plugin" "$DISABLED_DIR/$plugin"
+            soluk_ok "'$plugin' disabled."
+            command -v log >/dev/null 2>&1 && log "Plugin disabled: $plugin"
+        elif [ -d "$DISABLED_DIR/$plugin" ]; then
+            soluk_warn "'$plugin' is already disabled."
+        else
+            soluk_warn "Plugin not found."
+        fi
+        ;;
+
+    "Enable Plugin")
+        read -p "Plugin name: " plugin
+        clear
+        soluk_header "Enable Plugin"
+
+        if [ -d "$DISABLED_DIR/$plugin" ]; then
+            mv "$DISABLED_DIR/$plugin" "$INSTALLED_DIR/$plugin"
+            soluk_ok "'$plugin' enabled."
+            command -v log >/dev/null 2>&1 && log "Plugin enabled: $plugin"
+        elif [ -d "$INSTALLED_DIR/$plugin" ]; then
+            soluk_warn "'$plugin' is already enabled."
+        else
+            soluk_warn "Plugin not found."
+        fi
+        ;;
+
     "Remove Plugin")
         read -p "Plugin name: " plugin
 
         if [ -d "$INSTALLED_DIR/$plugin" ]; then
             rm -rf "$INSTALLED_DIR/$plugin"
+            soluk_ok "Plugin removed."
+            command -v log >/dev/null 2>&1 && log "Plugin removed: $plugin"
+        elif [ -d "$DISABLED_DIR/$plugin" ]; then
+            rm -rf "$DISABLED_DIR/$plugin"
             soluk_ok "Plugin removed."
             command -v log >/dev/null 2>&1 && log "Plugin removed: $plugin"
         else

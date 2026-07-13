@@ -75,6 +75,10 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - Rejects repos without a `plugin.sh`, strips `.git` after cloning
 - ⚠️ Only install plugins from sources you trust — `plugin.sh` runs directly
 
+**Plugin Manager → Disable / Enable Plugin**
+- Temporarily turns a plugin off without uninstalling it (keeps its files, just moves it aside)
+- Disabled plugins show up grayed out in "List Plugins" and can't be run until re-enabled
+
 ## 🛠 Project Structure
 
 - SolukOS/
@@ -112,7 +116,7 @@ v0.7.0
 - [x] Theme Manager
 - [x] Git-based remote Plugin Installer
 - [x] Automated install for sqlmap / nikto
-- [ ] Plugin Enable/Disable
+- [x] Plugin Enable/Disable
 
 v0.8.0
 

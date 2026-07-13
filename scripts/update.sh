@@ -49,6 +49,7 @@ if [ $? -eq 0 ]; then
     chmod +x "$BASE_DIR"/scripts/package/*.sh 2>/dev/null
     chmod +x "$BASE_DIR"/plugins/*/plugin.sh 2>/dev/null
     chmod +x "$BASE_DIR"/plugins/installed/*/plugin.sh 2>/dev/null
+    chmod +x "$BASE_DIR"/plugins/disabled/*/plugin.sh 2>/dev/null
 
     soluk_ok "soluk command refreshed."
 
