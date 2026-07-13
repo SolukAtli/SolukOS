@@ -66,6 +66,7 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 
 **Package Manager → Install Package** (`sqlmap`, `nikto`)
 - Not in the Termux repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `$PREFIX/bin`
+- `nikto` also needs a couple of CPAN-only Perl modules (JSON, XML::Writer) — installed automatically via `cpan`, even on a re-run if they were missing before
 - Works the same from `soluk pkg install sqlmap`, the Package Manager menu, or Security Toolkit's "Install All Tools"
 
 **Plugin Manager → Install from Git**
