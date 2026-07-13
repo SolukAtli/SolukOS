@@ -8,6 +8,7 @@ if [ -z "$BASE_DIR" ]; then
 fi
 
 source "$BASE_DIR/scripts/lib/ui.sh"
+source "$BASE_DIR/scripts/lib/pkg.sh"
 
 if [ "$1" = "version" ]; then
     clear
@@ -120,18 +121,21 @@ search)
 info)
     INFO=$(grep "^$3|" "$DB_FILE")
     [ -z "$INFO" ] && echo "Package not found" && exit 1
-    IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+    IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
     echo "Name: $NAME"
     echo "Category: $CATEGORY"
     echo "Type: $TYPE"
     echo "Status: $STATUS"
+    echo "Depends: ${DEPS:-none}"
     exit 0
     ;;
 
 install)
     INFO=$(grep "^$3|" "$DB_FILE")
     [ -z "$INFO" ] && echo "Package not found" && exit 1
-    IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+    IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
+
+    soluk_resolve_deps "$DEPS" "$DB_FILE"
 
     if [ "$TYPE" = "native" ]; then
         pkg install "$NAME" -y
@@ -148,7 +152,7 @@ install)
 remove)
     INFO=$(grep "^$3|" "$DB_FILE")
     [ -z "$INFO" ] && echo "Package not found" && exit 1
-    IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+    IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
 
     if [ "$TYPE" = "native" ]; then
         pkg uninstall "$NAME" -y

@@ -26,6 +26,7 @@ The project combines terminal customization, package management, plugin support 
 - 🎭 Theme Manager (Soluk, Matrix, Nord) via Settings
 - 🕵️ Automated install for external security tools not in Termux repos (sqlmap, nikto)
 - 🛡️ Confirmation prompt before uninstalling, auto-synced zsh config on update, real system logging
+- 🔗 Package dependency resolution (auto-installs what a package needs first)
 
 ## 🚀 Installation
 
@@ -69,6 +70,11 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - Not in the Termux repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `$PREFIX/bin`
 - `nikto` also needs a couple of CPAN-only Perl modules (JSON, XML::Writer) — installed automatically via `cpanm` (bootstrapped if missing), even on a re-run if they were missing before
 - Works the same from `soluk pkg install sqlmap`, the Package Manager menu, or Security Toolkit's "Install All Tools"
+
+**Package Manager → dependencies**
+- `packages/database.txt` entries can list required packages: `name|category|type|status|deps`
+- Installing a package (via `soluk pkg install`, the Package Manager menu, or Security Toolkit) resolves and installs any missing deps first
+- `soluk pkg info <name>` / Package Manager → Package Info show the "Depends" field
 
 **Plugin Manager → Install from Git**
 - Clones any git repo containing a `plugin.sh` into your installed plugins
@@ -120,9 +126,9 @@ v0.7.0
 
 v0.8.0
 
+- [x] Package Dependency Support
 - [ ] Repository System
 - [ ] Automatic Updates
-- [ ] Package Dependency Support
 
 v1.0.0
 

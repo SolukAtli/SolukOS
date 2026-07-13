@@ -4,6 +4,7 @@ BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 DB_FILE="$BASE_DIR/packages/database.txt"
 
 source "$BASE_DIR/scripts/lib/ui.sh"
+source "$BASE_DIR/scripts/lib/pkg.sh"
 
 if [ ! -f "$DB_FILE" ]; then
     soluk_warn "Package database not found: $DB_FILE"
@@ -48,11 +49,12 @@ do
         if [ -z "$INFO" ]; then
             soluk_warn "Package not found."
         else
-            IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+            IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
             soluk_row "Name"     "$NAME"
             soluk_row "Category" "$CATEGORY"
             soluk_row "Type"     "$TYPE"
             soluk_row "Status"   "$STATUS"
+            soluk_row "Depends"  "${DEPS:-none}"
         fi
         ;;
 
@@ -65,7 +67,9 @@ do
         if [ -z "$INFO" ]; then
             soluk_warn "Package not found."
         else
-            IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+            IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
+
+            soluk_resolve_deps "$DEPS" "$DB_FILE"
 
             if [ "$TYPE" = "native" ]; then
                 pkg install "$NAME" -y
@@ -88,7 +92,7 @@ do
         if [ -z "$INFO" ]; then
             soluk_warn "Package not found."
         else
-            IFS="|" read -r NAME CATEGORY TYPE STATUS <<< "$INFO"
+            IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
 
             if [ "$TYPE" = "native" ]; then
                 pkg uninstall "$NAME" -y
@@ -106,7 +110,7 @@ do
         clear
         soluk_header "Installed Status"
 
-        while IFS="|" read -r NAME CATEGORY TYPE STATUS
+        while IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS
         do
             [ -z "$NAME" ] && continue
 

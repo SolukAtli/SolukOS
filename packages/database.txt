@@ -1,15 +1,15 @@
-nmap|network|native|installed
-htop|system|native|installed
-curl|network|native|installed
-openssl|security|native|installed
+nmap|network|native|installed|
+htop|system|native|installed|
+curl|network|native|installed|
+openssl|security|native|installed|
 
-sqlmap|security|external|not-installed
-nikto|security|external|not-installed
+sqlmap|security|external|not-installed|python3
+nikto|security|external|not-installed|perl
 
-system-info|system|plugin|installed
-tools|system|plugin|installed
-security-tools|security|plugin|installed
+system-info|system|plugin|installed|
+tools|system|plugin|installed|
+security-tools|security|plugin|installed|
 
-zoxide|shell|native|installed
-bat|shell|native|installed
-eza|shell|native|installed
+zoxide|shell|native|installed|
+bat|shell|native|installed|
+eza|shell|native|installed|
