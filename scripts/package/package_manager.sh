@@ -23,6 +23,7 @@ do
         "Install Package" \
         "Remove Package" \
         "Check Installed Status" \
+        "Repository Manager" \
         "Back")
 
     case "$choice" in
@@ -120,6 +121,10 @@ do
                 soluk_fail "$NAME"
             fi
         done < "$DB_FILE"
+        ;;
+
+    "Repository Manager")
+        bash "$BASE_DIR/scripts/package/repo_manager.sh" "$BASE_DIR"
         ;;
 
     "Back"|"")

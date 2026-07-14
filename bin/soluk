@@ -43,6 +43,7 @@ if [ "$1" = "help" ]; then
     echo -e "  soluk pkg install <name>  Install a package"
     echo -e "  soluk pkg remove <name>   Remove a package"
     echo -e "  soluk pkg check           Open the Package Manager menu"
+    echo -e "  soluk pkg update          Open the Repository Manager menu"
     echo ""
     echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Shell tools${SOLUK_RESET} ${SOLUK_GRAY}(built into your terminal)${SOLUK_RESET}"
     echo -e "  z <folder>                Jump to a frequent directory (zoxide)"
@@ -171,9 +172,14 @@ check)
     exit 0
     ;;
 
+update)
+    bash "$BASE_DIR/scripts/package/repo_manager.sh" "$BASE_DIR"
+    exit 0
+    ;;
+
 *)
     echo -e "${SOLUK_RED}[✗] Unknown pkg command:${SOLUK_RESET} $2"
-    echo "Usage: soluk pkg {list|search|info|install|remove|check} ..."
+    echo "Usage: soluk pkg {list|search|info|install|remove|check|update} ..."
     exit 1
     ;;
 

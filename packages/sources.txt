@@ -1,0 +1,9 @@
+# SolukOS package repository sources
+# One URL per line. Each URL must point to a raw, pipe-delimited
+# database.txt-style file: name|category|type|status|deps
+# Lines starting with # are ignored.
+#
+# "Update Repositories" adds any packages from these sources that don't
+# already exist locally (by name) - it never overwrites existing entries.
+
+https://raw.githubusercontent.com/SolukAtli/SolukOS/main/packages/database.txt

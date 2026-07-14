@@ -27,6 +27,7 @@ The project combines terminal customization, package management, plugin support 
 - 🕵️ Automated install for external security tools not in Termux repos (sqlmap, nikto)
 - 🛡️ Confirmation prompt before uninstalling, auto-synced zsh config on update, real system logging
 - 🔗 Package dependency resolution (auto-installs what a package needs first)
+- 🌐 Repository system — sync extra packages into the database from remote URLs
 
 ## 🚀 Installation
 
@@ -54,6 +55,7 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - soluk pkg install `<package>`
 - soluk pkg remove `<package>`
 - soluk pkg check
+- soluk pkg update
 
 **Shell tools** (built into your terminal, no `soluk` prefix)
 - `z <folder>` — jump to a frequent directory (zoxide)
@@ -70,6 +72,11 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - Not in the Termux repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `$PREFIX/bin`
 - `nikto` also needs a couple of CPAN-only Perl modules (JSON, XML::Writer) — installed automatically via `cpanm` (bootstrapped if missing), even on a re-run if they were missing before
 - Works the same from `soluk pkg install sqlmap`, the Package Manager menu, or Security Toolkit's "Install All Tools"
+
+**Package Manager → Repository Manager**
+- `packages/sources.txt` lists URLs to remote `database.txt`-format files (pipe-delimited, same schema)
+- "Update Repositories" fetches each source and adds any packages that don't already exist locally by name — existing entries are never overwritten
+- Add/remove sources from the same menu, or via `soluk pkg update`
 
 **Package Manager → dependencies**
 - `packages/database.txt` entries can list required packages: `name|category|type|status|deps`
@@ -127,7 +134,7 @@ v0.7.0
 v0.8.0
 
 - [x] Package Dependency Support
-- [ ] Repository System
+- [x] Repository System
 - [ ] Automatic Updates
 
 v1.0.0
