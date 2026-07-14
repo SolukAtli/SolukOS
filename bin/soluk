@@ -9,6 +9,7 @@ fi
 
 source "$BASE_DIR/scripts/lib/ui.sh"
 source "$BASE_DIR/scripts/lib/pkg.sh"
+source "$BASE_DIR/scripts/lib/update_check.sh"
 
 if [ "$1" = "version" ]; then
     clear
@@ -68,6 +69,7 @@ if [ "$1" = "doctor" ]; then
     command -v eza >/dev/null 2>&1 && soluk_ok "eza" || soluk_fail "eza - pkg install eza"
     [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && soluk_ok "zsh-autosuggestions" || soluk_fail "zsh-autosuggestions - soluk update ile kurulur"
     [ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && soluk_ok "zsh-syntax-highlighting" || soluk_fail "zsh-syntax-highlighting - soluk update ile kurulur"
+    soluk_check_update "$BASE_DIR"
     echo ""
     exit 0
 fi

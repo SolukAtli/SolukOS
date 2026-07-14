@@ -28,6 +28,7 @@ The project combines terminal customization, package management, plugin support 
 - 🛡️ Confirmation prompt before uninstalling, auto-synced zsh config on update, real system logging
 - 🔗 Package dependency resolution (auto-installs what a package needs first)
 - 🌐 Repository system — sync extra packages into the database from remote URLs
+- 🔔 Update notifications — lets you know when a newer SolukOS version is out (never updates on its own)
 
 ## 🚀 Installation
 
@@ -72,6 +73,11 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - Not in the Termux repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `$PREFIX/bin`
 - `nikto` also needs a couple of CPAN-only Perl modules (JSON, XML::Writer) — installed automatically via `cpanm` (bootstrapped if missing), even on a re-run if they were missing before
 - Works the same from `soluk pkg install sqlmap`, the Package Manager menu, or Security Toolkit's "Install All Tools"
+
+**Update notifications**
+- `soluk doctor` checks your version against GitHub and warns if you're behind
+- A background check also runs once a day at shell startup (cached, throttled - doesn't slow down opening a terminal) and shows a one-line notice if a newer version exists
+- Nothing is ever downloaded or applied automatically - you still choose when to run "soluk update"
 
 **Package Manager → Repository Manager**
 - `packages/sources.txt` lists URLs to remote `database.txt`-format files (pipe-delimited, same schema)
@@ -135,7 +141,7 @@ v0.8.0
 
 - [x] Package Dependency Support
 - [x] Repository System
-- [ ] Automatic Updates
+- [x] Automatic Updates
 
 v1.0.0
 

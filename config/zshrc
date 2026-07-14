@@ -6,6 +6,16 @@ echo ""
 printf '\033[90m[ \033[0m\033[1m\033[96mSolukOS\033[0m\033[90m ] Terminal initialized.\033[0m\n'
 echo ""
 
+# Show a notice if a previous background check found a newer version
+# (reads a local cache only, no network call here - stays fast).
+if [ -f ~/.solukos/update_check ]; then
+    bash -c 'source ~/SolukOS/scripts/lib/ui.sh; source ~/SolukOS/scripts/lib/update_check.sh; soluk_print_update_notice; echo ""'
+fi
+
+# Kick off a background version check for next time (throttled to once
+# every 24h internally, so this is a no-op most days).
+( bash ~/SolukOS/scripts/lib/update_check.sh __bg_check ~/SolukOS >/dev/null 2>&1 & ) 2>/dev/null
+
 PROMPT='%F{8}┌──(%F{6}Soluk%F{8}㉿%F{6}Termux%F{8})-[%F{7}%~%F{8}]
 └─$ %f'
 

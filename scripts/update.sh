@@ -13,6 +13,7 @@ if [ -z "$BASE_DIR" ]; then
 fi
 
 source "$BASE_DIR/scripts/lib/ui.sh"
+[ -f "$BASE_DIR/scripts/lib/update_check.sh" ] && source "$BASE_DIR/scripts/lib/update_check.sh"
 
 if [ -f "$VERSION_FILE" ]; then
     VERSION=$(cat "$VERSION_FILE")
@@ -28,9 +29,21 @@ soluk_header "Updating SolukOS"
 echo "Current version: v$VERSION"
 echo ""
 
+if command -v soluk_fetch_remote_version >/dev/null 2>&1; then
+    soluk_info "Checking for a newer version..."
+    NEW_VERSION=$(soluk_fetch_remote_version "$BASE_DIR")
+
+    if [ -n "$NEW_VERSION" ] && [ "$NEW_VERSION" != "$VERSION" ]; then
+        soluk_ok "Update available: v$NEW_VERSION"
+    else
+        soluk_info "Already on the latest version (or the check couldn't reach GitHub)."
+    fi
+    echo ""
+fi
+
 cd "$BASE_DIR" || exit 1
 
-echo "[*] Checking updates..."
+echo "[*] Pulling latest changes..."
 
 git pull
 
@@ -60,12 +73,12 @@ if [ $? -eq 0 ]; then
         soluk_ok "Zsh config refreshed (old one backed up)."
     fi
 
-    NEW_VERSION=$(cat "$VERSION_FILE" 2>/dev/null)
+    FINAL_VERSION=$(cat "$VERSION_FILE" 2>/dev/null)
 
     echo ""
-    soluk_ok "Update completed (v$NEW_VERSION)."
+    soluk_ok "Update completed (v$FINAL_VERSION)."
 
-    echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update completed successfully (v$NEW_VERSION)" >> "$LOG_FILE"
+    echo "[$(date +"%Y-%m-%d %H:%M:%S")] Update completed successfully (v$FINAL_VERSION)" >> "$LOG_FILE"
 else
     echo ""
     soluk_warn "Update failed."
