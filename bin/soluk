@@ -34,6 +34,7 @@ if [ "$1" = "help" ]; then
     echo -e "  soluk version             Show installed version"
     echo -e "  soluk doctor              Check installation health"
     echo -e "  soluk fetch               Show system summary"
+    echo -e "  soluk update              Check for and pull updates"
     echo -e "  soluk reload              Reload the shell"
     echo -e "  soluk help                Show this help message"
     echo ""
@@ -76,6 +77,11 @@ fi
 
 if [ "$1" = "reload" ]; then
     exec zsh
+fi
+
+if [ "$1" = "update" ]; then
+    bash "$BASE_DIR/scripts/update.sh" "$BASE_DIR"
+    exit 0
 fi
 
 if [ "$1" = "fetch" ]; then

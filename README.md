@@ -47,6 +47,7 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - soluk doctor
 - soluk reload
 - soluk fetch
+- soluk update
 - soluk help
 
 **Packages**
