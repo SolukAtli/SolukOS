@@ -28,16 +28,22 @@ soluk_remote_version_url()
 }
 
 # Echoes the remote VERSION (trimmed), or nothing on any failure -
-# offline, no git, private repo, etc all just yield empty output.
+# offline, no git, private repo, blocked network, etc all just yield
+# empty output. Also rejects anything that doesn't look like a plain
+# version number (e.g. an error page or proxy message caught by curl).
 soluk_fetch_remote_version()
 {
-    local base_dir="$1" url
+    local base_dir="$1" url raw
 
     command -v curl >/dev/null 2>&1 || return 0
     url=$(soluk_remote_version_url "$base_dir") || return 0
     [ -z "$url" ] && return 0
 
-    curl -sL --max-time 5 "$url" 2>/dev/null | tr -d '[:space:]'
+    raw=$(curl -sL --max-time 5 "$url" 2>/dev/null | tr -d '[:space:]')
+
+    if [[ "$raw" =~ ^[0-9]+(\.[0-9]+)*$ ]]; then
+        echo "$raw"
+    fi
 }
 
 # Synchronous check + soluk_warn if outdated. Requires ui.sh to already
