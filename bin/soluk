@@ -12,7 +12,7 @@ source "$BASE_DIR/scripts/lib/pkg.sh"
 source "$BASE_DIR/scripts/lib/update_check.sh"
 
 if [ "$1" = "version" ]; then
-    clear
+    echo ""
     soluk_header "SolukOS Version"
 
     VERSION_STR=$(cat "$BASE_DIR/VERSION" 2>/dev/null)
@@ -85,7 +85,7 @@ if [ "$1" = "update" ]; then
 fi
 
 if [ "$1" = "fetch" ]; then
-    clear
+    echo ""
     soluk_banner "$BASE_DIR"
 
     VERSION_STR=$(cat "$BASE_DIR/VERSION" 2>/dev/null)
