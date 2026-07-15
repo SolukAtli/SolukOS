@@ -45,7 +45,7 @@ case $choice in
     echo ""
 
     echo "[*] Creating backup..."
-    bash "$BASE_DIR/scripts/backup.sh"
+    bash "$BASE_DIR/scripts/backup.sh" "$BASE_DIR"
 
     echo ""
 
@@ -102,7 +102,7 @@ exec zsh
     ;;
 
 2)
-    bash "$BASE_DIR/scripts/backup.sh"
+    bash "$BASE_DIR/scripts/backup.sh" "$BASE_DIR"
     ;;
 
 3)

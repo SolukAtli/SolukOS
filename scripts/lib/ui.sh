@@ -141,18 +141,18 @@ soluk_menu()
 
         echo "${result#*) }"
     else
-        echo -e "${SOLUK_GRAY}(fzf bulunamadi - 'pkg install fzf' ile modern menu acilir, simdilik klasik menu)${SOLUK_RESET}"
-        echo ""
+        echo -e "${SOLUK_GRAY}(fzf bulunamadi - 'pkg install fzf' ile modern menu acilir, simdilik klasik menu)${SOLUK_RESET}" >&2
+        echo "" >&2
 
         local opt
         i=1
         for opt in "${options[@]}"
         do
-            echo "[$i] $opt"
+            echo "[$i] $opt" >&2
             i=$((i+1))
         done
 
-        echo ""
+        echo "" >&2
         read -p "Choice: " num
 
         if [[ "$num" =~ ^[0-9]+$ ]] && [ "$num" -ge 1 ] && [ "$num" -le "$n" ]
