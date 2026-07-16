@@ -144,9 +144,14 @@ v0.8.0
 - [x] Repository System
 - [x] Automatic Updates
 
-v1.0.0
+v1.0.0 — First Stable Release
 
-- [ ] First Stable Release
+- [x] All v0.8.0 roadmap features complete
+- [x] Fresh install tested end-to-end (Full Install)
+- [x] `soluk doctor` passes all checks
+- [x] Patch 21-25 fixes verified on-device
+- [ ] `docs/installation.md` reviewed for accuracy
+- [ ] Final bug sweep (logo and nikto Perl modules are explicitly out of scope for v1.0.0)
 
 ## ⚠️ Disclaimer
 
