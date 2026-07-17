@@ -107,7 +107,7 @@ install_perl_modules()
     mkdir -p "$(dirname "$perl_log")"
 
     for mod in $missing; do
-        local dl_url tmp_dir dist_dir
+        local dl_url tmp_dir dist_dir rel_path
         {
             echo "=== $(date +"%Y-%m-%d %H:%M:%S") - $mod ==="
 
@@ -142,6 +142,18 @@ install_perl_modules()
                         # though the real distribution downloads fine.
                         cp -r "$dist_dir/lib/." "$perl_lib/"
                         echo "Copied $dist_dir/lib/ -> $perl_lib/"
+                    elif [ -n "$dist_dir" ] && [ -f "$dist_dir/$(basename "$(echo "$mod" | sed 's#::#/#g')").pm" ]; then
+                        # Older/flat-style distributions (e.g. XML::Writer)
+                        # ship the .pm file straight in the dist root instead
+                        # of under lib/ - normally MakeMaker works out the
+                        # right nested install path (XML/Writer.pm) during
+                        # `make install`, but since we skip that step we
+                        # compute it ourselves from the module name we
+                        # already know we're installing.
+                        rel_path="$(echo "$mod" | sed 's#::#/#g').pm"
+                        mkdir -p "$perl_lib/$(dirname "$rel_path")"
+                        cp "$dist_dir/$(basename "$rel_path")" "$perl_lib/$rel_path"
+                        echo "Copied $dist_dir/$(basename "$rel_path") -> $perl_lib/$rel_path"
                     else
                         echo "lib/ dizini bulunamadi - bu modul muhtemelen derleme gerektiriyor. Manuel dene: cpanm $mod"
                     fi
