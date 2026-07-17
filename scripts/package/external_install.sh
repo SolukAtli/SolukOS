@@ -111,7 +111,12 @@ install_perl_modules()
         {
             echo "=== $(date +"%Y-%m-%d %H:%M:%S") - $mod ==="
 
-            dl_url=$(curl -sL --max-time 15 "https://fastapi.metacpan.org/v1/download_url/$mod" | sed -n 's/.*"download_url":"\([^"]*\)".*/\1/p')
+            local api_resp curl_rc
+            api_resp=$(curl -sS -L --max-time 15 -A "SolukOS-installer/1.0" -w '\n__HTTP_STATUS__:%{http_code}' "https://fastapi.metacpan.org/v1/download_url/$mod" 2>&1)
+            curl_rc=$?
+            echo "curl exit code: $curl_rc"
+            echo "response: $api_resp"
+            dl_url=$(echo "$api_resp" | sed -n 's/.*"download_url":"\([^"]*\)".*/\1/p')
             echo "download_url: $dl_url"
 
             if [ -z "$dl_url" ]; then
@@ -121,7 +126,8 @@ install_perl_modules()
                 rm -rf "$tmp_dir"
                 mkdir -p "$tmp_dir"
 
-                curl -sL --max-time 60 "$dl_url" -o "$tmp_dir/dist.tar.gz"
+                curl -sS -L --max-time 60 -A "SolukOS-installer/1.0" "$dl_url" -o "$tmp_dir/dist.tar.gz"
+                echo "tarball size: $(wc -c < "$tmp_dir/dist.tar.gz" 2>/dev/null) bytes"
 
                 if tar xzf "$tmp_dir/dist.tar.gz" -C "$tmp_dir"; then
                     dist_dir=$(find "$tmp_dir" -mindepth 1 -maxdepth 1 -type d | head -1)
