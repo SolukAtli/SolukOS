@@ -116,7 +116,7 @@ install_perl_modules()
             curl_rc=$?
             echo "curl exit code: $curl_rc"
             echo "response: $api_resp"
-            dl_url=$(echo "$api_resp" | sed -n 's/.*"download_url":"\([^"]*\)".*/\1/p')
+            dl_url=$(echo "$api_resp" | sed -n 's/.*"download_url"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
             echo "download_url: $dl_url"
 
             if [ -z "$dl_url" ]; then
