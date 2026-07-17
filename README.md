@@ -161,4 +161,4 @@ Users are responsible for ensuring that all activities are lawful and authorized
 
 ## 📜 Version
 
-Current Version: v0.8.0
+Current Version: v1.0.0
