@@ -65,12 +65,15 @@ install_git_tool()
 write_wrapper()
 {
     local name="$1" runtime="$2" entry="$3"
+    local entry_dir entry_file
+    entry_dir="$(dirname "$entry")"
+    entry_file="$(basename "$entry")"
 
     if [ "$runtime" = "perl" ]; then
         cat > "$BIN_DIR/$name" << WRAPPER
 #!/data/data/com.termux/files/usr/bin/bash
 export PERL5LIB="\$HOME/perl5/lib/perl5:\$PERL5LIB"
-$runtime "$TOOLS_DIR/$name/$entry" "\$@"
+cd "$TOOLS_DIR/$name/$entry_dir" && $runtime "$entry_file" "\$@"
 WRAPPER
     else
         cat > "$BIN_DIR/$name" << WRAPPER
