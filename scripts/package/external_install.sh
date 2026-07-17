@@ -89,6 +89,7 @@ WRAPPER
 install_perl_modules()
 {
     local modules="$1" mod missing=""
+    local perl_log="$HOME/.solukos/logs/perl_modules.log"
 
     for mod in $modules; do
         PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB" perl -M"$mod" -e1 >/dev/null 2>&1 || missing="$missing $mod"
@@ -116,13 +117,26 @@ install_perl_modules()
         return 1
     fi
 
+    mkdir -p "$(dirname "$perl_log")"
+
+    # A previous failed/interrupted attempt can leave a broken partial
+    # download behind, and cpanm will happily reuse that broken local
+    # copy instead of re-fetching - this is what was silently breaking
+    # JSON/XML::Writer before (build.log showed it trying to "unpack" a
+    # stale local Makefile.PL instead of downloading a real tarball).
+    # Starting from a clean cache each time avoids that.
+    rm -rf "$HOME/.cpanm/work" 2>/dev/null
+
     for mod in $missing; do
-        cpanm --notest "$mod" >/dev/null 2>&1
+        {
+            echo "=== $(date +"%Y-%m-%d %H:%M:%S") - $mod ==="
+            cpanm --mirror https://cpan.metacpan.org/ --mirror-only --notest --verbose "$mod"
+        } >> "$perl_log" 2>&1
 
         if PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB" perl -M"$mod" -e1 >/dev/null 2>&1; then
             soluk_ok "$mod installed."
         else
-            soluk_warn "$mod otomatik kurulamadi. Manuel dene: cpanm $mod"
+            soluk_warn "$mod otomatik kurulamadi. Detay icin: cat ~/.solukos/logs/perl_modules.log"
         fi
     done
 }
