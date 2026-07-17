@@ -83,57 +83,71 @@ WRAPPER
 }
 
 # Installs any CPAN modules a tool needs that Termux doesn't package natively
-# (e.g. nikto needs JSON and XML::Writer). Raw `cpan` is known to misbehave
-# on Termux, so this bootstraps and uses cpanm instead, after making sure
-# the build toolchain it needs (make, clang, curl) is present.
+# (e.g. nikto needs JSON and XML::Writer). Both cpan and cpanm hit real
+# problems on this Termux perl build, so for pure-Perl modules (no XS/C to
+# compile) this fetches the tarball straight from MetaCPAN and drops its
+# lib/ files into PERL5LIB directly, skipping cpanm's build step entirely.
 install_perl_modules()
 {
     local modules="$1" mod missing=""
     local perl_log="$HOME/.solukos/logs/perl_modules.log"
+    local perl_lib="$HOME/perl5/lib/perl5"
 
     for mod in $modules; do
-        PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB" perl -M"$mod" -e1 >/dev/null 2>&1 || missing="$missing $mod"
+        PERL5LIB="$perl_lib:$PERL5LIB" perl -M"$mod" -e1 >/dev/null 2>&1 || missing="$missing $mod"
     done
 
     [ -z "$missing" ] && return 0
 
     soluk_info "Installing Perl modules:$missing"
-    soluk_warn "Bu islem birkac dakika surebilir (derleyici araclari da kurulacak)."
 
-    command -v make  >/dev/null 2>&1 || pkg install make  -y >/dev/null 2>&1
-    command -v clang >/dev/null 2>&1 || pkg install clang -y >/dev/null 2>&1
-    command -v curl  >/dev/null 2>&1 || pkg install curl  -y >/dev/null 2>&1
+    command -v curl >/dev/null 2>&1 || pkg install curl -y >/dev/null 2>&1
 
-    if ! command -v cpanm >/dev/null 2>&1 && [ ! -x "$HOME/perl5/bin/cpanm" ]; then
-        soluk_info "Bootstrapping cpanm..."
-        curl -sL https://cpanmin.us | perl - App::cpanminus >/dev/null 2>&1
-    fi
-
-    export PATH="$HOME/perl5/bin:$PATH"
-
-    if ! command -v cpanm >/dev/null 2>&1; then
-        soluk_warn "cpanm kurulamadi. Manuel kurulum gerekli:"
-        soluk_warn "curl -L https://cpanmin.us | perl - App::cpanminus"
-        return 1
-    fi
-
+    mkdir -p "$perl_lib"
     mkdir -p "$(dirname "$perl_log")"
 
-    # A previous failed/interrupted attempt can leave a broken partial
-    # download behind, and cpanm will happily reuse that broken local
-    # copy instead of re-fetching - this is what was silently breaking
-    # JSON/XML::Writer before (build.log showed it trying to "unpack" a
-    # stale local Makefile.PL instead of downloading a real tarball).
-    # Starting from a clean cache each time avoids that.
-    rm -rf "$HOME/.cpanm/work" 2>/dev/null
-
     for mod in $missing; do
+        local dl_url tmp_dir dist_dir
         {
             echo "=== $(date +"%Y-%m-%d %H:%M:%S") - $mod ==="
-            cpanm --mirror https://cpan.metacpan.org/ --mirror-only --notest --verbose "$mod"
+
+            dl_url=$(curl -sL --max-time 15 "https://fastapi.metacpan.org/v1/download_url/$mod" | sed -n 's/.*"download_url":"\([^"]*\)".*/\1/p')
+            echo "download_url: $dl_url"
+
+            if [ -z "$dl_url" ]; then
+                echo "MetaCPAN'dan indirme linki alinamadi."
+            else
+                tmp_dir="$HOME/.solukos/tmp/perlmod_$$_$RANDOM"
+                rm -rf "$tmp_dir"
+                mkdir -p "$tmp_dir"
+
+                curl -sL --max-time 60 "$dl_url" -o "$tmp_dir/dist.tar.gz"
+
+                if tar xzf "$tmp_dir/dist.tar.gz" -C "$tmp_dir"; then
+                    dist_dir=$(find "$tmp_dir" -mindepth 1 -maxdepth 1 -type d | head -1)
+
+                    if [ -n "$dist_dir" ] && [ -d "$dist_dir/lib" ]; then
+                        # Pure-Perl module (no XS/C parts to compile), so we
+                        # skip cpanm's Configure/build step entirely and just
+                        # drop its lib/ files into PERL5LIB. This sidesteps a
+                        # cpanm bug on this Termux perl build where running
+                        # Makefile.PL misfires and tries to re-"fetch" it as
+                        # if it were its own tarball (gzip/tar error), even
+                        # though the real distribution downloads fine.
+                        cp -r "$dist_dir/lib/." "$perl_lib/"
+                        echo "Copied $dist_dir/lib/ -> $perl_lib/"
+                    else
+                        echo "lib/ dizini bulunamadi - bu modul muhtemelen derleme gerektiriyor. Manuel dene: cpanm $mod"
+                    fi
+                else
+                    echo "tar extraction failed for $dl_url"
+                fi
+
+                rm -rf "$tmp_dir"
+            fi
         } >> "$perl_log" 2>&1
 
-        if PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB" perl -M"$mod" -e1 >/dev/null 2>&1; then
+        if PERL5LIB="$perl_lib:$PERL5LIB" perl -M"$mod" -e1 >/dev/null 2>&1; then
             soluk_ok "$mod installed."
         else
             soluk_warn "$mod otomatik kurulamadi. Detay icin: cat ~/.solukos/logs/perl_modules.log"
