@@ -150,8 +150,8 @@ v1.0.0 — First Stable Release
 - [x] Fresh install tested end-to-end (Full Install)
 - [x] `soluk doctor` passes all checks
 - [x] Patch 21-25 fixes verified on-device
-- [ ] `docs/installation.md` reviewed for accuracy
-- [ ] Final bug sweep (logo and nikto Perl modules are explicitly out of scope for v1.0.0)
+- [x] `docs/installation.md` reviewed for accuracy
+- [x] Final bug sweep (logo and nikto Perl modules are explicitly out of scope for v1.0.0)
 
 ## ⚠️ Disclaimer
 
