@@ -119,7 +119,10 @@ do
         else
             IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
 
-            if [ "$TYPE" = "native" ]; then
+            read -p "Remove '$NAME'? (y/n): " CONFIRM
+            if [ "$CONFIRM" != "y" ]; then
+                echo "Cancelled."
+            elif [ "$TYPE" = "native" ]; then
                 pkg uninstall "$NAME" -y
             elif [ "$TYPE" = "plugin" ]; then
                 soluk_info "'$NAME' is a plugin. Use Plugin Manager to remove it."
