@@ -121,7 +121,7 @@ DB_FILE="$BASE_DIR/packages/database.txt"
 case "$2" in
 
 list)
-    cat "$DB_FILE"
+    soluk_print_pkg_list "$DB_FILE"
     exit 0
     ;;
 

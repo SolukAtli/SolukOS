@@ -48,3 +48,31 @@ soluk_resolve_deps()
         fi
     done
 }
+
+# Prints the package database as an aligned table instead of raw
+# pipe-delimited lines. Status is checked live (command -v) rather than
+# read from the file, since the stored status field is just a static
+# label and can be stale.
+soluk_print_pkg_list()
+{
+    local db_file="$1"
+    local name category type status deps status_txt status_color
+
+    printf "  ${SOLUK_BOLD}${SOLUK_CYAN}%-16s %-11s %-10s %-14s %s${SOLUK_RESET}\n" \
+        "NAME" "CATEGORY" "TYPE" "STATUS" "DEPENDS"
+
+    while IFS="|" read -r name category type status deps; do
+        [ -z "$name" ] && continue
+
+        if command -v "$name" >/dev/null 2>&1; then
+            status_txt="installed"
+            status_color="$SOLUK_GREEN"
+        else
+            status_txt="not installed"
+            status_color="$SOLUK_RED"
+        fi
+
+        printf "  %-16s %-11s %-10s ${status_color}%-14s${SOLUK_RESET} %s\n" \
+            "$name" "$category" "$type" "$status_txt" "${deps:-none}"
+    done < "$db_file"
+}

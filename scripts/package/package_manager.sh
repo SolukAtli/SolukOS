@@ -30,9 +30,9 @@ do
     case "$choice" in
 
     "List Packages")
-        clear
+        echo ""
         soluk_header "Available Packages"
-        cat "$DB_FILE"
+        soluk_print_pkg_list "$DB_FILE"
         ;;
 
     "Search Package")

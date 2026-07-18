@@ -47,6 +47,14 @@ fi
 [ -f "$PREFIX/share/fzf/key-bindings.zsh" ] && source "$PREFIX/share/fzf/key-bindings.zsh"
 [ -f "$PREFIX/share/fzf/completion.zsh" ] && source "$PREFIX/share/fzf/completion.zsh"
 
+# zsh's own completion system - needed for tab-completion (e.g. `soluk <TAB>`)
+# -u skips the "insecure directories" prompt, which Android's permission
+# model triggers constantly and would otherwise nag on every shell start.
+autoload -Uz compinit
+compinit -u
+
+[ -f "$SOLUK_BASE_DIR/scripts/lib/completion.zsh" ] && source "$SOLUK_BASE_DIR/scripts/lib/completion.zsh"
+
 # SolukOS zsh plugins (dosya yoksa sessizce atlar, hata vermez)
 # zsh-syntax-highlighting must stay last for correct highlighting.
 [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
