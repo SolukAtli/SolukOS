@@ -1,0 +1,12 @@
+base
+linux
+linux-firmware
+mkinitcpio
+mkinitcpio-archiso
+networkmanager
+sudo
+nano
+vim
+git
+grub
+efibootmgr

@@ -1,0 +1,53 @@
+name: Build ISO
+
+on:
+  push:
+    tags:
+      - 'iso-v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build ISO (archiso inside Arch Linux container)
+        run: |
+          docker run --rm --privileged \
+            -v "${{ github.workspace }}:/workspace" \
+            -w /workspace \
+            archlinux:latest \
+            bash -c "
+              set -e
+              pacman-key --init
+              pacman-key --populate archlinux
+              pacman -Sy --noconfirm archlinux-keyring
+              pacman -Syu --noconfirm archiso
+              chmod +x iso/profiledef.sh
+              mkarchiso -v -w work -o out iso
+            "
+
+      - name: Rename ISO
+        run: |
+          ISO_FILE=$(find out -maxdepth 1 -name '*.iso' | head -n1)
+          NAME="SolukOS-Linux-${GITHUB_REF_NAME}.iso"
+          mv "$ISO_FILE" "out/$NAME"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: solukos-iso
+          path: out/*.iso
+          retention-days: 14
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/*.iso
+          generate_release_notes: true
