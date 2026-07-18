@@ -4,6 +4,7 @@ linux-firmware
 mkinitcpio
 mkinitcpio-archiso
 networkmanager
+syslinux
 sudo
 nano
 vim
