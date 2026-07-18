@@ -19,6 +19,8 @@ jobs:
       - name: Build ISO (archiso inside Arch Linux container)
         run: |
           docker run --rm --privileged \
+            -e HOST_UID="$(id -u)" \
+            -e HOST_GID="$(id -g)" \
             -v "${{ github.workspace }}:/workspace" \
             -w /workspace \
             archlinux:latest \
@@ -30,6 +32,7 @@ jobs:
               pacman -Syu --noconfirm archiso grub
               chmod +x iso/profiledef.sh
               mkarchiso -v -w work -o out iso
+              chown -R \"\${HOST_UID}:\${HOST_GID}\" /workspace/out
             "
 
       - name: Rename ISO
