@@ -43,6 +43,7 @@ if [ "$1" = "help" ]; then
     echo -e "  soluk pkg search <name>   Search the package database"
     echo -e "  soluk pkg info <name>     Show package details"
     echo -e "  soluk pkg install <name>  Install a package"
+    echo -e "  soluk pkg update <name>   Update a package (git pull for external tools)"
     echo -e "  soluk pkg remove <name>   Remove a package"
     echo -e "  soluk pkg check           Open the Package Manager menu"
     echo -e "  soluk pkg update          Open the Repository Manager menu"
@@ -183,7 +184,24 @@ check)
     ;;
 
 update)
-    bash "$BASE_DIR/scripts/package/repo_manager.sh" "$BASE_DIR"
+    if [ -z "$3" ]; then
+        bash "$BASE_DIR/scripts/package/repo_manager.sh" "$BASE_DIR"
+        exit 0
+    fi
+
+    INFO=$(grep "^$3|" "$DB_FILE")
+    [ -z "$INFO" ] && echo "Package not found" && exit 1
+    IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
+
+    if [ "$TYPE" = "native" ]; then
+        pkg install "$NAME" -y
+    elif [ "$TYPE" = "plugin" ]; then
+        echo "Plugin updater coming soon"
+    elif [ "$TYPE" = "external" ]; then
+        bash "$BASE_DIR/scripts/package/external_install.sh" update "$NAME"
+    else
+        echo "Manual update required"
+    fi
     exit 0
     ;;
 
