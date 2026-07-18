@@ -185,6 +185,39 @@ remove_git_tool()
     command -v log >/dev/null 2>&1 && log "External tool removed: $name"
 }
 
+update_git_tool()
+{
+    local name="$1" runtime="$2" entry="$3" modules="$4"
+    local before after
+
+    if [ ! -d "$TOOLS_DIR/$name" ]; then
+        soluk_warn "$name kurulu degil. Once 'soluk pkg install $name' calistir."
+        return 1
+    fi
+
+    soluk_info "Updating $name..."
+
+    before="$(git -C "$TOOLS_DIR/$name" rev-parse HEAD 2>/dev/null)"
+
+    if git -C "$TOOLS_DIR/$name" pull --ff-only >/dev/null 2>&1; then
+        after="$(git -C "$TOOLS_DIR/$name" rev-parse HEAD 2>/dev/null)"
+
+        write_wrapper "$name" "$runtime" "$entry"
+        if [ "$runtime" = "perl" ] && [ -n "$modules" ]; then
+            install_perl_modules "$modules"
+        fi
+
+        if [ "$before" = "$after" ]; then
+            soluk_ok "$name already up to date."
+        else
+            soluk_ok "$name updated."
+        fi
+        command -v log >/dev/null 2>&1 && log "External tool updated: $name"
+    else
+        soluk_warn "Update failed (git pull). Check your internet connection."
+    fi
+}
+
 case "$NAME" in
 
 sqlmap)
@@ -211,5 +244,6 @@ esac
 case "$ACTION" in
 install) install_git_tool "$NAME" "$URL" "$RUNTIME" "$ENTRY" "$MODULES" ;;
 remove)  remove_git_tool "$NAME" ;;
+update)  update_git_tool "$NAME" "$RUNTIME" "$ENTRY" "$MODULES" ;;
 *)       soluk_warn "Bilinmeyen islem: $ACTION" ;;
 esac

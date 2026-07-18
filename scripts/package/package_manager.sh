@@ -21,6 +21,7 @@ do
         "Search Package" \
         "Package Info" \
         "Install Package" \
+        "Update Package" \
         "Remove Package" \
         "Check Installed Status" \
         "Repository Manager" \
@@ -80,6 +81,29 @@ do
                 bash "$BASE_DIR/scripts/package/external_install.sh" install "$NAME"
             else
                 soluk_warn "'$NAME' is an external tool. Manual installation required."
+            fi
+        fi
+        ;;
+
+    "Update Package")
+        read -p "Package name: " pkgname
+        clear
+        soluk_header "Update Package"
+        INFO=$(grep "^$pkgname|" "$DB_FILE")
+
+        if [ -z "$INFO" ]; then
+            soluk_warn "Package not found."
+        else
+            IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
+
+            if [ "$TYPE" = "native" ]; then
+                pkg install "$NAME" -y
+            elif [ "$TYPE" = "plugin" ]; then
+                soluk_info "'$NAME' is a plugin. Use Plugin Manager to update it."
+            elif [ "$TYPE" = "external" ]; then
+                bash "$BASE_DIR/scripts/package/external_install.sh" update "$NAME"
+            else
+                soluk_warn "Manual update required for '$NAME'."
             fi
         fi
         ;;
