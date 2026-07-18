@@ -11,3 +11,21 @@ vim
 git
 grub
 efibootmgr
+
+# KDE Plasma masaustu (Faz 1)
+plasma-desktop
+plasma-x11-session
+sddm
+konsole
+dolphin
+plasma-nm
+plasma-pa
+pipewire
+pipewire-pulse
+pipewire-alsa
+wireplumber
+xorg-server
+xf86-input-libinput
+mesa
+noto-fonts
+ttf-dejavu

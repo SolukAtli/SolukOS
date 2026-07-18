@@ -29,13 +29,27 @@ Workflow biterken (birkaç dakika sürer):
 
 USB'ye yazmak için Rufus / Ventoy / balenaEtcher kullanılabilir.
 
-## Şu an içinde ne var (Faz 0)
+## Şu an içinde ne var (Faz 1)
 
-Sadece iskelet: base sistem, NetworkManager, root autologin, temel araçlar.
-KDE Plasma, Soluk teması, `soluk` CLI'nin pacman'e taşınması ve kalıcı USB
-desteği henüz **eklenmedi** — bunlar sonraki fazlarda gelecek. Bu ilk sürümün
-tek amacı: derleme hattının (repo → GitHub Actions → bootlanabilir ISO)
-uçtan uca çalıştığını kanıtlamak.
+**Faz 0 (tamamlandı, USB'de doğrulandı):** base sistem, NetworkManager,
+derleme hattı (repo → GitHub Actions → bootlanabilir ISO) uçtan uca çalışıyor.
+
+**Faz 1 (bu sürüm):** KDE Plasma 6 masaüstü eklendi. Giriş ekranı (SDDM)
+karşılıyor:
+
+- Kullanıcı adı: `soluk`
+- Şifre: `soluk`
+
+Bu geçici, test amaçlı bir hesap — Faz 5'te gerçek bir kurulum akışı
+(Calamares) geldiğinde kullanıcı adı/şifre seçimi kurulum sırasında
+sorulacak. `soluk` kullanıcısı `sudo` yetkisine sahip (wheel grubunda).
+
+SDDM'nin giriş ekranındaki oturum seçici ikonundan "Plasma (X11)" veya
+"Plasma (Wayland)" arasında seçim yapılabilir — hangisi donanımda daha
+iyi çalışıyorsa onu kullan.
+
+Soluk teması, `soluk` CLI'nin pacman'e taşınması, güvenlik araçları ve
+kalıcı USB desteği henüz **eklenmedi** — sonraki fazlarda gelecek.
 
 ## Bilinen sınırlama
 

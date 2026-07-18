@@ -16,6 +16,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare systemd enablement symlinks
+        run: |
+          mkdir -p iso/airootfs/etc/systemd/system/multi-user.target.wants
+          ln -sf /usr/lib/systemd/system/NetworkManager.service \
+            iso/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
+          ln -sf ../solukos-live-user.service \
+            iso/airootfs/etc/systemd/system/multi-user.target.wants/solukos-live-user.service
+          ln -sf /usr/lib/systemd/system/sddm.service \
+            iso/airootfs/etc/systemd/system/display-manager.service
+          ln -sf /usr/lib/systemd/system/graphical.target \
+            iso/airootfs/etc/systemd/system/default.target
+
       - name: Build ISO (archiso inside Arch Linux container)
         run: |
           docker run --rm --privileged \

@@ -19,4 +19,5 @@ airootfs_image_tool_options=('-comp' 'zstd' '-Xcompression-level' '19')
 file_permissions=(
     ["/etc/shadow"]="0:0:400"
     ["/root"]="0:0:750"
+    ["/etc/sudoers.d/wheel"]="0:0:440"
 )
