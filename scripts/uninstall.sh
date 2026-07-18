@@ -11,6 +11,7 @@ soluk_header "Remove SolukOS"
 echo "This will:"
 echo "  - Restore your original .zshrc (if a backup exists)"
 echo "  - Remove ~/.solukos (settings, theme, logs, backups, installed external tools)"
+echo "  - Remove commands for any externally-installed tools (nikto, sqlmap, etc.)"
 echo "  - Remove the 'soluk' command"
 echo ""
 echo "It will NOT delete the project folder itself:"
@@ -32,6 +33,19 @@ if [ -f ~/.zshrc.solukos.backup ]; then
     soluk_ok "Original Zsh configuration restored."
 else
     soluk_warn "No original .zshrc backup found - .zshrc left as-is."
+fi
+
+# Wrapper commands for externally-installed tools (nikto, sqlmap, etc. -
+# anything cloned via external_install.sh) live in $PREFIX/bin, outside
+# ~/.solukos, so they'd otherwise survive the rm -rf below and be left
+# pointing at a folder that no longer exists.
+if [ -d ~/.solukos/tools ]; then
+    for tool_dir in ~/.solukos/tools/*/; do
+        [ -d "$tool_dir" ] || continue
+        tool_name="$(basename "$tool_dir")"
+        rm -f "/data/data/com.termux/files/usr/bin/$tool_name"
+    done
+    soluk_ok "External tool commands removed."
 fi
 
 rm -rf ~/.solukos
