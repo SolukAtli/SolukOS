@@ -19,6 +19,7 @@ jobs:
       - name: Prepare systemd enablement symlinks
         run: |
           mkdir -p iso/airootfs/etc/systemd/system/multi-user.target.wants
+          mkdir -p iso/airootfs/etc/systemd/system/getty.target.wants
           ln -sf /usr/lib/systemd/system/NetworkManager.service \
             iso/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
           ln -sf ../solukos-live-user.service \
@@ -29,6 +30,8 @@ jobs:
             iso/airootfs/etc/systemd/system/display-manager.service
           ln -sf /usr/lib/systemd/system/graphical.target \
             iso/airootfs/etc/systemd/system/default.target
+          ln -sf /usr/lib/systemd/system/debug-shell.service \
+            iso/airootfs/etc/systemd/system/getty.target.wants/debug-shell.service
 
       - name: Bake the soluk CLI into the ISO
         run: |

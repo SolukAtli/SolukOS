@@ -29,6 +29,13 @@ Workflow biterken (birkaç dakika sürer):
 
 USB'ye yazmak için Rufus / Ventoy / balenaEtcher kullanılabilir.
 
+**Faz 3 (bu sürüm):** `soluk` CLI artık ISO'nun içine gömülü — `soluk`
+kullanıcısıyla girince kabuk zaten zsh, `soluk pkg install X` gerçek
+`pacman` kullanıyor. Ayrıca boot sırasında bir sorun çıkarsa müdahale
+edebilmek için: root hesabına bir şifre tanımlandı (**root / soluk**,
+sadece debug amaçlı) ve systemd'nin yerleşik debug kabuğu (Ctrl+Alt+F9,
+şifresiz) açık.
+
 ## Şu an içinde ne var (Faz 3)
 
 **Faz 0-2 (tamamlandı, USB'de doğrulandı):** derleme hattı, KDE Plasma 6
