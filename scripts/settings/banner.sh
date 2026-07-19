@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="$1"
 BANNER_FILE="$HOME/.solukos/banner.txt"

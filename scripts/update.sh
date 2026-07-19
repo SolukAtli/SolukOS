@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="$1"
 
@@ -52,8 +52,9 @@ if [ $? -eq 0 ]; then
     echo "[*] Refreshing soluk command..."
 
     if [ -f "$BASE_DIR/bin/soluk" ]; then
-        cp "$BASE_DIR/bin/soluk" /data/data/com.termux/files/usr/bin/soluk
-        chmod +x /data/data/com.termux/files/usr/bin/soluk
+        mkdir -p ~/.local/bin
+        cp "$BASE_DIR/bin/soluk" ~/.local/bin/soluk
+        chmod +x ~/.local/bin/soluk
     fi
 
     chmod +x "$BASE_DIR"/scripts/*.sh 2>/dev/null

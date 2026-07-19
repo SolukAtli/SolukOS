@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 # SolukOS - shared UI helpers (colors, headers, fzf-based menus)
 #
 # Usage:
@@ -7,10 +7,11 @@
 #   choice=$(soluk_menu "Label" "Option 1" "Option 2" "Back")
 #   soluk_banner "$BASE_DIR"
 #
-# Colors here are the *basic* ANSI slots (0-15). Termux remaps those 16
-# slots via ~/.termux/colors.properties (see scripts/theme.sh), so the
-# actual on-screen tones follow whatever palette is applied there - by
-# default a muted / pale ("soluk") blue-gray theme.
+# Colors here are the *basic* ANSI slots (0-15). On the desktop, Konsole
+# remaps those 16 slots via the color scheme written by scripts/theme.sh
+# (~/.local/share/konsole/*.colorscheme), so the actual on-screen tones
+# follow whatever palette is applied there - by default a muted / pale
+# ("soluk") blue-gray theme.
 
 SOLUK_RESET="\033[0m"
 SOLUK_BOLD="\033[1m"
@@ -141,7 +142,7 @@ soluk_menu()
 
         echo "${result#*) }"
     else
-        echo -e "${SOLUK_GRAY}(fzf bulunamadi - 'pkg install fzf' ile modern menu acilir, simdilik klasik menu)${SOLUK_RESET}" >&2
+        echo -e "${SOLUK_GRAY}(fzf bulunamadi - 'sudo pacman -S fzf' ile modern menu acilir, simdilik klasik menu)${SOLUK_RESET}" >&2
         echo "" >&2
 
         local opt

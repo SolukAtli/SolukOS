@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -71,8 +71,9 @@ case $choice in
 
 if [ -f "$BASE_DIR/bin/soluk" ]; then
 
-    cp "$BASE_DIR/bin/soluk" /data/data/com.termux/files/usr/bin/soluk
-    chmod +x /data/data/com.termux/files/usr/bin/soluk
+    mkdir -p ~/.local/bin
+    cp "$BASE_DIR/bin/soluk" ~/.local/bin/soluk
+    chmod +x ~/.local/bin/soluk
 
     echo "Soluk command installed."
 

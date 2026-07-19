@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 # SolukOS - shared package-database helpers.
 #
 # Database format (packages/database.txt), pipe-delimited:
@@ -12,7 +12,7 @@
 
 # Installs any deps that aren't already satisfied. Deps found in the
 # database are installed according to their own type; anything else is
-# treated as a plain Termux package name.
+# treated as a plain pacman package name.
 soluk_resolve_deps()
 {
     local deps="$1" db_file="$2"
@@ -39,12 +39,12 @@ soluk_resolve_deps()
             IFS="|" read -r dep_name dep_cat dep_type dep_status dep_deps <<< "$dep_info"
 
             if [ "$dep_type" = "native" ]; then
-                pkg install "$dep_name" -y
+                sudo pacman -S --noconfirm "$dep_name"
             else
-                pkg install "$dep" -y 2>/dev/null
+                sudo pacman -S --noconfirm "$dep" 2>/dev/null
             fi
         else
-            pkg install "$dep" -y 2>/dev/null
+            sudo pacman -S --noconfirm "$dep" 2>/dev/null
         fi
     done
 }

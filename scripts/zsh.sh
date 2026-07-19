@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 
@@ -9,7 +9,7 @@ then
     echo "[+] Zsh already installed."
 else
     echo "[+] Installing Zsh..."
-    pkg install -y zsh
+    sudo pacman -S --noconfirm zsh
 fi
 
 mkdir -p ~/.zsh
@@ -33,3 +33,11 @@ echo "[+] Copying SolukOS Zsh configuration..."
 cp "$BASE_DIR/config/zshrc" ~/.zshrc
 
 echo "[+] Zsh configuration applied."
+
+ZSH_PATH="$(command -v zsh)"
+
+if [ -n "$ZSH_PATH" ] && [ "$SHELL" != "$ZSH_PATH" ]; then
+    echo "[+] Zsh varsayilan kabuk yapiliyor..."
+    grep -qxF "$ZSH_PATH" /etc/shells 2>/dev/null || echo "$ZSH_PATH" | sudo tee -a /etc/shells >/dev/null
+    sudo chsh -s "$ZSH_PATH" "$(whoami)"
+fi

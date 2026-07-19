@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 SOLUK_DIR="$HOME/.solukos"
@@ -39,4 +39,4 @@ bash "$BASE_DIR/scripts/theme.sh"
 
 echo ""
 soluk_ok "Theme set to: $NEW"
-soluk_warn "Renklerin tam yansimasi icin Termux'u kapatip acman gerekebilir."
+soluk_warn "Renklerin tam yansimasi icin yeni bir Konsole penceresi/sekmesi acman gerekebilir."

@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 
@@ -10,7 +10,7 @@ while true
 do
     soluk_header "SolukOS Tools"
 
-    choice=$(soluk_menu "Tools" "System Info" "Storage Info" "Network Info" "Termux Info" "Exit")
+    choice=$(soluk_menu "Tools" "System Info" "Storage Info" "Network Info" "OS Release Info" "Exit")
 
     case "$choice" in
 
@@ -32,10 +32,12 @@ do
         ip addr
         ;;
 
-    "Termux Info")
+    "OS Release Info")
         clear
-        soluk_header "Termux Info"
-        termux-info
+        soluk_header "OS Release Info"
+        cat /etc/os-release 2>/dev/null
+        echo ""
+        command -v hostnamectl >/dev/null 2>&1 && hostnamectl
         ;;
 
     "Exit"|"")

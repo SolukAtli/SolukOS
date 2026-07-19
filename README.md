@@ -1,10 +1,18 @@
 ## 🌫️ SolukOS
 
-A lightweight, modular and cybersecurity-focused environment built on Termux.
+A lightweight, modular and cybersecurity-focused Linux environment.
 
 ## 📌 About
 
-SolukOS is a personal open-source project designed to provide a Linux-inspired experience on Android through Termux.
+SolukOS started as a personal open-source project bringing a Linux-inspired
+experience to Android through Termux. It's now growing into **SolukOS
+Linux** — a full, USB-bootable Arch-based distro with a KDE Plasma desktop
+(see [`iso/README.md`](iso/README.md) for that build and its own progress).
+
+This repo (`scripts/`, `bin/soluk`, `plugins/`) is the `soluk` CLI itself —
+the terminal tool this document describes below. As of Faz 3 it targets a
+real Arch Linux system (`pacman`, standard filesystem paths) and ships
+pre-installed inside the SolukOS Linux ISO.
 
 The project combines terminal customization, package management, plugin support and system utilities into a single environment for learning Linux, cybersecurity concepts and shell scripting.
 
@@ -24,7 +32,7 @@ The project combines terminal customization, package management, plugin support 
 - 🖼️ `soluk fetch` system summary screen
 - 🎨 Consistent, colorized UI across every menu and screen
 - 🎭 Theme Manager (Soluk, Matrix, Nord) via Settings
-- 🕵️ Automated install for external security tools not in Termux repos (sqlmap, nikto)
+- 🕵️ Automated install for external security tools not in the official Arch repos (sqlmap, nikto)
 - 🛡️ Confirmation prompt before uninstalling, auto-synced zsh config on update, real system logging
 - 🔗 Package dependency resolution (auto-installs what a package needs first)
 - 🌐 Repository system — sync extra packages into the database from remote URLs
@@ -71,7 +79,7 @@ Running `soluk` with no arguments opens the interactive Manager menu. Unknown co
 - Nord — cool blue-gray minimalist palette
 
 **Package Manager → Install Package** (`sqlmap`, `nikto`)
-- Not in the Termux repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `$PREFIX/bin`
+- Not in the official Arch repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `~/.local/bin`
 - `nikto` also needs a couple of CPAN-only Perl modules (JSON, XML::Writer) — installed automatically via `cpanm` (bootstrapped if missing), even on a re-run if they were missing before
 - Works the same from `soluk pkg install sqlmap`, the Package Manager menu, or Security Toolkit's "Install All Tools"
 

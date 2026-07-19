@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 BACKUP_DIR="$HOME/.solukos/backups"

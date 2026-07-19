@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 # SolukOS - remote version check helper.
 #
 # This never applies updates by itself - it only tells the user one is

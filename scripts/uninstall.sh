@@ -1,7 +1,7 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
-SOLUK_BIN="/data/data/com.termux/files/usr/bin/soluk"
+SOLUK_BIN="$HOME/.local/bin/soluk"
 
 [ -f "$BASE_DIR/scripts/lib/ui.sh" ] && source "$BASE_DIR/scripts/lib/ui.sh"
 
@@ -36,14 +36,14 @@ else
 fi
 
 # Wrapper commands for externally-installed tools (nikto, sqlmap, etc. -
-# anything cloned via external_install.sh) live in $PREFIX/bin, outside
+# anything cloned via external_install.sh) live in ~/.local/bin, outside
 # ~/.solukos, so they'd otherwise survive the rm -rf below and be left
 # pointing at a folder that no longer exists.
 if [ -d ~/.solukos/tools ]; then
     for tool_dir in ~/.solukos/tools/*/; do
         [ -d "$tool_dir" ] || continue
         tool_name="$(basename "$tool_dir")"
-        rm -f "/data/data/com.termux/files/usr/bin/$tool_name"
+        rm -f "$HOME/.local/bin/$tool_name"
     done
     soluk_ok "External tool commands removed."
 fi

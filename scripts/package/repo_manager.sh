@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 DB_FILE="$BASE_DIR/packages/database.txt"
@@ -28,7 +28,7 @@ do
         soluk_header "Update Repositories"
 
         if ! command -v curl >/dev/null 2>&1; then
-            soluk_warn "curl bulunamadi. 'pkg install curl' ile kurup tekrar dene."
+            soluk_warn "curl bulunamadi. 'sudo pacman -S curl' ile kurup tekrar dene."
         elif [ -z "$(grep -v '^#' "$SOURCES_FILE" | grep -v '^[[:space:]]*$')" ]; then
             soluk_warn "Hic repository tanimli degil. Once 'Add Repository' ile bir URL ekle."
         else

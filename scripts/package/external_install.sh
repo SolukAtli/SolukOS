@@ -1,7 +1,8 @@
-#!/data/data/com.termux/files/usr/bin/bash
-# Installs/removes external security tools that aren't real Termux packages
-# (they're not in the Termux repos, so `pkg install` can't get them).
-# Clones the upstream repo and drops a wrapper command in $PREFIX/bin so
+#!/usr/bin/env bash
+# Installs/removes external security tools that aren't installed via pacman
+# (either not packaged for Arch at all, or intentionally kept as a
+# from-source clone - see Faz 4 notes for which tools this still applies to).
+# Clones the upstream repo and drops a wrapper command in ~/.local/bin so
 # the tool works like any other installed command afterwards.
 #
 # Usage: external_install.sh <install|remove> <tool-name>
@@ -14,20 +15,20 @@ ACTION="$1"
 NAME="$2"
 
 TOOLS_DIR="$HOME/.solukos/tools"
-BIN_DIR="/data/data/com.termux/files/usr/bin"
+BIN_DIR="$HOME/.local/bin"
 
 install_git_tool()
 {
     local name="$1" url="$2" runtime="$3" entry="$4" modules="$5"
 
     if ! command -v git >/dev/null 2>&1; then
-        soluk_warn "git bulunamadi. 'pkg install git' ile kurup tekrar dene."
+        soluk_warn "git bulunamadi. 'sudo pacman -S git' ile kurup tekrar dene."
         return 1
     fi
 
     if ! command -v "$runtime" >/dev/null 2>&1; then
         soluk_info "$runtime kuruluyor..."
-        pkg install "$runtime" -y
+        sudo pacman -S --noconfirm "$runtime"
     fi
 
     mkdir -p "$TOOLS_DIR"
@@ -59,7 +60,7 @@ install_git_tool()
     fi
 }
 
-# Writes/refreshes the $PREFIX/bin wrapper for a tool. Called both on a
+# Writes/refreshes the ~/.local/bin wrapper for a tool. Called both on a
 # fresh install and when re-running install on an already-cloned tool, so
 # older wrappers (e.g. missing PERL5LIB) get upgraded automatically too.
 write_wrapper()
@@ -69,15 +70,17 @@ write_wrapper()
     entry_dir="$(dirname "$entry")"
     entry_file="$(basename "$entry")"
 
+    mkdir -p "$BIN_DIR"
+
     if [ "$runtime" = "perl" ]; then
         cat > "$BIN_DIR/$name" << WRAPPER
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 export PERL5LIB="\$HOME/perl5/lib/perl5:\$PERL5LIB"
 cd "$TOOLS_DIR/$name/$entry_dir" && $runtime "$entry_file" "\$@"
 WRAPPER
     else
         cat > "$BIN_DIR/$name" << WRAPPER
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 $runtime "$TOOLS_DIR/$name/$entry" "\$@"
 WRAPPER
     fi
@@ -85,11 +88,12 @@ WRAPPER
     chmod +x "$BIN_DIR/$name"
 }
 
-# Installs any CPAN modules a tool needs that Termux doesn't package natively
-# (e.g. nikto needs JSON and XML::Writer). Both cpan and cpanm hit real
-# problems on this Termux perl build, so for pure-Perl modules (no XS/C to
-# compile) this fetches the tarball straight from MetaCPAN and drops its
-# lib/ files into PERL5LIB directly, skipping cpanm's build step entirely.
+# Installs any CPAN modules a tool needs that aren't pulled in automatically
+# (e.g. nikto needs JSON and XML::Writer). This fetches pure-Perl modules
+# (no XS/C to compile) straight from MetaCPAN and drops their lib/ files
+# into PERL5LIB directly, skipping cpanm's build step entirely.
+# TODO (Faz 4): re-check whether plain cpanm works fine on Arch's perl and
+# this whole workaround can be simplified/removed.
 install_perl_modules()
 {
     local modules="$1" mod missing=""
@@ -104,7 +108,7 @@ install_perl_modules()
 
     soluk_info "Installing Perl modules:$missing"
 
-    command -v curl >/dev/null 2>&1 || pkg install curl -y >/dev/null 2>&1
+    command -v curl >/dev/null 2>&1 || sudo pacman -S --noconfirm curl >/dev/null 2>&1
 
     mkdir -p "$perl_lib"
     mkdir -p "$(dirname "$perl_log")"
@@ -139,7 +143,7 @@ install_perl_modules()
                         # Pure-Perl module (no XS/C parts to compile), so we
                         # skip cpanm's Configure/build step entirely and just
                         # drop its lib/ files into PERL5LIB. This sidesteps a
-                        # cpanm bug on this Termux perl build where running
+                        # cpanm bug seen on the old Termux perl build where running
                         # Makefile.PL misfires and tries to re-"fetch" it as
                         # if it were its own tarball (gzip/tar error), even
                         # though the real distribution downloads fine.

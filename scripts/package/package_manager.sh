@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 DB_FILE="$BASE_DIR/packages/database.txt"
@@ -74,7 +74,7 @@ do
             soluk_resolve_deps "$DEPS" "$DB_FILE"
 
             if [ "$TYPE" = "native" ]; then
-                pkg install "$NAME" -y
+                sudo pacman -S --noconfirm "$NAME"
             elif [ "$TYPE" = "plugin" ]; then
                 soluk_info "'$NAME' is a plugin. Use Plugin Manager to install it."
             elif [ "$TYPE" = "external" ]; then
@@ -97,7 +97,7 @@ do
             IFS="|" read -r NAME CATEGORY TYPE STATUS DEPS <<< "$INFO"
 
             if [ "$TYPE" = "native" ]; then
-                pkg install "$NAME" -y
+                sudo pacman -S --noconfirm "$NAME"
             elif [ "$TYPE" = "plugin" ]; then
                 soluk_info "'$NAME' is a plugin. Use Plugin Manager to update it."
             elif [ "$TYPE" = "external" ]; then
@@ -123,7 +123,7 @@ do
             if [ "$CONFIRM" != "y" ]; then
                 echo "Cancelled."
             elif [ "$TYPE" = "native" ]; then
-                pkg uninstall "$NAME" -y
+                sudo pacman -Rns --noconfirm "$NAME"
             elif [ "$TYPE" = "plugin" ]; then
                 soluk_info "'$NAME' is a plugin. Use Plugin Manager to remove it."
             elif [ "$TYPE" = "external" ]; then

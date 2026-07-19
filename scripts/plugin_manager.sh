@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 PLUGIN_DIR="$BASE_DIR/plugins"
@@ -146,7 +146,7 @@ do
         soluk_header "Install from Git"
 
         if ! command -v git >/dev/null 2>&1; then
-            soluk_warn "git bulunamadi. 'pkg install git' ile kurup tekrar dene."
+            soluk_warn "git bulunamadi. 'sudo pacman -S git' ile kurup tekrar dene."
         else
             soluk_warn "Sadece guvendigin kaynaklardan eklenti kur - plugin.sh dogrudan calisir."
             echo ""

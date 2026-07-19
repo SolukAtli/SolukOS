@@ -19,10 +19,10 @@ fi
 # every 24h internally, so this is a no-op most days).
 ( bash "$SOLUK_BASE_DIR/scripts/lib/update_check.sh" __bg_check "$SOLUK_BASE_DIR" >/dev/null 2>&1 & ) 2>/dev/null
 
-PROMPT='%F{8}┌──(%F{6}Soluk%F{8}㉿%F{6}Termux%F{8})-[%F{7}%~%F{8}]
+PROMPT='%F{8}┌──(%F{6}Soluk%F{8}㉿%F{6}%m%F{8})-[%F{7}%~%F{8}]
 └─$ %f'
 
-alias update='pkg update && pkg upgrade'
+alias update='sudo pacman -Syu'
 
 # eza (modern ls) - falls back to classic ls/ls -la if not installed
 if command -v eza >/dev/null 2>&1; then
@@ -43,13 +43,19 @@ if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
 fi
 
+# ~/.local/bin holds the 'soluk' command itself plus wrappers for
+# externally-installed tools (nikto, sqlmap, etc.) - see
+# scripts/package/external_install.sh.
+export PATH="$HOME/.local/bin:$PATH"
+
 # fzf shell integration: CTRL+R history search, CTRL+T file search, ALT+C cd
-[ -f "$PREFIX/share/fzf/key-bindings.zsh" ] && source "$PREFIX/share/fzf/key-bindings.zsh"
-[ -f "$PREFIX/share/fzf/completion.zsh" ] && source "$PREFIX/share/fzf/completion.zsh"
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 
 # zsh's own completion system - needed for tab-completion (e.g. `soluk <TAB>`)
-# -u skips the "insecure directories" prompt, which Android's permission
-# model triggers constantly and would otherwise nag on every shell start.
+# -u skips the "insecure directories" prompt if any directory in $fpath
+# ends up group/world-writable, which is more convenience than necessity
+# on a single-user desktop but avoids a nag on every shell start.
 autoload -Uz compinit
 compinit -u
 

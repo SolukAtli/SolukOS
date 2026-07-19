@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 # Prints assets/banner.txt centered, framed and colored in the muted
 # "Soluk" (pale/misty) palette.
 #

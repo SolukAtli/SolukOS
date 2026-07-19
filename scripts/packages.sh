@@ -1,10 +1,9 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 echo "[+] Installing required packages..."
 
-pkg update -y
-pkg upgrade -y
+sudo pacman -Syu --noconfirm
 
-pkg install -y zsh git nano fzf zoxide bat eza curl
+sudo pacman -S --noconfirm zsh git nano fzf zoxide bat eza curl
 
 echo "[+] Packages installed."

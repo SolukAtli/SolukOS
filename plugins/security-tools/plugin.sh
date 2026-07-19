@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${1:-$(cat ~/.solukos/install_path 2>/dev/null)}"
 
@@ -44,7 +44,7 @@ install_profile()
                 ;;
             *)
                 soluk_info "Installing $TOOL"
-                pkg install "$TOOL" -y
+                sudo pacman -S --noconfirm "$TOOL"
                 ;;
             esac
         fi
