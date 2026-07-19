@@ -6,7 +6,7 @@ ConditionPathExists=!/home/soluk
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/sbin/useradd -m -G wheel,audio,video,storage,optical,network -s /bin/bash soluk
+ExecStart=/usr/sbin/useradd -m -G wheel,audio,video,storage,optical,network -s /usr/bin/zsh soluk
 ExecStart=/usr/bin/sh -c 'echo soluk:soluk | /usr/sbin/chpasswd'
 
 [Install]

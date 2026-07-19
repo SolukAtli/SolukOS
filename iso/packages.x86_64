@@ -30,3 +30,12 @@ mesa
 noto-fonts
 ttf-dejavu
 chromium
+
+# soluk CLI gereksinimleri (Faz 3)
+zsh
+zsh-autosuggestions
+zsh-syntax-highlighting
+fzf
+zoxide
+bat
+eza

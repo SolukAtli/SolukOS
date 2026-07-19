@@ -29,28 +29,35 @@ Workflow biterken (birkaç dakika sürer):
 
 USB'ye yazmak için Rufus / Ventoy / balenaEtcher kullanılabilir.
 
-## Şu an içinde ne var (Faz 2)
+## Şu an içinde ne var (Faz 3)
 
-**Faz 0 (tamamlandı, USB'de doğrulandı):** derleme hattı uçtan uca çalışıyor.
+**Faz 0-2 (tamamlandı, USB'de doğrulandı):** derleme hattı, KDE Plasma 6
+masaüstü, `soluk`/`soluk` kullanıcısı, Chromium, Soluk renk teması.
 
-**Faz 1 (tamamlandı, USB'de doğrulandı):** KDE Plasma 6 masaüstü, giriş
-ekranı, `soluk`/`soluk` kullanıcısı, Chromium tarayıcı.
+**Faz 3 (bu sürüm, henüz test edilmedi):** `soluk` CLI artık ISO'nun içinde
+önceden kurulu geliyor. Giriş yapar yapmaz:
 
-**Faz 2 (bu sürüm, henüz test edilmedi):** Soluk kimliği — terminal
-(Konsole) ve KDE uygulama renk şeması artık `scripts/theme.sh`'deki
-`soluk` paletiyle birebir aynı (`#1c1f24` arka plan, gri-mavi-altın
-tonları). `soluk` kullanıcısı ile giriş yapınca hem masaüstü uygulamaları
-hem Konsole otomatik olarak bu renklerle açılır.
+- `soluk` komutu doğrudan çalışır (Konsole'da `soluk help` dene)
+- Kabuk zaten zsh (fzf/zoxide/bat/eza dahil, `soluk help` çıktısındaki
+  kısayollar aktif)
+- `soluk pkg install/remove/update` gerçek `pacman` kullanır
+- Tema, banner, zshrc otomatik uygulanmış durumda
 
-**Bilinçli olarak ertelenenler:** SDDM giriş ekranı teması, Plymouth açılış
-ekranı ve duvar kağıdı bu sürüme eklenmedi. Sebep: gerçek "S + sis" logosu
-henüz tasarlanmadı, ve bu ikisi (özellikle SDDM teması) yanlış yazılırsa
-grafik girişin hiç açılmaması gibi ciddi bir bozulma riski taşıyor — logo
-hazır olup gerçekten USB'de test edebildiğimizde ele alınacak.
+Bunu mümkün kılan mekanizma: CLI kod ağacı (`bin/`, `scripts/`, `plugins/`,
+`packages/`, `config/`, ...) build sırasında GitHub Actions tarafından
+`/opt/solukos`'a kopyalanıyor (repo'da statik bir kopya tutmuyoruz - tek
+kaynak hep kod ağacının kökü, drift riski yok), sonra ilk açılışta yeni bir
+systemd servisi (`solukos-cli-setup.service`) `soluk` komutunu
+`~/.local/bin`'e, zshrc'yi `~/.zshrc`'ye kopyalayıp temayı uyguluyor.
+
+**Bilinen sınırlama:** `/opt/solukos` root sahipliğinde salt-okunur - yani
+canlı USB oturumunda `soluk update` (git pull) çalışmaz. Bu şu an için
+sorun değil (zaten hiçbir şey kalıcı değil), ama Faz 5'te kalıcı USB/kurulum
+gelince yeniden ele alınması gerekiyor.
 
 ## Bilinen sınırlama
 
-Faz 2 sandbox'ta test edilemedi (mkarchiso çalıştırılamıyor burada).
+Faz 3 sandbox'ta test edilemedi (mkarchiso çalıştırılamıyor burada).
 Renk şemalarının formatı standart ve düşük riskli olsa da, gerçek USB testi
 henüz yapılmadı — en kötü ihtimalle sadece varsayılan renklere döner, açılışı
 engellemez.

@@ -23,10 +23,24 @@ jobs:
             iso/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
           ln -sf ../solukos-live-user.service \
             iso/airootfs/etc/systemd/system/multi-user.target.wants/solukos-live-user.service
+          ln -sf ../solukos-cli-setup.service \
+            iso/airootfs/etc/systemd/system/multi-user.target.wants/solukos-cli-setup.service
           ln -sf /usr/lib/systemd/system/sddm.service \
             iso/airootfs/etc/systemd/system/display-manager.service
           ln -sf /usr/lib/systemd/system/graphical.target \
             iso/airootfs/etc/systemd/system/default.target
+
+      - name: Bake the soluk CLI into the ISO
+        run: |
+          mkdir -p iso/airootfs/opt/solukos
+          cp -r bin scripts plugins packages config assets docs \
+            install.sh README.md VERSION LICENSE \
+            iso/airootfs/opt/solukos/
+          # Note: mkarchiso resets all airootfs file permissions to 644/755
+          # regardless of what's set here, unless listed in profiledef.sh's
+          # file_permissions array (see there for bin/soluk + install.sh).
+          # Everything else under /opt/solukos is invoked via explicit
+          # `bash script.sh` or sourced, so it doesn't need +x at all.
 
       - name: Build ISO (archiso inside Arch Linux container)
         run: |

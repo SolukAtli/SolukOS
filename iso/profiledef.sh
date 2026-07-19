@@ -20,4 +20,6 @@ file_permissions=(
     ["/etc/shadow"]="0:0:400"
     ["/root"]="0:0:750"
     ["/etc/sudoers.d/wheel"]="0:0:440"
+    ["/opt/solukos/bin/soluk"]="0:0:755"
+    ["/opt/solukos/install.sh"]="0:0:755"
 )
