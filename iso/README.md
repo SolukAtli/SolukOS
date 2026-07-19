@@ -29,30 +29,28 @@ Workflow biterken (birkaç dakika sürer):
 
 USB'ye yazmak için Rufus / Ventoy / balenaEtcher kullanılabilir.
 
-## Şu an içinde ne var (Faz 1)
+## Şu an içinde ne var (Faz 2)
 
-**Faz 0 (tamamlandı, USB'de doğrulandı):** base sistem, NetworkManager,
-derleme hattı (repo → GitHub Actions → bootlanabilir ISO) uçtan uca çalışıyor.
+**Faz 0 (tamamlandı, USB'de doğrulandı):** derleme hattı uçtan uca çalışıyor.
 
-**Faz 1 (bu sürüm):** KDE Plasma 6 masaüstü eklendi. Giriş ekranı (SDDM)
-karşılıyor:
+**Faz 1 (tamamlandı, USB'de doğrulandı):** KDE Plasma 6 masaüstü, giriş
+ekranı, `soluk`/`soluk` kullanıcısı, Chromium tarayıcı.
 
-- Kullanıcı adı: `soluk`
-- Şifre: `soluk`
+**Faz 2 (bu sürüm, henüz test edilmedi):** Soluk kimliği — terminal
+(Konsole) ve KDE uygulama renk şeması artık `scripts/theme.sh`'deki
+`soluk` paletiyle birebir aynı (`#1c1f24` arka plan, gri-mavi-altın
+tonları). `soluk` kullanıcısı ile giriş yapınca hem masaüstü uygulamaları
+hem Konsole otomatik olarak bu renklerle açılır.
 
-Bu geçici, test amaçlı bir hesap — Faz 5'te gerçek bir kurulum akışı
-(Calamares) geldiğinde kullanıcı adı/şifre seçimi kurulum sırasında
-sorulacak. `soluk` kullanıcısı `sudo` yetkisine sahip (wheel grubunda).
-
-SDDM'nin giriş ekranındaki oturum seçici ikonundan "Plasma (X11)" veya
-"Plasma (Wayland)" arasında seçim yapılabilir — hangisi donanımda daha
-iyi çalışıyorsa onu kullan.
-
-Soluk teması, `soluk` CLI'nin pacman'e taşınması, güvenlik araçları ve
-kalıcı USB desteği henüz **eklenmedi** — sonraki fazlarda gelecek.
+**Bilinçli olarak ertelenenler:** SDDM giriş ekranı teması, Plymouth açılış
+ekranı ve duvar kağıdı bu sürüme eklenmedi. Sebep: gerçek "S + sis" logosu
+henüz tasarlanmadı, ve bu ikisi (özellikle SDDM teması) yanlış yazılırsa
+grafik girişin hiç açılmaması gibi ciddi bir bozulma riski taşıyor — logo
+hazır olup gerçekten USB'de test edebildiğimizde ele alınacak.
 
 ## Bilinen sınırlama
 
-Bu profil sandbox ortamında (ağ erişimi yok) gerçek bir `mkarchiso`
-çalıştırmasıyla test edilmedi. İlk çalıştırmada Actions log'unda bir hata
-görülürse log'u buraya yapıştır, birlikte düzeltelim.
+Faz 2 sandbox'ta test edilemedi (mkarchiso çalıştırılamıyor burada).
+Renk şemalarının formatı standart ve düşük riskli olsa da, gerçek USB testi
+henüz yapılmadı — en kötü ihtimalle sadece varsayılan renklere döner, açılışı
+engellemez.
