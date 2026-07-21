@@ -1,0 +1,17 @@
+# mkinitcpio preset for the 'linux' package - overridden for archiso.
+#
+# Without this file, the 'linux' package's own pacman hook generates a
+# default preset that uses /etc/mkinitcpio.conf's HOOKS, which normally
+# includes 'autodetect'. autodetect only bundles modules for hardware
+# seen on the BUILD machine - fine for a normal install, fatal for a
+# live ISO built inside a GitHub Actions container with no real disks:
+# it silently strips out the NVMe/USB-storage/etc. drivers needed to
+# boot on real hardware, which is exactly what caused
+# "Failed to switch root" / no block devices in /dev on real machines.
+
+PRESETS=('archiso')
+
+ALL_kver='/boot/vmlinuz-linux'
+
+archiso_config='/etc/mkinitcpio.conf.d/archiso.conf'
+archiso_image="/boot/initramfs-linux.img"
