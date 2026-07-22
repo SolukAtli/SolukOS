@@ -36,18 +36,20 @@ edebilmek için: root hesabına bir şifre tanımlandı (**root / soluk**,
 sadece debug amaçlı) ve systemd'nin yerleşik debug kabuğu (Ctrl+Alt+F9,
 şifresiz) açık.
 
-**Faz 5 (bu sürüm, henüz test edilmedi):** Kalıcılık desteği eklendi.
-USB'de `SOLUKOS_PERSIST` etiketli bir ext4 bölüm varsa, sistem artık
-tüm değişiklikleri (kurulan paketler, ayarlar, dosyalar) oraya yazıyor —
-RAM'e değil. Bölümü oluşturmak için masaüstüne GParted eklendi.
+**Faz 5 (bu sürüm, henüz test edilmedi):** Kalıcılık desteği eklendi —
+ama **ayrı bir boot menüsü seçeneği** olarak. Boot menüsünde iki giriş
+var:
 
-**Önemli sınırlama:** Rufus'un DD Image mode'u USB'nin **tüm** disk
-düzenini yeniden yazar. Yani ISO'yu bir dahaki sefere yeniden derleyip
-aynı USB'ye yazınca, kalıcılık bölümü de silinir ve yeniden
-oluşturulması gerekir. Sık ISO güncellemesi planlanıyorsa, kalıcılık
-bölümünü ayrı bir ikinci USB'de tutmak daha az sürtünmeli olur
-(`cow_label=SOLUKOS_PERSIST` hangi fiziksel USB'de olursa olsun o
-etiketi arar, aynı USB olması şart değil).
+- **"Arch Linux"** (varsayılan) — her zaman normal açılır, kalıcılık
+  bölümü olmasa bile sorunsuz çalışır
+- **"Arch Linux (kalici - SOLUKOS_PERSIST)"** — sadece `SOLUKOS_PERSIST`
+  etiketli bir ext4 bölüm USB'de gerçekten varsa seçilmeli
+
+Bunu bilerek iki ayrı girişe böldük: `cow_label` parametresini
+varsayılan girişe koysaydık, bölüm henüz oluşturulmadan her açılışta
+sistem onu arayıp bulamayıp garip bir kurtarma kabuğuna düşerdi.
+
+Bölümü oluşturmak için masaüstüne GParted eklendi.
 
 ## Şu an içinde ne var (Faz 3)
 
