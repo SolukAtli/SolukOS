@@ -39,3 +39,7 @@ fzf
 zoxide
 bat
 eza
+
+# Kalicilik bolumu olusturmak icin (Faz 5)
+gparted
+ntfs-3g

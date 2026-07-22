@@ -36,6 +36,19 @@ edebilmek için: root hesabına bir şifre tanımlandı (**root / soluk**,
 sadece debug amaçlı) ve systemd'nin yerleşik debug kabuğu (Ctrl+Alt+F9,
 şifresiz) açık.
 
+**Faz 5 (bu sürüm, henüz test edilmedi):** Kalıcılık desteği eklendi.
+USB'de `SOLUKOS_PERSIST` etiketli bir ext4 bölüm varsa, sistem artık
+tüm değişiklikleri (kurulan paketler, ayarlar, dosyalar) oraya yazıyor —
+RAM'e değil. Bölümü oluşturmak için masaüstüne GParted eklendi.
+
+**Önemli sınırlama:** Rufus'un DD Image mode'u USB'nin **tüm** disk
+düzenini yeniden yazar. Yani ISO'yu bir dahaki sefere yeniden derleyip
+aynı USB'ye yazınca, kalıcılık bölümü de silinir ve yeniden
+oluşturulması gerekir. Sık ISO güncellemesi planlanıyorsa, kalıcılık
+bölümünü ayrı bir ikinci USB'de tutmak daha az sürtünmeli olur
+(`cow_label=SOLUKOS_PERSIST` hangi fiziksel USB'de olursa olsun o
+etiketi arar, aynı USB olması şart değil).
+
 ## Şu an içinde ne var (Faz 3)
 
 **Faz 0-2 (tamamlandı, USB'de doğrulandı):** derleme hattı, KDE Plasma 6
