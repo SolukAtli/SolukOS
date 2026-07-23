@@ -73,7 +73,7 @@ jobs:
                 makepkg --noconfirm --needed
                 cp -v *.pkg.tar.zst /workspace/local-repo/
               '
-              repo-add /workspace/local-repo/local.db.tar.gz /workspace/local-repo/*.pkg.tar.zst
+              repo-add /workspace/local-repo/solukos-local.db.tar.gz /workspace/local-repo/*.pkg.tar.zst
             "
 
       - name: Build ISO (archiso inside Arch Linux container)
