@@ -43,3 +43,6 @@ eza
 # Kalicilik bolumu olusturmak icin (Faz 5)
 gparted
 ntfs-3g
+
+# Calamares kurulum programi (Faz 6, Asama 1 - sadece build dogrulamasi)
+calamares-git

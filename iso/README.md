@@ -51,6 +51,14 @@ sistem onu arayıp bulamayıp garip bir kurtarma kabuğuna düşerdi.
 
 Bölümü oluşturmak için masaüstüne GParted eklendi.
 
+**Faz 6, Aşama 1 (bu sürüm, sadece build kanıtı):** Calamares (grafik
+kurulum programı) AUR'dan (`calamares-git`) derlenip ISO'ya eklenmeye
+çalışılıyor. Bu aşamada henüz **hiçbir kurulum ekranı yapılandırılmadı**
+— amaç sadece "AUR derlemesi CI'da başarılı oluyor mu" sorusuna cevap
+bulmak. Build muhtemelen normalden çok daha uzun sürecek (Calamares'in
+kendisini derlemek gerekiyor). Başarılı olursa Aşama 2'de gerçek kurulum
+modülleri (disk seçimi, kullanıcı, GRUB) yapılandırılacak.
+
 ## Şu an içinde ne var (Faz 3)
 
 **Faz 0-2 (tamamlandı, USB'de doğrulandı):** derleme hattı, KDE Plasma 6

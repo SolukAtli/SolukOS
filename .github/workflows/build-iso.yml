@@ -45,6 +45,37 @@ jobs:
           # Everything else under /opt/solukos is invoked via explicit
           # `bash script.sh` or sourced, so it doesn't need +x at all.
 
+      - name: Build calamares-git from AUR (Faz 6, Asama 1 - proof only)
+        run: |
+          mkdir -p local-repo
+          docker run --rm \
+            -v "${{ github.workspace }}:/workspace" \
+            -w /workspace \
+            archlinux:latest \
+            bash -c "
+              set -e
+              pacman-key --init
+              pacman-key --populate archlinux
+              pacman -Sy --noconfirm archlinux-keyring
+              pacman -Syu --noconfirm --needed base-devel git \
+                kcoreaddons kpmcore libpwquality python python-jsonschema \
+                python-yaml qt6-declarative qt6-svg yaml-cpp cmake \
+                extra-cmake-modules libglvnd ninja pybind11 qt6-tools \
+                qt6-translations
+              useradd -m builder
+              echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+              chown -R builder:builder /workspace/local-repo
+              su builder -c '
+                set -e
+                cd /tmp
+                git clone https://aur.archlinux.org/calamares-git.git
+                cd calamares-git
+                makepkg --noconfirm --needed
+                cp -v *.pkg.tar.zst /workspace/local-repo/
+              '
+              repo-add /workspace/local-repo/local.db.tar.gz /workspace/local-repo/*.pkg.tar.zst
+            "
+
       - name: Build ISO (archiso inside Arch Linux container)
         run: |
           docker run --rm --privileged \
