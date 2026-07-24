@@ -11,6 +11,8 @@ vim
 git
 grub
 efibootmgr
+amd-ucode
+intel-ucode
 
 # KDE Plasma masaustu (Faz 1)
 plasma-desktop

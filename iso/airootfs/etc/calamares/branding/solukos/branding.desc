@@ -1,0 +1,44 @@
+---
+# SolukOS Linux Calamares marka dosyasi.
+# ONEMLI: componentName, bu dosyanin bulundugu klasor adiyla (solukos)
+# birebir eslesmeli - yoksa Calamares baslamayi reddediyor (kaynak:
+# calamares/src/libcalamaresui/Branding.cpp).
+componentName: solukos
+
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+
+windowExpanding: normal
+windowSize: 1024px,600px
+windowPlacement: center
+
+sidebar: qml,bottom
+navigation: qml,right
+
+strings:
+    productName:         SolukOS Linux
+    shortProductName:    SolukOS
+    version:             1.0
+    shortVersion:        1.0
+    versionedName:       SolukOS Linux 1.0
+    shortVersionedName:  SolukOS 1.0
+    bootloaderEntryName: SolukOS Linux
+    productUrl:          https://github.com/SolukAtli/SolukOS
+    supportUrl:          https://github.com/SolukAtli/SolukOS/issues
+    releaseNotesUrl:     https://github.com/SolukAtli/SolukOS
+
+# NOT: logo henuz tasarlanmadi (bkz. iso/README.md). Bu dosyalar yok,
+# Calamares'in bunu tolere ettigi resmi ornek yapilandirmalarda da
+# gorulmustu (calamares-extensions/branding/image-slideshow) - en kotu
+# ihtimalle bos/varsayilan gorunur, cokmez.
+images:
+    productLogo:         "logo.png"
+    productIcon:         "logo.png"
+    productWelcome:      "welcome.png"
+
+# Soluk paleti (scripts/theme.sh ile ayni degerler)
+style:
+    sidebarBackground:    "#1c1f24"
+    sidebarText:          "#c0c8d0"
+    sidebarTextSelect:    "#7f9fbf"
+    sidebarTextHighlight: "#2b2f36"
