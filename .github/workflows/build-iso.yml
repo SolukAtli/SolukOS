@@ -22,6 +22,8 @@ jobs:
           mkdir -p iso/airootfs/etc/systemd/system/getty.target.wants
           ln -sf /usr/lib/systemd/system/NetworkManager.service \
             iso/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
+          ln -sf /usr/lib/systemd/system/NetworkManager-wait-online.service \
+            iso/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager-wait-online.service
           ln -sf ../solukos-live-user.service \
             iso/airootfs/etc/systemd/system/multi-user.target.wants/solukos-live-user.service
           ln -sf ../solukos-cli-setup.service \

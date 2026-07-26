@@ -26,6 +26,9 @@ pipewire
 pipewire-pulse
 pipewire-alsa
 wireplumber
+sof-firmware
+alsa-ucm-conf
+plymouth
 xorg-server
 xf86-input-libinput
 mesa
@@ -49,3 +52,4 @@ ntfs-3g
 # Calamares kurulum programi (Faz 6, Asama 1 - sadece build dogrulamasi)
 calamares-git
 polkit-kde-agent
+sddm-kcm

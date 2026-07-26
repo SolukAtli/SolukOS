@@ -11,3 +11,7 @@ set -e -u
 # mudahale sansi kalmamasina yol aciyordu. Debug icin bilinen bir sifre
 # taniyoruz - ayni test kullanicisiyla (soluk/soluk) tutarli.
 echo "root:soluk" | chpasswd
+
+# Plymouth splash temasi (varsayilan "spinner" - sade, marka logosu
+# eklenince degistirilebilir: plymouth-set-default-theme -l ile liste)
+plymouth-set-default-theme spinner
