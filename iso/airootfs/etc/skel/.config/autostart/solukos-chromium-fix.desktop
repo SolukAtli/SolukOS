@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=SolukOS Chromium Kilit Temizleyici
+Comment=Onceki oturumdan kalan Chromium SingletonLock dosyalarini temizler
+Exec=sh -c "rm -f $HOME/.config/chromium/Singleton* $HOME/.config/google-chrome/Singleton* 2>/dev/null"
+NoDisplay=true
+X-KDE-autostart-phase=1

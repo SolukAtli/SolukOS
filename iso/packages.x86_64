@@ -53,3 +53,23 @@ ntfs-3g
 calamares-git
 polkit-kde-agent
 sddm-kcm
+
+# Temel KDE uygulamalari (eksik cikanlar)
+spectacle
+ark
+p7zip
+unzip
+kate
+kcalc
+gwenview
+elisa
+haruna
+okular
+kinfocenter
+plasma-systemmonitor
+kdeconnect
+
+# Ses sorun giderme + KWin portal + gelismis tema motoru
+pavucontrol
+xdg-desktop-portal-kde
+kvantum
