@@ -1,0 +1,5 @@
+# Canli oturum (live USB) icin sifresiz sudo. Sadece "soluk" test
+# kullanicisina - kalici kurulumda bu dosya yok, gercek kullanici
+# normal sifreyle sudo kullanir. Live USB'de sifreye takilmak kotu UX
+# ve Calamares gibi araclarin yetki yukseltmesini zorlastiriyor.
+soluk ALL=(ALL:ALL) NOPASSWD: ALL
