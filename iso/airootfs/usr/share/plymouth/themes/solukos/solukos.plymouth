@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=SolukOS
+Description=SolukOS varsayilan acilis ekrani (Soluk renk semasi)
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/solukos
+ScriptFile=/usr/share/plymouth/themes/solukos/solukos.script

@@ -1,0 +1,67 @@
+# SolukOS Plymouth boot splash - v2 (at logosu + Space Grotesk)
+# Palet: Soluk.colors (Window arkaplan) + ACCENT2 (nefes alan halka)
+
+Window.SetBackgroundTopColor(0.0, 0.0, 0.0);
+Window.SetBackgroundBottomColor(0.02, 0.02, 0.024);
+
+# --- Nefes alan halka (at logosunun ARKASINDA, 40 kare onceden hesaplanmis) ---
+glow_frame_count = 40;
+for (i = 0; i < glow_frame_count; i++) {
+    glow_images[i] = Image("glow_" + i + ".png");
+}
+glow.sprite = Sprite(glow_images[0]);
+glow.sprite.SetX(Window.GetWidth()  / 2 - glow_images[0].GetWidth()  / 2);
+glow.sprite.SetY(Window.GetHeight() / 2 - glow_images[0].GetHeight() / 2 - 60);
+glow.sprite.SetZ(90);
+
+# --- At logosu (glow'un ONUNDE) ---
+logo.image = Image("logo.png");
+logo.sprite = Sprite(logo.image);
+logo.sprite.SetX(Window.GetWidth()  / 2 - logo.image.GetWidth()  / 2);
+logo.sprite.SetY(Window.GetHeight() / 2 - logo.image.GetHeight() / 2 - 60);
+logo.sprite.SetZ(100);
+
+# --- Ince aksan cizgisi (logo ile yazi arasinda) ---
+line.image = Image("line.png");
+line.sprite = Sprite(line.image);
+line.sprite.SetX(Window.GetWidth() / 2 - line.image.GetWidth() / 2);
+line.sprite.SetY(logo.sprite.GetY() + logo.image.GetHeight() + 26);
+line.sprite.SetZ(100);
+
+# --- "SolukOS" kelime isareti (Space Grotesk Bold), cizginin altinda ---
+word.image = Image("word.png");
+word.sprite = Sprite(word.image);
+word.sprite.SetX(Window.GetWidth() / 2 - word.image.GetWidth() / 2);
+word.sprite.SetY(line.sprite.GetY() + 18);
+word.sprite.SetZ(100);
+
+glow_slowdown = 3;
+glow_counter = 0;
+glow_index = 0;
+
+fun refresh_callback() {
+    glow_counter++;
+    if (glow_counter >= glow_slowdown) {
+        glow_counter = 0;
+        glow_index++;
+        if (glow_index >= glow_frame_count) {
+            glow_index = 0;
+        }
+        glow.sprite.SetImage(glow_images[glow_index]);
+    }
+}
+
+Plymouth.SetRefreshFunction(refresh_callback);
+
+fun display_normal_callback() {
+    logo.sprite.SetX(Window.GetWidth() / 2 - logo.image.GetWidth() / 2);
+    logo.sprite.SetY(Window.GetHeight() / 2 - logo.image.GetHeight() / 2 - 60);
+    glow.sprite.SetX(Window.GetWidth() / 2 - glow_images[0].GetWidth() / 2);
+    glow.sprite.SetY(logo.sprite.GetY());
+    line.sprite.SetX(Window.GetWidth() / 2 - line.image.GetWidth() / 2);
+    line.sprite.SetY(logo.sprite.GetY() + logo.image.GetHeight() + 26);
+    word.sprite.SetX(Window.GetWidth() / 2 - word.image.GetWidth() / 2);
+    word.sprite.SetY(line.sprite.GetY() + 18);
+}
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
