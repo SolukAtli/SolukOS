@@ -12,8 +12,11 @@ windowExpanding: normal
 windowSize: 1024px,600px
 windowPlacement: center
 
-sidebar: qml,bottom
-navigation: qml,right
+# NOT: qml,* modu calamares-sidebar.qml / calamares-navigation.qml
+# gerektiriyor - bu dosyalar henuz yok. QML tasarimi yapilana kadar
+# Calamares'in hazir widget panelleri kullaniliyor.
+sidebar: widget
+navigation: widget
 
 strings:
     productName:         SolukOS Linux
@@ -42,3 +45,13 @@ style:
     sidebarText:          "#c0c8d0"
     sidebarTextSelect:    "#7f9fbf"
     sidebarTextHighlight: "#2b2f36"
+
+# ZORUNLU: bu anahtar hic olmazsa Calamares, pencereyi acmadan
+# bail() ile aninda cokuyor (kaynak: libcalamaresui/Branding.cpp,
+# "key not found: slideshow" hatasi tam olarak buradan geliyor).
+# Ozel bir slideshow QML'imiz henuz yok, o yuzden mutlak yollu bir
+# resim listesi kullaniyoruz (bunun icin slideshowAPI gerekmiyor).
+# Kaynak: calamares/src/branding/default/branding.desc yorumlari.
+slideshow:
+    - "/usr/share/wallpapers/SolukOS/contents/images/1920x1080.png"
+    - "/usr/share/plymouth/themes/solukos/logo.png"
