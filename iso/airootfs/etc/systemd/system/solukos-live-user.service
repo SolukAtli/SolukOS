@@ -8,6 +8,10 @@ Type=oneshot
 RemainAfterExit=yes
 ExecStart=/usr/sbin/useradd -m -G wheel,audio,video,storage,optical,network -s /usr/bin/zsh soluk
 ExecStart=/usr/bin/sh -c 'echo soluk:soluk | /usr/sbin/chpasswd'
+# SolukOS koyu temasini ilk giristen once, oturum acmadan uygula
+# (plasma-apply-* araclari "offscreen" modda calisan oturum gerektirmez).
+ExecStart=/usr/bin/su - soluk -c 'QT_QPA_PLATFORM=offscreen plasma-apply-lookandfeel org.kde.breezedark.desktop'
+ExecStart=/usr/bin/su - soluk -c 'QT_QPA_PLATFORM=offscreen plasma-apply-colorscheme SolukOS'
 
 [Install]
 WantedBy=multi-user.target
