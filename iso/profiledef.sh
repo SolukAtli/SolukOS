@@ -23,4 +23,5 @@ file_permissions=(
     ["/etc/sudoers.d/zz-soluk-live"]="0:0:440"
     ["/opt/solukos/bin/soluk"]="0:0:755"
     ["/opt/solukos/install.sh"]="0:0:755"
+    ["/etc/skel/Desktop/install-solukos.desktop"]="0:0:755"
 )

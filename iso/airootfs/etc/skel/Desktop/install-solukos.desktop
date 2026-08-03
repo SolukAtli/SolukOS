@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Install SolukOS
+Name[tr]=SolukOS Kur
+Comment=Install SolukOS to your computer
+Comment[tr]=SolukOS'u bilgisayarina kur
+Icon=/etc/calamares/branding/solukos/logo.png
+Exec=sh -c "pkexec calamares"
+Terminal=false
+Categories=System;
+X-KDE-Priority=TopLevel

@@ -44,6 +44,7 @@ fzf
 zoxide
 bat
 eza
+neofetch
 
 # Kalicilik bolumu olusturmak icin (Faz 5)
 gparted
@@ -73,3 +74,7 @@ kdeconnect
 pavucontrol
 xdg-desktop-portal-kde
 kvantum
+
+# Masaustu store + kisayol destegi
+discover
+flatpak
