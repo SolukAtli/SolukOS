@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=SolukOS Wallpaper Fix
+Exec=sh -c "plasma-apply-wallpaperimage /usr/share/wallpapers/SolukOS/contents/images/2560x1440.png"
+Terminal=false
+NoDisplay=true
+X-KDE-autostart-phase=1
