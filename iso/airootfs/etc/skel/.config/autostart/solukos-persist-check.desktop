@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=SolukOS Persistence Check
+Exec=/usr/local/bin/solukos-persist-check.sh
+Terminal=false
+NoDisplay=true
+X-KDE-autostart-phase=2
