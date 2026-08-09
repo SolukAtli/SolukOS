@@ -1,0 +1,26 @@
+[Unit]
+Description=SolukOS Linux - soluk CLI'yi canli oturum kullanicisi icin hazirla
+After=solukos-live-user.service
+Before=display-manager.service
+ConditionPathExists=/opt/solukos
+ConditionPathExists=!/home/soluk/.solukos/install_path
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=soluk
+Group=soluk
+WorkingDirectory=/home/soluk
+ExecStart=/usr/bin/bash -c '\
+    mkdir -p "$HOME/.solukos" "$HOME/.local/bin" && \
+    cp /opt/solukos/assets/banner.txt "$HOME/.solukos/banner.txt" && \
+    cp /opt/solukos/VERSION "$HOME/.solukos/version" && \
+    echo /opt/solukos > "$HOME/.solukos/install_path" && \
+    cp /opt/solukos/bin/soluk "$HOME/.local/bin/soluk" && \
+    chmod +x "$HOME/.local/bin/soluk" && \
+    cp /opt/solukos/config/zshrc "$HOME/.zshrc" && \
+    bash /opt/solukos/scripts/theme.sh \
+'
+
+[Install]
+WantedBy=multi-user.target

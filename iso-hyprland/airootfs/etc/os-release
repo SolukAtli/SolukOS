@@ -1,0 +1,11 @@
+NAME="SolukOS"
+PRETTY_NAME="SolukOS"
+ID=solukos
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;127;159;191"
+LOGO=solukos
+HOME_URL="https://github.com/SolukAtli/SolukOS"
+DOCUMENTATION_URL="https://github.com/SolukAtli/SolukOS"
+SUPPORT_URL="https://github.com/SolukAtli/SolukOS"
+BUG_REPORT_URL="https://github.com/SolukAtli/SolukOS/issues"
