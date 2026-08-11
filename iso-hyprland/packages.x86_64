@@ -36,6 +36,10 @@ noto-fonts
 ttf-dejavu
 chromium
 waybar
+wofi
+mako
+hyprlock
+hypridle
 ttf-jetbrains-mono-nerd
 
 # soluk CLI (KDE spin ile ortak)

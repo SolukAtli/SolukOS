@@ -1,0 +1,8 @@
+width=500
+height=350
+location=center
+show=drun
+prompt=Ara...
+allow_images=true
+insensitive=true
+term=kitty
