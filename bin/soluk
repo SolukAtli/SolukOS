@@ -48,6 +48,11 @@ if [ "$1" = "help" ]; then
     echo -e "  soluk pkg check           Open the Package Manager menu"
     echo -e "  soluk pkg update          Open the Repository Manager menu"
     echo ""
+    echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Themes${SOLUK_RESET} ${SOLUK_GRAY}(Hyprland spin only)${SOLUK_RESET}"
+    echo -e "  soluk theme list          List available themes"
+    echo -e "  soluk theme set <name>    Switch to a theme"
+    echo -e "  soluk theme create <name> Duplicate the active theme to start your own"
+    echo ""
     echo -e "${SOLUK_BOLD}${SOLUK_CYAN}Shell tools${SOLUK_RESET} ${SOLUK_GRAY}(built into your terminal)${SOLUK_RESET}"
     echo -e "  z <folder>                Jump to a frequent directory (zoxide)"
     echo -e "  ll / lt                   List files with icons (eza)"
@@ -208,6 +213,93 @@ update)
 *)
     echo -e "${SOLUK_RED}[✗] Unknown pkg command:${SOLUK_RESET} $2"
     echo "Usage: soluk pkg {list|search|info|install|remove|check|update} ..."
+    exit 1
+    ;;
+
+esac
+
+fi
+
+if [ "$1" = "theme" ]; then
+
+THEMES_DIR="$HOME/.config/soluk/themes"
+CURRENT_LINK="$HOME/.config/soluk/current-theme"
+
+case "$2" in
+
+list)
+    echo ""
+    soluk_header "SolukOS Themes"
+    if [ ! -d "$THEMES_DIR" ]; then
+        soluk_fail "No themes directory found (Hyprland spin only for now)"
+        echo ""
+        exit 1
+    fi
+    ACTIVE=$(basename "$(readlink -f "$CURRENT_LINK" 2>/dev/null)")
+    for t in "$THEMES_DIR"/*/; do
+        NAME=$(basename "$t")
+        if [ "$NAME" = "$ACTIVE" ]; then
+            echo -e "  ${SOLUK_BOLD}${SOLUK_YELLOW}* $NAME (active)${SOLUK_RESET}"
+        else
+            echo "    $NAME"
+        fi
+    done
+    echo ""
+    exit 0
+    ;;
+
+set)
+    if [ -z "$3" ]; then
+        echo "Usage: soluk theme set <name>"
+        exit 1
+    fi
+    if ! command -v hyprctl >/dev/null 2>&1; then
+        soluk_fail "Theme switching currently only works on the Hyprland spin."
+        exit 1
+    fi
+    TARGET="$THEMES_DIR/$3"
+    if [ ! -d "$TARGET" ]; then
+        soluk_fail "Theme not found: $3"
+        echo "Run 'soluk theme list' to see available themes."
+        exit 1
+    fi
+
+    ln -sfn "$THEMES_DIR/$3" "$CURRENT_LINK"
+    [ -f "$TARGET/waybar-colors.css" ] && cp "$TARGET/waybar-colors.css" "$HOME/.config/waybar/colors.css"
+
+    hyprctl reload >/dev/null 2>&1
+    command -v makoctl >/dev/null 2>&1 && makoctl reload >/dev/null 2>&1
+    if pgrep -x waybar >/dev/null 2>&1; then
+        pkill waybar
+        sleep 0.3
+        (setsid waybar >/dev/null 2>&1 &)
+    fi
+
+    soluk_ok "Theme switched: $3"
+    exit 0
+    ;;
+
+create)
+    if [ -z "$3" ]; then
+        echo "Usage: soluk theme create <new-name>"
+        exit 1
+    fi
+    NEW_DIR="$THEMES_DIR/$3"
+    if [ -d "$NEW_DIR" ]; then
+        soluk_fail "A theme named '$3' already exists."
+        exit 1
+    fi
+    ACTIVE_DIR="$(readlink -f "$CURRENT_LINK")"
+    mkdir -p "$THEMES_DIR"
+    cp -r "$ACTIVE_DIR" "$NEW_DIR"
+    soluk_ok "New theme created from the active one: $NEW_DIR"
+    echo "Edit the files there, then run: soluk theme set $3"
+    exit 0
+    ;;
+
+*)
+    echo -e "${SOLUK_RED}[✗] Unknown theme command:${SOLUK_RESET} $2"
+    echo "Usage: soluk theme {list|set|create} ..."
     exit 1
     ;;
 

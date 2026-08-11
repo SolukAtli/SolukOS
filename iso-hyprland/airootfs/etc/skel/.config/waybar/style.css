@@ -1,3 +1,5 @@
+@import url("colors.css");
+
 /* SolukOS Hyprland Edition - waybar teması
    Ayni palet: KDE spinindeki SolukOS.colors ile tutarli */
 
@@ -12,10 +14,10 @@ window#waybar {
 }
 
 #waybar {
-    background-color: rgba(28, 31, 36, 0.85);
-    border: 1px solid rgba(127, 159, 191, 0.35);
+    background-color: @solukos_bg;
+    border: 1px solid alpha(@solukos_accent, 0.35);
     border-radius: 12px;
-    color: #c0c8d0;
+    color: @solukos_text;
 }
 
 #workspaces {
@@ -25,18 +27,18 @@ window#waybar {
 
 #workspaces button {
     padding: 0 8px;
-    color: #7f9fbf;
+    color: @solukos_accent;
     background: transparent;
     border-radius: 8px;
 }
 
 #workspaces button.active {
-    background-color: rgba(127, 159, 191, 0.25);
-    color: #c0c8d0;
+    background-color: alpha(@solukos_accent, 0.25);
+    color: @solukos_text;
 }
 
 #workspaces button:hover {
-    background-color: rgba(127, 159, 191, 0.15);
+    background-color: alpha(@solukos_accent, 0.15);
 }
 
 #clock,
@@ -48,20 +50,20 @@ window#waybar {
 #tray {
     padding: 0 10px;
     margin: 4px 2px;
-    color: #c0c8d0;
+    color: @solukos_text;
 }
 
 #clock {
     font-weight: bold;
-    color: #7f9fbf;
+    color: @solukos_accent;
 }
 
 #battery.warning {
-    color: #e8c07d;
+    color: @solukos_warning;
 }
 
 #battery.critical {
-    color: #e06c75;
+    color: @solukos_critical;
 }
 
 #pulseaudio.muted {
