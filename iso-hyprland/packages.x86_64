@@ -35,6 +35,8 @@ mesa
 noto-fonts
 ttf-dejavu
 chromium
+waybar
+ttf-jetbrains-mono-nerd
 
 # soluk CLI (KDE spin ile ortak)
 zsh

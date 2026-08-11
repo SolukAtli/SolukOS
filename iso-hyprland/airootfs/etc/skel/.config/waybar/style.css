@@ -1,0 +1,73 @@
+/* SolukOS Hyprland Edition - waybar teması
+   Ayni palet: KDE spinindeki SolukOS.colors ile tutarli */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+#waybar {
+    background-color: rgba(28, 31, 36, 0.85);
+    border: 1px solid rgba(127, 159, 191, 0.35);
+    border-radius: 12px;
+    color: #c0c8d0;
+}
+
+#workspaces {
+    background: transparent;
+    margin: 4px 4px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #7f9fbf;
+    background: transparent;
+    border-radius: 8px;
+}
+
+#workspaces button.active {
+    background-color: rgba(127, 159, 191, 0.25);
+    color: #c0c8d0;
+}
+
+#workspaces button:hover {
+    background-color: rgba(127, 159, 191, 0.15);
+}
+
+#clock,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#battery,
+#tray {
+    padding: 0 10px;
+    margin: 4px 2px;
+    color: #c0c8d0;
+}
+
+#clock {
+    font-weight: bold;
+    color: #7f9fbf;
+}
+
+#battery.warning {
+    color: #e8c07d;
+}
+
+#battery.critical {
+    color: #e06c75;
+}
+
+#pulseaudio.muted {
+    color: #6b7280;
+}
+
+#tray {
+    margin-right: 8px;
+}
