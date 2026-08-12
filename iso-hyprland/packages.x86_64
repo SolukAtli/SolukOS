@@ -14,7 +14,7 @@ efibootmgr
 amd-ucode
 intel-ucode
 
-# Hyprland masaustu (Faz 1 - ciplak/temel)
+# Hyprland masaüstü
 hyprland
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
@@ -34,17 +34,25 @@ plymouth
 mesa
 noto-fonts
 ttf-dejavu
+ttf-jetbrains-mono-nerd
 chromium
 waybar
 wofi
 mako
 hyprlock
 hypridle
+
+# Dosya yöneticisi + masaüstü ikonları
 thunar
 gvfs
 tumbler
 thunar-volman
 thunar-archive-plugin
+pcmanfm-qt
+lxqt-qtplugin
+papirus-icon-theme
+
+# Araçlar
 imv
 xarchiver
 grim
@@ -55,7 +63,6 @@ cliphist
 wob
 brightnessctl
 network-manager-applet
-ttf-jetbrains-mono-nerd
 
 # soluk CLI (KDE spin ile ortak)
 zsh

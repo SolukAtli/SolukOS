@@ -1,8 +1,5 @@
 @import url("colors.css");
 
-/* SolukOS Hyprland Edition - waybar teması
-   Ayni palet: KDE spinindeki SolukOS.colors ile tutarli */
-
 * {
     font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
     font-size: 13px;
@@ -14,34 +11,11 @@ window#waybar {
 }
 
 #waybar {
-    background-color: alpha(@solukos_bg, 0.55);
-    border: none;
-    border-bottom: 1px solid alpha(@solukos_accent, 0.25);
-    border-radius: 0;
+    background-color: transparent;
     color: @solukos_text;
 }
 
-#workspaces {
-    background: transparent;
-    margin: 0 6px;
-}
-
-#workspaces button {
-    padding: 0 6px;
-    color: @solukos_accent;
-    background: transparent;
-    border-radius: 4px;
-}
-
-#workspaces button.active {
-    background-color: alpha(@solukos_accent, 0.25);
-    color: @solukos_text;
-}
-
-#workspaces button:hover {
-    background-color: alpha(@solukos_accent, 0.15);
-}
-
+#workspaces,
 #clock,
 #network,
 #pulseaudio,
@@ -49,13 +23,36 @@ window#waybar {
 #memory,
 #battery,
 #tray {
-    padding: 0 10px;
-    margin: 4px 2px;
+    background-color: alpha(@solukos_bg, 0.72);
+    border-radius: 10px;
+    padding: 0 12px;
+    margin: 0 3px;
+    border: 1px solid alpha(@solukos_accent, 0.18);
+}
+
+#workspaces {
+    padding: 0 6px;
+}
+
+#workspaces button {
+    padding: 0 6px;
+    color: alpha(@solukos_accent, 0.7);
+    background: transparent;
+    border-radius: 8px;
+    margin: 3px 1px;
+}
+
+#workspaces button.active {
+    background-color: alpha(@solukos_accent, 0.28);
     color: @solukos_text;
 }
 
+#workspaces button:hover {
+    background-color: alpha(@solukos_accent, 0.15);
+}
+
 #clock {
-    font-weight: bold;
+    font-weight: 600;
     color: @solukos_accent;
 }
 
@@ -72,5 +69,5 @@ window#waybar {
 }
 
 #tray {
-    margin-right: 8px;
+    padding: 0 10px;
 }

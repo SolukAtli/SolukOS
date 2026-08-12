@@ -1,11 +1,11 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 28,
-    "spacing": 4,
-    "margin-top": 0,
-    "margin-left": 0,
-    "margin-right": 0,
+    "height": 32,
+    "spacing": 6,
+    "margin-top": 6,
+    "margin-left": 12,
+    "margin-right": 12,
     "modules-left": [
         "hyprland/workspaces"
     ],
@@ -25,35 +25,37 @@
         "all-outputs": true,
         "format": "{icon}",
         "format-icons": {
-            "active": "●",
-            "default": "○"
+            "active": "",
+            "default": "",
+            "urgent": ""
         }
     },
     "clock": {
-        "format": "{:%H:%M  %d/%m/%Y}",
+        "format": "{:%H:%M  %d/%m}",
         "tooltip-format": "{:%A, %d %B %Y}"
     },
     "network": {
-        "format-wifi": "WiFi {signalStrength}%",
-        "format-ethernet": "LAN Bagli",
-        "format-disconnected": "Bagli degil",
+        "format-wifi": "󰤨  {signalStrength}%",
+        "format-ethernet": "󰈀  LAN",
+        "format-disconnected": "󰤭  Bağlı değil",
         "tooltip-format": "{ifname}: {ipaddr}"
     },
     "pulseaudio": {
-        "format": "VOL {volume}%",
-        "format-muted": "Sessiz",
+        "format": "󰕾  {volume}%",
+        "format-muted": "󰝟  Sessiz",
         "on-click": "pavucontrol"
     },
     "cpu": {
-        "format": "CPU {usage}%",
+        "format": "󰍛  {usage}%",
         "interval": 5
     },
     "memory": {
-        "format": "RAM {percentage}%",
+        "format": "󰘚  {percentage}%",
         "interval": 5
     },
     "battery": {
-        "format": "BAT {capacity}%",
+        "format": "󰁹  {capacity}%",
+        "format-charging": "󰂄  {capacity}%",
         "states": {
             "warning": 30,
             "critical": 15
