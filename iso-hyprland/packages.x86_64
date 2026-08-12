@@ -40,6 +40,20 @@ wofi
 mako
 hyprlock
 hypridle
+thunar
+gvfs
+tumbler
+thunar-volman
+thunar-archive-plugin
+imv
+xarchiver
+grim
+slurp
+swappy
+wl-clipboard
+cliphist
+wob
+brightnessctl
 ttf-jetbrains-mono-nerd
 
 # soluk CLI (KDE spin ile ortak)
