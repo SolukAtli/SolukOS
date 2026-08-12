@@ -14,22 +14,23 @@ window#waybar {
 }
 
 #waybar {
-    background-color: @solukos_bg;
-    border: 1px solid alpha(@solukos_accent, 0.35);
-    border-radius: 12px;
+    background-color: alpha(@solukos_bg, 0.55);
+    border: none;
+    border-bottom: 1px solid alpha(@solukos_accent, 0.25);
+    border-radius: 0;
     color: @solukos_text;
 }
 
 #workspaces {
     background: transparent;
-    margin: 4px 4px;
+    margin: 0 6px;
 }
 
 #workspaces button {
-    padding: 0 8px;
+    padding: 0 6px;
     color: @solukos_accent;
     background: transparent;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 #workspaces button.active {

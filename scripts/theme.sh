@@ -374,3 +374,179 @@ echo "[+] Konsole temasi guncellendi. Yeni acilan terminallerde aktif olacak."
 echo "[+] Theme set to: $THEME"
 
 command -v log >/dev/null 2>&1 && log "Theme set to: $THEME"
+
+# ---------------------------------------------------------------------------
+# Ayni THEME secimini kitty'ye (Hyprland spin) ve Hyprland/waybar/mako'ya da
+# uygula. Konsole/KDE spininde bu blok zararsizdir (kitty/hyprctl yoksa atlanir).
+# ---------------------------------------------------------------------------
+
+KITTY_DIR="$HOME/.config/kitty"
+mkdir -p "$KITTY_DIR"
+
+case "$THEME" in
+matrix)
+cat > "$KITTY_DIR/theme.conf" << KITTYTHEME
+background            #0a0e0a
+foreground            #33ff66
+cursor                #33ff66
+selection_background  #123018
+selection_foreground  #33ff66
+color0                #0a0e0a
+color8                #123018
+color1                #1f7a3f
+color9                #1f7a3f
+color2                #33cc55
+color10               #33cc55
+color3                #5ee87a
+color11               #5ee87a
+color4                #268a4a
+color12               #268a4a
+color5                #2fb35c
+color13               #2fb35c
+color6                #39d466
+color14               #39d466
+color7                #a8f7bb
+color15               #a8f7bb
+KITTYTHEME
+    ;;
+nord)
+cat > "$KITTY_DIR/theme.conf" << KITTYTHEME
+background            #2e3440
+foreground            #d8dee9
+cursor                #d8dee9
+selection_background  #4c566a
+selection_foreground  #d8dee9
+color0                #2e3440
+color8                #4c566a
+color1                #bf616a
+color9                #bf616a
+color2                #a3be8c
+color10               #a3be8c
+color3                #ebcb8b
+color11               #ebcb8b
+color4                #81a1c1
+color12               #81a1c1
+color5                #b48ead
+color13               #b48ead
+color6                #88c0d0
+color14               #88c0d0
+color7                #e5e9f0
+color15               #e5e9f0
+KITTYTHEME
+    ;;
+soluk)
+cat > "$KITTY_DIR/theme.conf" << KITTYTHEME
+background            #1c1f24
+foreground            #c0c8d0
+cursor                #c0c8d0
+selection_background  #2b2f36
+selection_foreground  #c0c8d0
+color0                #1c1f24
+color8                #2b2f36
+color1                #a56b6b
+color9                #a56b6b
+color2                #7f9f7f
+color10               #7f9f7f
+color3                #bfae7f
+color11               #bfae7f
+color4                #7f9fbf
+color12               #7f9fbf
+color5                #9f8fbf
+color13               #9f8fbf
+color6                #7fb0af
+color14               #7fb0af
+color7                #c0c8d0
+color15               #c0c8d0
+KITTYTHEME
+    ;;
+esac
+
+echo "[+] kitty temasi guncellendi (Hyprland spininde yeni pencerelerde aktif olacak)."
+
+# Sadece Hyprland oturumundaysak (hyprctl varsa) masaustunun geri kalanini da uygula.
+if command -v hyprctl >/dev/null 2>&1; then
+    SOLUK_THEMES_DIR="$HOME/.config/soluk/themes"
+    TARGET_DIR="$SOLUK_THEMES_DIR/$THEME"
+    mkdir -p "$TARGET_DIR"
+
+    case "$THEME" in
+    matrix)
+        cat > "$TARGET_DIR/hypr-theme.conf" << HYPRTHEME
+\$solukos_bg = rgba(0a0e0aee)
+\$solukos_bg_solid = rgba(0a0e0aff)
+\$solukos_accent = rgba(268a4aee)
+\$solukos_text = rgba(33ff66ff)
+HYPRTHEME
+        cat > "$TARGET_DIR/waybar-colors.css" << WAYBARTHEME
+@define-color solukos_bg rgba(10, 14, 10, 0.85);
+@define-color solukos_accent #268a4a;
+@define-color solukos_text #33ff66;
+@define-color solukos_warning #5ee87a;
+@define-color solukos_critical #1f7a3f;
+WAYBARTHEME
+        cat > "$TARGET_DIR/mako.ini" << MAKOTHEME
+background-color=#0a0e0ae6
+text-color=#33ff66
+border-color=#268a4a
+border-size=2
+border-radius=10
+MAKOTHEME
+        ;;
+    nord)
+        cat > "$TARGET_DIR/hypr-theme.conf" << HYPRTHEME
+\$solukos_bg = rgba(2e3440ee)
+\$solukos_bg_solid = rgba(2e3440ff)
+\$solukos_accent = rgba(81a1c1ee)
+\$solukos_text = rgba(d8dee9ff)
+HYPRTHEME
+        cat > "$TARGET_DIR/waybar-colors.css" << WAYBARTHEME
+@define-color solukos_bg rgba(46, 52, 64, 0.85);
+@define-color solukos_accent #81a1c1;
+@define-color solukos_text #d8dee9;
+@define-color solukos_warning #ebcb8b;
+@define-color solukos_critical #bf616a;
+WAYBARTHEME
+        cat > "$TARGET_DIR/mako.ini" << MAKOTHEME
+background-color=#2e3440e6
+text-color=#d8dee9
+border-color=#81a1c1
+border-size=2
+border-radius=10
+MAKOTHEME
+        ;;
+    soluk)
+        cat > "$TARGET_DIR/hypr-theme.conf" << HYPRTHEME
+\$solukos_bg = rgba(1c1f24ee)
+\$solukos_bg_solid = rgba(1c1f24ff)
+\$solukos_accent = rgba(7f9fbfee)
+\$solukos_text = rgba(c0c8d0ff)
+HYPRTHEME
+        cat > "$TARGET_DIR/waybar-colors.css" << WAYBARTHEME
+@define-color solukos_bg rgba(28, 31, 36, 0.85);
+@define-color solukos_accent #7f9fbf;
+@define-color solukos_text #c0c8d0;
+@define-color solukos_warning #bfae7f;
+@define-color solukos_critical #a56b6b;
+WAYBARTHEME
+        cat > "$TARGET_DIR/mako.ini" << MAKOTHEME
+background-color=#1c1f24e6
+text-color=#c0c8d0
+border-color=#7f9fbf
+border-size=2
+border-radius=10
+MAKOTHEME
+        ;;
+    esac
+
+    ln -sfn "$THEME" "$HOME/.config/soluk/current-theme"
+    [ -f "$TARGET_DIR/waybar-colors.css" ] && cp "$TARGET_DIR/waybar-colors.css" "$HOME/.config/waybar/colors.css"
+
+    hyprctl reload >/dev/null 2>&1
+    command -v makoctl >/dev/null 2>&1 && makoctl reload >/dev/null 2>&1
+    if pgrep -x waybar >/dev/null 2>&1; then
+        pkill waybar
+        sleep 0.3
+        (setsid waybar >/dev/null 2>&1 &)
+    fi
+    echo "[+] Hyprland masaustu (waybar/hyprlock/mako) da guncellendi."
+fi

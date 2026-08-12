@@ -54,6 +54,7 @@ wl-clipboard
 cliphist
 wob
 brightnessctl
+network-manager-applet
 ttf-jetbrains-mono-nerd
 
 # soluk CLI (KDE spin ile ortak)
