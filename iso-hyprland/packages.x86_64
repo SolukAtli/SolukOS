@@ -73,3 +73,7 @@ zoxide
 bat
 eza
 fastfetch
+
+# Muzik (rmpc + mpd)
+mpd
+rmpc

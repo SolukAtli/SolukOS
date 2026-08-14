@@ -1,0 +1,2 @@
+# Live oturumdaki soluk kullanicisi icin sifresiz sudo (KDE spin ile ayni)
+soluk ALL=(ALL:ALL) NOPASSWD: ALL
