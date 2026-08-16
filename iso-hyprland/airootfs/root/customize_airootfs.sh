@@ -18,3 +18,7 @@ mkdir -p /etc/skel/Music
 mkdir -p /etc/skel/.config/mpd/playlists
 mkdir -p /etc/skel/.config/systemd/user/default.target.wants
 ln -sf /usr/lib/systemd/user/mpd.service /etc/skel/.config/systemd/user/default.target.wants/mpd.service
+
+# yazi temasi - paylasilan tema klasorunden sembolik baglanti
+mkdir -p /etc/skel/.config/yazi
+ln -sf ../soluk/themes/solukos/yazi-theme.toml /etc/skel/.config/yazi/theme.toml
