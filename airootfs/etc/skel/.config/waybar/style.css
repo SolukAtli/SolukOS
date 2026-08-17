@@ -19,7 +19,6 @@ window#waybar {
 #window,
 #clock,
 #network,
-#mpd,
 #backlight,
 #pulseaudio,
 #idle_inhibitor,
@@ -58,15 +57,6 @@ window#waybar {
 #clock {
     font-weight: 600;
     color: @solukos_accent;
-}
-
-#mpd {
-    color: @solukos_accent;
-}
-
-#mpd.stopped,
-#mpd.disconnected {
-    color: alpha(@solukos_text, 0.5);
 }
 
 #battery.warning {

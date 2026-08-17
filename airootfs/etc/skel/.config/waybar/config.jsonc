@@ -12,9 +12,8 @@
     ],
     "modules-right": [
         "network",
-        "mpd",
-        "pulseaudio",
         "backlight",
+        "pulseaudio",
         "idle_inhibitor",
         "cpu",
         "memory",
@@ -46,19 +45,6 @@
         "format-disconnected": "󰤭  Bağlı değil",
         "tooltip-format": "{ifname}: {ipaddr}",
         "on-click": "nm-connection-editor"
-    },
-    "mpd": {
-        "format": "{stateIcon} {artist} - {title}",
-        "format-stopped": "󰝛  Çalmıyor",
-        "format-disconnected": "󰝛  Kapalı",
-        "state-icons": {
-            "playing": "󰐊",
-            "paused": "󰏤"
-        },
-        "interval": 5,
-        "max-length": 40,
-        "on-click": "kitty --class soluk-music --hold -e rmpc -t ~/.config/soluk/themes/solukos/rmpc-theme.ron",
-        "tooltip-format": "{artist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})"
     },
     "backlight": {
         "format": "{icon} {percent}%",

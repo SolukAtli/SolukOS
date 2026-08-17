@@ -1,171 +1,146 @@
 ## 🌫️ SolukOS
 
-A lightweight, modular and cybersecurity-focused Linux environment.
+A custom-built, USB-bootable Arch Linux distribution — two desktop
+environments, one identity.
 
 ## 📌 About
 
-SolukOS started as a personal open-source project bringing a Linux-inspired
-experience to Android through Termux. It's now growing into **SolukOS
-Linux** — a full, USB-bootable Arch-based distro with a KDE Plasma desktop
-(see [`iso/README.md`](iso/README.md) for that build and its own progress).
+SolukOS started as a personal, security-flavored customization layer for
+Termux on Android. It has since grown into something else entirely:
+**SolukOS Linux**, a real, installable Arch-based distro with two full
+desktop spins —
 
-This repo (`scripts/`, `bin/soluk`, `plugins/`) is the `soluk` CLI itself —
-the terminal tool this document describes below. As of Faz 3 it targets a
-real Arch Linux system (`pacman`, standard filesystem paths) and ships
-pre-installed inside the SolukOS Linux ISO.
+- **KDE Plasma** ([`iso/`](iso)) — the original, more mature spin, with a
+  working Calamares installer.
+- **Hyprland** ([`iso-hyprland/`](iso-hyprland)) — a newer, TUI-forward
+  spin built around a quieter, more atmospheric desktop.
 
-The project combines terminal customization, package management, plugin support and system utilities into a single environment for learning Linux, cybersecurity concepts and shell scripting.
+This repo root (`scripts/`, `bin/soluk`, `plugins/`, `packages/`) is the
+`soluk` CLI — a small package-manager-and-plugin layer on top of `pacman`
+that ships pre-installed inside both spins. `iso/` and `iso-hyprland/`
+are the actual `archiso` profiles that turn all of this into a bootable
+`.iso`.
+
+The cybersecurity-toolkit framing from the Termux days is gone — that's
+not what this project is about anymore. `soluk pkg install` can still
+pull in a couple of external tools that aren't in the official Arch
+repos, but it's not something we build the project's identity around.
+
+## 🧭 What makes SolukOS different
+
+Most personal Hyprland/Linux "rice" projects stop at a dotfiles repo you
+clone and symlink into an existing install. SolukOS goes further than
+that on purpose:
+
+- **A real, installable OS, not just dotfiles.** Boot splash (Plymouth),
+  login screen (SDDM), installer (Calamares) and the desktop itself are
+  all part of the same build — not "apply these configs after you've
+  already installed Arch yourself."
+- **One identity, two desktops.** "Soluk" (muted, faded, breath-like) is
+  a real design language — a specific color palette, a shared theme
+  system, one mascot — carried consistently across both KDE and
+  Hyprland, not just a wallpaper.
+- **Deliberately quiet, not flashy.** The Hyprland spin leans on TUI
+  tools (`rmpc`, `yazi`, `fastfetch`) and a muted palette instead of
+  glassmorphism/gradient trends — a calmer, more "terminal" feel by
+  choice.
+
+This is still being figured out — see [Roadmap](#️-roadmap) for where
+it's headed next.
 
 ## ✨ Features
 
-- 🐧 Linux-style terminal experience
-- 🌫️ Custom SolukOS branding
-- 📦 Built-in package management
-- 🧩 Plugin system with a git-based remote installer
-- ⚙️ SolukOS command-line interface
-- 🔍 Package search and information tools
-- 🩺 System diagnostics ("doctor")
-- 📋 Package database support
-- 🚀 Modular architecture
-- 💡 fzf-powered menus and shell history/file search
-- ⚡ Smart navigation with zoxide, modern `ls`/`cat` via eza and bat
-- 🖼️ `soluk fetch` system summary screen
-- 🎨 Consistent, colorized UI across every menu and screen
-- 🎭 Theme Manager (Soluk, Matrix, Nord) via Settings
-- 🕵️ Automated install for external security tools not in the official Arch repos (sqlmap, nikto)
-- 🛡️ Confirmation prompt before uninstalling, auto-synced zsh config on update, real system logging
-- 🔗 Package dependency resolution (auto-installs what a package needs first)
-- 🌐 Repository system — sync extra packages into the database from remote URLs
-- 🔔 Update notifications — lets you know when a newer SolukOS version is out (never updates on its own)
+**`soluk` CLI (both spins)**
+- ⚙️ Interactive manager menu, or direct commands (see below)
+- 📦 Package manager on top of `pacman`, with a plugin system
+  (git-based installer, enable/disable, dependency resolution)
+- 🌐 Repository system — pull extra package sources from remote URLs
+- 🔔 Daily, cached update-check (never installs anything on its own)
+- 🖼️ `soluk fetch` system summary, `soluk doctor` health check
+- 💡 fzf-powered menus, zoxide/eza/bat, colorized UI throughout
+
+**Hyprland spin**
+- 🎭 Theme Manager (Soluk, Matrix, Nord) — switches waybar, mako, and
+  the rest of the palette together
+- 🎵 `rmpc` (TUI music player) + `mpd`, themed to match
+- 📁 `yazi` (TUI file manager), themed to match
+- 🪟 Custom waybar, hyprlock, hypridle, fastfetch identity panel,
+  figlet-based clock widget
+
+**KDE Plasma spin**
+- 🖥️ Full Plasma desktop, Calamares installer with SolukOS branding
 
 ## 🚀 Installation
 
-```git clone https://github.com/SolukAtli/SolukOS.git
-cd SolukOS
+```
+git clone https://github.com/solukatli/solukos.git
+cd solukos
 chmod +x install.sh
 ./install.sh
 ```
 
+To build a bootable ISO instead of just installing the CLI, see
+[`iso/README.md`](iso/README.md) (KDE spin — Hyprland spin's own README
+is still on the roadmap, build steps are the same pattern via
+`.github/workflows/build-iso-hyprland.yml` in the meantime).
+
 ## 💻 Available Commands
 
-Running `soluk` with no arguments opens the interactive Manager menu. Unknown commands print an error instead of opening the menu.
+Running `soluk` with no arguments opens the interactive Manager menu.
 
 **System**
-- soluk version
-- soluk doctor
-- soluk reload
-- soluk fetch
-- soluk update
-- soluk help
+- `soluk version` / `soluk doctor` / `soluk fetch` / `soluk update` / `soluk reload` / `soluk help`
 
 **Packages**
-- soluk pkg list
-- soluk pkg search `<package>`
-- soluk pkg info `<package>`
-- soluk pkg install `<package>`
-- soluk pkg remove `<package>`
-- soluk pkg check
-- soluk pkg update
+- `soluk pkg list` / `search <name>` / `info <name>` / `install <name>` / `remove <name>` / `update [name]` / `check`
 
-**Shell tools** (built into your terminal, no `soluk` prefix)
-- `z <folder>` — jump to a frequent directory (zoxide)
-- `ll` / `lt` — list files with icons (eza)
-- `cat <file>` — preview a file, highlighted (bat)
-- `Ctrl+R` / `Ctrl+T` / `Alt+C` — search history / files / cd (fzf)
+**Themes** (Hyprland spin only)
+- `soluk theme list` / `soluk theme set <name>` / `soluk theme create <name>`
 
-**Settings → Theme Manager**
-- Soluk (default) — muted grays, desaturated blue/gold
-- Matrix — classic black/green hacker terminal
-- Nord — cool blue-gray minimalist palette
+**Shell tools** (no `soluk` prefix — built into the terminal)
+- `z <folder>` (zoxide) · `ll` / `lt` (eza) · `cat <file>` (bat) · `Ctrl+R` / `Ctrl+T` / `Alt+C` (fzf)
 
-**Package Manager → Install Package** (`sqlmap`, `nikto`)
-- Not in the official Arch repos, so these are cloned from their upstream git repo into `~/.solukos/tools/` with a wrapper command dropped into `~/.local/bin`
-- `nikto` also needs a couple of CPAN-only Perl modules (JSON, XML::Writer) — installed automatically via `cpanm` (bootstrapped if missing), even on a re-run if they were missing before
-- Works the same from `soluk pkg install sqlmap`, the Package Manager menu, or Security Toolkit's "Install All Tools"
-
-**Update notifications**
-- `soluk doctor` checks your version against GitHub and warns if you're behind
-- A background check also runs once a day at shell startup (cached, throttled - doesn't slow down opening a terminal) and shows a one-line notice if a newer version exists
-- Nothing is ever downloaded or applied automatically - you still choose when to run "soluk update"
-
-**Package Manager → Repository Manager**
-- `packages/sources.txt` lists URLs to remote `database.txt`-format files (pipe-delimited, same schema)
-- "Update Repositories" fetches each source and adds any packages that don't already exist locally by name — existing entries are never overwritten
-- Add/remove sources from the same menu, or via `soluk pkg update`
-
-**Package Manager → dependencies**
-- `packages/database.txt` entries can list required packages: `name|category|type|status|deps`
-- Installing a package (via `soluk pkg install`, the Package Manager menu, or Security Toolkit) resolves and installs any missing deps first
-- `soluk pkg info <name>` / Package Manager → Package Info show the "Depends" field
-
-**Plugin Manager → Install from Git**
-- Clones any git repo containing a `plugin.sh` into your installed plugins
-- Rejects repos without a `plugin.sh`, strips `.git` after cloning
-- ⚠️ Only install plugins from sources you trust — `plugin.sh` runs directly
-
-**Plugin Manager → Disable / Enable Plugin**
-- Temporarily turns a plugin off without uninstalling it (keeps its files, just moves it aside)
-- Disabled plugins show up grayed out in "List Plugins" and can't be run until re-enabled
+Full setup walkthrough: [`docs/installation.md`](docs/installation.md).
 
 ## 🛠 Project Structure
 
-- SolukOS/
-- ├── scripts/
-- ├── packages/
-- ├── plugins/
-- ├── docs/
-- ├── assets/
-- ├── config/
-- └── install.sh
+```
+solukos/
+├── bin/soluk           # the CLI itself
+├── scripts/            # soluk's internals (menus, package/plugin logic)
+├── packages/           # soluk's own package database
+├── plugins/            # soluk's plugin system
+├── docs/
+├── iso/                # KDE Plasma spin (archiso profile)
+├── iso-hyprland/       # Hyprland spin (archiso profile)
+└── install.sh
+```
 
 ## 🗺️ Roadmap
 
-v0.6.1
+**Done**
+- [x] `soluk` CLI: packages, plugins, themes, repositories, update checks
+- [x] KDE Plasma spin: bootable ISO, Calamares installer
+- [x] Hyprland spin: waybar, hyprlock/hypridle, theme system, rmpc, yazi, fastfetch, clock widget
 
-- [x] Package Manager
-- [x] CLI Commands
-- [x] Package Search
-- [x] Package Information
-- [x] Package Installation
-- [x] Package Removal
-- [x] Doctor Command
-- [x] Version Command
+**In progress**
+- [ ] Hyprland spin: Calamares installer (KDE spin has this already, Hyprland doesn't yet)
+- [ ] Hyprland spin: persistent storage on the live USB
+- [ ] Hyprland spin: Plymouth boot splash
+- [ ] `iso-hyprland/README.md` (parity with `iso/README.md`)
 
-v0.7.0
+**v1.0 Linux**
+- [ ] Both spins installable, persistent, and polished to the same level
+- [ ] One consistent "soluk" identity from boot to desktop, on both spins
 
-- [x] Help Command
-- [x] Update Command
-- [x] Improved Diagnostics
-- [x] zsh-autosuggestions / zsh-syntax-highlighting
-- [x] fzf history & file search (CTRL+R / CTRL+T / ALT+C)
-- [x] zoxide, bat, eza
-- [x] soluk fetch
-- [x] Consistent colorized UI across all menus
-- [x] Theme Manager
-- [x] Git-based remote Plugin Installer
-- [x] Automated install for sqlmap / nikto
-- [x] Plugin Enable/Disable
-
-v0.8.0
-
-- [x] Package Dependency Support
-- [x] Repository System
-- [x] Automatic Updates
-
-v1.0.0 — First Stable Release
-
-- [x] All v0.8.0 roadmap features complete
-- [x] Fresh install tested end-to-end (Full Install)
-- [x] `soluk doctor` passes all checks
-- [x] Patch 21-25 fixes verified on-device
-- [x] `docs/installation.md` reviewed for accuracy
-- [x] Final bug sweep (logo and nikto Perl modules are explicitly out of scope for v1.0.0)
+**Under consideration**
+- [ ] Some form of mobile-side companion/integration — not scoped yet
 
 ## ⚠️ Disclaimer
 
-SolukOS is intended for Linux learning, scripting practice, terminal customization and cybersecurity education.
-
-Users are responsible for ensuring that all activities are lawful and authorized.
+SolukOS is intended for Linux learning, scripting practice, and desktop
+customization. Users are responsible for ensuring that all activities
+are lawful and authorized.
 
 ## 📜 Version
 
