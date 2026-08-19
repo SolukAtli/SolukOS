@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# SolukOS - grafik guc menusu (wofi tabanli, wlogout resmi Arch deposunda
+# olmadigi icin AUR'a bagimli kalmamak amaciyla boyle yazildi)
+
+options="Kilitle\nUyku\nYeniden Baslat\nKapat\nCikis"
+
+chosen=$(echo -e "$options" | wofi --dmenu --prompt "Guc Menusu" --width 300 --height 220)
+
+case "$chosen" in
+    Kilitle)           hyprlock ;;
+    Uyku)               systemctl suspend ;;
+    "Yeniden Baslat")   systemctl reboot ;;
+    Kapat)              systemctl poweroff ;;
+    Cikis)              hyprctl dispatch exit ;;
+esac

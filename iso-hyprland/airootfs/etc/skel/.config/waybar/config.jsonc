@@ -24,12 +24,7 @@
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
-        "format": "{icon}",
-        "format-icons": {
-            "active": "",
-            "default": "",
-            "urgent": ""
-        }
+        "format": "{id}"
     },
     "hyprland/window": {
         "format": "{}",
@@ -80,11 +75,13 @@
     },
     "cpu": {
         "format": "󰍛  {usage}%",
-        "interval": 5
+        "interval": 5,
+        "on-click": "kitty --class soluk-monitor -e btop"
     },
     "memory": {
         "format": "󰘚  {percentage}%",
-        "interval": 5
+        "interval": 5,
+        "on-click": "kitty --class soluk-monitor -e btop"
     },
     "battery": {
         "format": "󰁹  {capacity}%",
@@ -92,7 +89,8 @@
         "states": {
             "warning": 30,
             "critical": 15
-        }
+        },
+        "on-click": "kitty --class soluk-monitor -e btop"
     },
     "tray": {
         "spacing": 10

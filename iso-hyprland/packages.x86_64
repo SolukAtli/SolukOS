@@ -81,3 +81,22 @@ yazi
 
 # Ag baglantisi duzenleyici (waybar wifi tiklama)
 nm-connection-editor
+
+# Sistem izleyici (waybar cpu/memory tiklama)
+btop
+
+# Qt tema tutarliligi (pcmanfm-qt, nm-connection-editor icin)
+qt5ct
+qt6ct
+
+# Bluetooth
+bluez
+bluez-utils
+blueman
+
+# Guc profili (performans/dengeli/tasarruf)
+power-profiles-daemon
+
+# PDF goruntuleyici
+zathura
+zathura-pdf-mupdf

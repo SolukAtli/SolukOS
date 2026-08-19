@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# SolukOS - ilk acilista bir kere gosterilen kisa karsilama mesaji.
+# Yeni bir paket gerektirmiyor, sadece bir isaret dosyasina bakiyor.
+
+MARKER="$HOME/.local/state/solukos-welcomed"
+[ -f "$MARKER" ] && exit 0
+
+mkdir -p "$(dirname "$MARKER")"
+
+kitty --class soluk-welcome --hold -e bash -c '
+echo ""
+echo "  SolukOS'"'"'a hos geldin."
+echo ""
+echo "  SUPER + Enter    Terminal"
+echo "  SUPER + D        Uygulama ac"
+echo "  SUPER + E        Dosyalar"
+echo "  SUPER + F1/F2/F3 Sistem bilgisi / Muzik / Dosya yoneticisi (TUI)"
+echo "  SUPER + M        Guc menusu (kilit, uyku, kapat...)"
+echo "  SUPER + /        Tum kisayollarin listesi"
+echo ""
+echo "  Bu pencereyi kapatabilirsin, bir daha cikmayacak."
+echo ""
+'
+
+touch "$MARKER"

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# SolukOS - kisayol listesi. hyprland.conf'taki gercek "bind" satirlarini
+# okuyup gosterir, boylece config degistikce elle guncellenmesi gerekmez.
+
+CONF="$HOME/.config/hypr/hyprland.conf"
+
+{
+    echo "=== SolukOS Kisayollari ==="
+    echo ""
+    grep -E "^bind[a-z]* = " "$CONF" | sed \
+        -e 's/^bind[a-z]* = //' \
+        -e 's/\$mainMod/SUPER/' \
+        -e 's/, */+/g' \
+        -e 's/+exec+/  ->  /' \
+        -e 's/+$//'
+} | wofi --dmenu --prompt "Kisayollar" --width 500 --height 600
