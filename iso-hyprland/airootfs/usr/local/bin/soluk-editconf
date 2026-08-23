@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# SolukOS - config dosyalarini hizlica duzenlemek icin kucuk bir secim
+# menusu. Bilgili kullanicilar zaten dosyalari biliyor, ama "nerede"
+# sorusunu tek tusla cozer.
+
+pkill -x wofi 2>/dev/null
+sleep 0.05
+
+declare -A files=(
+    ["Hyprland"]="$HOME/.config/hypr/hyprland.conf"
+    ["Waybar"]="$HOME/.config/waybar/config.jsonc"
+    ["Waybar Stil"]="$HOME/.config/waybar/style.css"
+    ["Kitty"]="$HOME/.config/kitty/kitty.conf"
+)
+
+chosen=$(printf "%s\n" "${!files[@]}" | wofi --dmenu --prompt "Duzenle" --width 300 --height 200)
+[ -n "$chosen" ] || exit 0
+
+kitty --class soluk-editor -e nano "${files[$chosen]}"

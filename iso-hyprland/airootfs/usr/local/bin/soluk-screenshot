@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# SolukOS - ekran goruntusu / kayit menusu. Tekil grim/slurp kisayollari
+# (Shift+Print) hala hizli yol olarak duruyor, bu menu daha fazla secenek
+# icin var.
+
+pkill -x wofi 2>/dev/null
+sleep 0.05
+
+RECORDING_FLAG="/tmp/solukos-recording.pid"
+
+if [ -f "$RECORDING_FLAG" ]; then
+    options="Kaydi Durdur"
+else
+    options="Tam Ekran\nAlan Sec\nPencere\nKayit Baslat (tam ekran)\nKayit Baslat (alan sec)"
+fi
+
+chosen=$(echo -e "$options" | wofi --dmenu --prompt "Ekran Goruntusu" --width 300 --height 260)
+
+case "$chosen" in
+    "Tam Ekran")
+        grim - | swappy -f -
+        ;;
+    "Alan Sec")
+        grim -g "$(slurp)" - | swappy -f -
+        ;;
+    "Pencere")
+        geom=$(hyprctl activewindow -j | python3 -c "import json,sys; w=json.load(sys.stdin); x,y=w['at']; ww,wh=w['size']; print(f'{x},{y} {ww}x{wh}')")
+        grim -g "$geom" - | swappy -f -
+        ;;
+    "Kayit Baslat (tam ekran)")
+        wf-recorder -f "$HOME/Videos/solukos-$(date +%Y%m%d-%H%M%S).mp4" &
+        echo $! > "$RECORDING_FLAG"
+        ;;
+    "Kayit Baslat (alan sec)")
+        wf-recorder -g "$(slurp)" -f "$HOME/Videos/solukos-$(date +%Y%m%d-%H%M%S).mp4" &
+        echo $! > "$RECORDING_FLAG"
+        ;;
+    "Kaydi Durdur")
+        kill -INT "$(cat "$RECORDING_FLAG")" 2>/dev/null
+        rm -f "$RECORDING_FLAG"
+        ;;
+esac

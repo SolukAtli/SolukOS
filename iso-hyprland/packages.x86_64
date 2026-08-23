@@ -62,7 +62,6 @@ wl-clipboard
 cliphist
 wob
 brightnessctl
-network-manager-applet
 
 # soluk CLI (KDE spin ile ortak)
 zsh
@@ -79,13 +78,10 @@ mpd
 rmpc
 yazi
 
-# Ag baglantisi duzenleyici (waybar wifi tiklama)
-nm-connection-editor
-
 # Sistem izleyici (waybar cpu/memory tiklama)
 btop
 
-# Qt tema tutarliligi (pcmanfm-qt, nm-connection-editor icin)
+# Qt tema tutarliligi (pcmanfm-qt icin)
 qt5ct
 qt6ct
 
@@ -100,3 +96,10 @@ power-profiles-daemon
 # PDF goruntuleyici
 zathura
 zathura-pdf-mupdf
+
+# pavucontrol - waybar ses tiklamasi icin (unutulmustu)
+pavucontrol
+
+# Renk secici, ekran kaydi
+hyprpicker
+wf-recorder

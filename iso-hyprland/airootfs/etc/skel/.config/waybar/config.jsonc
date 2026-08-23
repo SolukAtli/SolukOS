@@ -40,7 +40,7 @@
         "format-ethernet": "󰈀  LAN",
         "format-disconnected": "󰤭  Bağlı değil",
         "tooltip-format": "{ifname}: {ipaddr}",
-        "on-click": "nm-connection-editor"
+        "on-click": "kitty --class soluk-network -e nmtui"
     },
     "mpd": {
         "format": "{stateIcon} {artist} - {title}",

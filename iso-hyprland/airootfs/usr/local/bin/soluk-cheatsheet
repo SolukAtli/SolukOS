@@ -3,6 +3,8 @@
 # okuyup gosterir, boylece config degistikce elle guncellenmesi gerekmez.
 
 CONF="$HOME/.config/hypr/hyprland.conf"
+pkill -x wofi 2>/dev/null
+sleep 0.05
 
 {
     echo "=== SolukOS Kisayollari ==="

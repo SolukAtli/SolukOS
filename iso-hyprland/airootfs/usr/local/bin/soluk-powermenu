@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 # SolukOS - grafik guc menusu (wofi tabanli, wlogout resmi Arch deposunda
 # olmadigi icin AUR'a bagimli kalmamak amaciyla boyle yazildi)
+#
+# NOT: Hyprland'da bilinen bir compositor sorunu var (layer-shell pencere
+# kapaninca waybar'in tiklamasi bir sonrakine kadar takili kalabiliyor -
+# hyprwm/Hyprland #1348, #4281). Bu tam config'ten duzeltilemiyor, ama en
+# azindan ust uste wofi yigilmasini onlemek icin once eskisini kapatiyoruz.
+pkill -x wofi 2>/dev/null
+sleep 0.05
 
 options="Kilitle\nUyku\nYeniden Baslat\nKapat\nCikis"
 

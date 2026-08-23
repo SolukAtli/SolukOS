@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# SolukOS - grafik tema secici. Var olan "soluk theme set" CLI komutunu
+# sarmalar, sadece klavye/CLI bilmeyenler icin gorsel bir secim sunar.
+
+pkill -x wofi 2>/dev/null
+sleep 0.05
+
+THEMES_DIR="$HOME/.config/soluk/themes"
+[ -d "$THEMES_DIR" ] || exit 0
+
+chosen=$(find "$THEMES_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort | wofi --dmenu --prompt "Tema Sec" --width 300 --height 200)
+
+[ -n "$chosen" ] && soluk theme set "$chosen"
