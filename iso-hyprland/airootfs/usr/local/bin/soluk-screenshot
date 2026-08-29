@@ -24,7 +24,7 @@ case "$chosen" in
         grim -g "$(slurp)" - | swappy -f -
         ;;
     "Pencere")
-        geom=$(hyprctl activewindow -j | python3 -c "import json,sys; w=json.load(sys.stdin); x,y=w['at']; ww,wh=w['size']; print(f'{x},{y} {ww}x{wh}')")
+        geom=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
         grim -g "$geom" - | swappy -f -
         ;;
     "Kayit Baslat (tam ekran)")

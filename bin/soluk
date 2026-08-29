@@ -265,10 +265,10 @@ set)
     fi
 
     ln -sfn "$THEMES_DIR/$3" "$CURRENT_LINK"
-    [ -f "$TARGET/waybar-colors.css" ] && cp "$TARGET/waybar-colors.css" "$HOME/.config/waybar/colors.css"
 
     hyprctl reload >/dev/null 2>&1
     command -v makoctl >/dev/null 2>&1 && makoctl reload >/dev/null 2>&1
+    pkill -SIGUSR1 kitty 2>/dev/null
     if pgrep -x waybar >/dev/null 2>&1; then
         pkill waybar
         sleep 0.3

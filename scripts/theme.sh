@@ -464,89 +464,9 @@ esac
 echo "[+] kitty temasi guncellendi (Hyprland spininde yeni pencerelerde aktif olacak)."
 
 # Sadece Hyprland oturumundaysak (hyprctl varsa) masaustunun geri kalanini da uygula.
-if command -v hyprctl >/dev/null 2>&1; then
-    SOLUK_THEMES_DIR="$HOME/.config/soluk/themes"
-    TARGET_DIR="$SOLUK_THEMES_DIR/$THEME"
-    mkdir -p "$TARGET_DIR"
-
-    case "$THEME" in
-    matrix)
-        cat > "$TARGET_DIR/hypr-theme.conf" << HYPRTHEME
-\$solukos_bg = rgba(0a0e0aee)
-\$solukos_bg_solid = rgba(0a0e0aff)
-\$solukos_accent = rgba(268a4aee)
-\$solukos_text = rgba(33ff66ff)
-HYPRTHEME
-        cat > "$TARGET_DIR/waybar-colors.css" << WAYBARTHEME
-@define-color solukos_bg rgba(10, 14, 10, 0.85);
-@define-color solukos_accent #268a4a;
-@define-color solukos_text #33ff66;
-@define-color solukos_warning #5ee87a;
-@define-color solukos_critical #1f7a3f;
-WAYBARTHEME
-        cat > "$TARGET_DIR/mako.ini" << MAKOTHEME
-background-color=#0a0e0ae6
-text-color=#33ff66
-border-color=#268a4a
-border-size=2
-border-radius=10
-MAKOTHEME
-        ;;
-    nord)
-        cat > "$TARGET_DIR/hypr-theme.conf" << HYPRTHEME
-\$solukos_bg = rgba(2e3440ee)
-\$solukos_bg_solid = rgba(2e3440ff)
-\$solukos_accent = rgba(81a1c1ee)
-\$solukos_text = rgba(d8dee9ff)
-HYPRTHEME
-        cat > "$TARGET_DIR/waybar-colors.css" << WAYBARTHEME
-@define-color solukos_bg rgba(46, 52, 64, 0.85);
-@define-color solukos_accent #81a1c1;
-@define-color solukos_text #d8dee9;
-@define-color solukos_warning #ebcb8b;
-@define-color solukos_critical #bf616a;
-WAYBARTHEME
-        cat > "$TARGET_DIR/mako.ini" << MAKOTHEME
-background-color=#2e3440e6
-text-color=#d8dee9
-border-color=#81a1c1
-border-size=2
-border-radius=10
-MAKOTHEME
-        ;;
-    soluk)
-        cat > "$TARGET_DIR/hypr-theme.conf" << HYPRTHEME
-\$solukos_bg = rgba(1c1f24ee)
-\$solukos_bg_solid = rgba(1c1f24ff)
-\$solukos_accent = rgba(7f9fbfee)
-\$solukos_text = rgba(c0c8d0ff)
-HYPRTHEME
-        cat > "$TARGET_DIR/waybar-colors.css" << WAYBARTHEME
-@define-color solukos_bg rgba(28, 31, 36, 0.85);
-@define-color solukos_accent #7f9fbf;
-@define-color solukos_text #c0c8d0;
-@define-color solukos_warning #bfae7f;
-@define-color solukos_critical #a56b6b;
-WAYBARTHEME
-        cat > "$TARGET_DIR/mako.ini" << MAKOTHEME
-background-color=#1c1f24e6
-text-color=#c0c8d0
-border-color=#7f9fbf
-border-size=2
-border-radius=10
-MAKOTHEME
-        ;;
-    esac
-
-    ln -sfn "$THEME" "$HOME/.config/soluk/current-theme"
-    [ -f "$TARGET_DIR/waybar-colors.css" ] && cp "$TARGET_DIR/waybar-colors.css" "$HOME/.config/waybar/colors.css"
-
-    hyprctl reload >/dev/null 2>&1
-    command -v makoctl >/dev/null 2>&1 && makoctl reload >/dev/null 2>&1
-    if pgrep -x waybar >/dev/null 2>&1; then
-        pkill waybar
-        sleep 0.3
-        (setsid waybar >/dev/null 2>&1 &)
-    fi
-    echo "[+] Hyprland masaustu (waybar/hyprlock/mako) da guncellendi."
+if command -v hyprctl >/dev/null 2>&1 && command -v soluk >/dev/null 2>&1; then
+    # Tema anahtarlama artik tek/ortak motor olan "soluk theme set" komutuna
+    # devrediliyor - boylece CLI (bin/soluk) ile bu ayarlar menusu iki farkli
+    # sey yapmiyor, matrix/nord de build-time'da hazir geliyor (HYP-004 fix).
+    soluk theme set "$THEME"
 fi

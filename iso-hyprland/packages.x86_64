@@ -103,3 +103,6 @@ pavucontrol
 # Renk secici, ekran kaydi
 hyprpicker
 wf-recorder
+
+# jq - soluk-screenshot pencere yakalama icin (python3 yerine, daha hafif)
+jq

@@ -22,7 +22,7 @@ ln -sf /usr/lib/systemd/user/mpd.service /etc/skel/.config/systemd/user/default.
 
 # yazi temasi - paylasilan tema klasorunden sembolik baglanti
 mkdir -p /etc/skel/.config/yazi
-ln -sf ../soluk/themes/solukos/yazi-theme.toml /etc/skel/.config/yazi/theme.toml
+ln -sf ../soluk/current-theme/yazi-theme.toml /etc/skel/.config/yazi/theme.toml
 
 # bluetooth + guc profili sistem servisleri
 mkdir -p /etc/systemd/system/multi-user.target.wants

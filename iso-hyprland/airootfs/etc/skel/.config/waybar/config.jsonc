@@ -52,7 +52,7 @@
         },
         "interval": 5,
         "max-length": 40,
-        "on-click": "kitty --class soluk-music --hold -e rmpc -t ~/.config/soluk/themes/solukos/rmpc-theme.ron",
+        "on-click": "kitty --class soluk-music --hold -e rmpc -t ~/.config/soluk/current-theme/rmpc-theme.ron",
         "tooltip-format": "{artist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})"
     },
     "backlight": {

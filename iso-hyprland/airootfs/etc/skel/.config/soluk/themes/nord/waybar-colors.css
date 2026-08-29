@@ -1,0 +1,5 @@
+@define-color solukos_bg rgba(46, 52, 64, 0.85);
+@define-color solukos_accent #81a1c1;
+@define-color solukos_text #d8dee9;
+@define-color solukos_warning #ebcb8b;
+@define-color solukos_critical #bf616a;

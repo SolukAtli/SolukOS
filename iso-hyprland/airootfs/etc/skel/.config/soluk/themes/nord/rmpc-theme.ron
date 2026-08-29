@@ -1,0 +1,26 @@
+#![enable(implicit_some)]
+(
+    background_color: "#2e3440",
+    text_color: "#d8dee9",
+    modal_background_color: "#2e3440",
+    borders_style: (fg: "#81a1c1", bg: None, modifiers: None),
+    highlighted_item_style: (fg: "#81a1c1", bg: None, modifiers: "Bold"),
+    current_item_style: (fg: "#2e3440", bg: "#81a1c1", modifiers: "Bold"),
+    highlight_border_style: (fg: "#81a1c1", bg: None, modifiers: None),
+    tab_bar: (
+        enabled: true,
+        active_style: (fg: "#2e3440", bg: "#81a1c1", modifiers: "Bold"),
+        inactive_style: (fg: "#d8dee9", bg: None, modifiers: None),
+    ),
+    progress_bar: (
+        elapsed_style: (fg: "#81a1c1", bg: None, modifiers: None),
+        thumb_style: (fg: "#81a1c1", bg: None, modifiers: None),
+    ),
+    scrollbar: (
+        thumb_style: (fg: "#81a1c1", bg: None, modifiers: None),
+    ),
+    level_styles: (
+        warn: (fg: "#ebcb8b", bg: "#2e3440"),
+        error: (fg: "#bf616a", bg: "#2e3440"),
+    ),
+)

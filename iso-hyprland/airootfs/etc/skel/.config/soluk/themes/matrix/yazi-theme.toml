@@ -1,0 +1,23 @@
+[mgr]
+cwd = { fg = "#268a4a" }
+border_style = { fg = "#268a4a" }
+
+marker_selected = { fg = "#268a4a", bg = "#268a4a" }
+marker_copied   = { fg = "#5ee87a", bg = "#5ee87a" }
+marker_cut      = { fg = "#1f7a3f", bg = "#1f7a3f" }
+
+[tabs]
+active   = { fg = "#0a0e0a", bg = "#268a4a", bold = true }
+inactive = { fg = "#33ff66", bg = "#0a0e0a" }
+
+[mode]
+normal_main = { fg = "#0a0e0a", bg = "#268a4a", bold = true }
+normal_alt  = { fg = "#268a4a", bg = "#0a0e0a" }
+
+[status]
+perm_type = { fg = "#268a4a" }
+
+[which]
+mask = { bg = "#0a0e0a" }
+cand = { fg = "#268a4a" }
+desc = { fg = "#33ff66" }
