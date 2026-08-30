@@ -145,3 +145,5 @@ are lawful and authorized.
 ## 📜 Version
 
 Current Version: v1.0.0
+
+Testing CodeRabbit review
