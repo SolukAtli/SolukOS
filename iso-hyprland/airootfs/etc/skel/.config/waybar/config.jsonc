@@ -1,98 +1,172 @@
 {
-    "layer": "top",
-    "position": "top",
-    "height": 32,
-    "spacing": 0,
-    "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/window"
-    ],
-    "modules-center": [
-        "clock"
-    ],
-    "modules-right": [
-        "network",
-        "mpd",
-        "pulseaudio",
-        "backlight",
-        "idle_inhibitor",
-        "cpu",
-        "memory",
-        "battery",
-        "tray"
-    ],
-    "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "format": "{id}"
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "margin-top": 7,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 7,
+  "modules-left": [
+    "custom/brand",
+    "hyprland/workspaces",
+    "mpd",
+    "custom/equalizer"
+  ],
+  "modules-center": [
+    "custom/session",
+    "clock",
+    "custom/date"
+  ],
+  "modules-right": [
+    "custom/recording",
+    "idle_inhibitor",
+    "cpu",
+    "memory",
+    "battery",
+    "backlight",
+    "pulseaudio",
+    "network",
+    "tray",
+    "custom/power"
+  ],
+
+  "custom/brand": {
+    "format": " 󰣇 SOLUK ",
+    "tooltip": "SolukOS"
+  },
+
+  "hyprland/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": false,
+    "format": "{icon}",
+    "format-icons": {
+      "active": "★",
+      "default": "✦",
+      "urgent": "✹"
     },
-    "hyprland/window": {
-        "format": "{}",
-        "max-length": 50,
-        "separate-outputs": true
-    },
-    "clock": {
-        "format": "{:%H:%M  %d/%m}",
-        "tooltip-format": "{:%A, %d %B %Y}"
-    },
-    "network": {
-        "format-wifi": "󰤨  {signalStrength}%",
-        "format-ethernet": "󰈀  LAN",
-        "format-disconnected": "󰤭  Bağlı değil",
-        "tooltip-format": "{ifname}: {ipaddr}",
-        "on-click": "kitty --class soluk-network -e nmtui"
-    },
-    "mpd": {
-        "format": "{stateIcon} {artist} - {title}",
-        "format-stopped": "󰝛  Çalmıyor",
-        "format-disconnected": "󰝛  Kapalı",
-        "state-icons": {
-            "playing": "󰐊",
-            "paused": "󰏤"
-        },
-        "interval": 5,
-        "max-length": 40,
-        "on-click": "kitty --class soluk-music --hold -e rmpc -t ~/.config/soluk/current-theme/rmpc-theme.ron",
-        "tooltip-format": "{artist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})"
-    },
-    "backlight": {
-        "format": "{icon} {percent}%",
-        "format-icons": ["󰃞", "󰃟", "󰃠"],
-        "on-scroll-up": "brightnessctl set 5%+",
-        "on-scroll-down": "brightnessctl set 5%-"
-    },
-    "pulseaudio": {
-        "format": "󰕾  {volume}%",
-        "format-muted": "󰝟  Sessiz",
-        "on-click": "pavucontrol"
-    },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "󰅶",
-            "deactivated": "󰾪"
-        }
-    },
-    "cpu": {
-        "format": "󰍛  {usage}%",
-        "interval": 5,
-        "on-click": "kitty --class soluk-monitor -e btop"
-    },
-    "memory": {
-        "format": "󰘚  {percentage}%",
-        "interval": 5,
-        "on-click": "kitty --class soluk-monitor -e btop"
-    },
-    "battery": {
-        "format": "󰁹  {capacity}%",
-        "format-charging": "󰂄  {capacity}%",
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "on-click": "kitty --class soluk-monitor -e btop"
-    },
-    "tray": {
-        "spacing": 10
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": []
     }
+  },
+
+  "mpd": {
+    "format": " 󰎆  {artist} — {title} ",
+    "format-stopped": " 󰎆  no track ",
+    "format-disconnected": " 󰎆  mpd offline ",
+    "state-icons": {
+      "playing": "▶",
+      "paused": "Ⅱ"
+    },
+    "interval": 5,
+    "max-length": 31,
+    "tooltip-format": "{artist} — {title}\n{elapsedTime:%M:%S} / {totalTime:%M:%S}",
+    "on-click": "kitty --class soluk-music --hold -e rmpc -t ~/.config/soluk/current-theme/rmpc-theme.ron"
+  },
+
+  "custom/equalizer": {
+    "exec": "printf '▂▅▇▆▃▅▇▂'",
+    "interval": 2,
+    "format": "{}",
+    "tooltip": "System activity",
+    "on-click": "kitty --class soluk-monitor -e btop"
+  },
+
+  "custom/session": {
+    "format": " 󰣇  SOLUKOS  ·  ◌  HYPRLAND ",
+    "tooltip": "SolukOS Hyprland session"
+  },
+
+  "clock": {
+    "format": " 󰥔  {:%H:%M} ",
+    "tooltip-format": "<big>{:%A}</big>\n{:%d %B %Y}",
+    "interval": 30
+  },
+
+  "custom/date": {
+    "exec": "date '+%d-%m'",
+    "interval": 60,
+    "format": " 󰃭  {} ",
+    "tooltip": "Calendar"
+  },
+
+  "custom/recording": {
+    "exec": "if pgrep -x wf-recorder >/dev/null; then printf '● REC'; else printf '○ REC'; fi",
+    "interval": 2,
+    "format": " {} ",
+    "return-type": "string",
+    "on-click": "soluk-screenshot"
+  },
+
+  "idle_inhibitor": {
+    "format": " {icon} ",
+    "format-icons": {
+      "activated": "󰅶",
+      "deactivated": "󰾪"
+    },
+    "tooltip-format-activated": "Idle inhibitor: on",
+    "tooltip-format-deactivated": "Idle inhibitor: off"
+  },
+
+  "cpu": {
+    "format": " CPU {usage}% ",
+    "interval": 5,
+    "states": { "warning": 70, "critical": 90 },
+    "on-click": "kitty --class soluk-monitor -e btop"
+  },
+
+  "memory": {
+    "format": " RAM {percentage}% ",
+    "interval": 5,
+    "states": { "warning": 70, "critical": 90 },
+    "on-click": "kitty --class soluk-monitor -e btop"
+  },
+
+  "battery": {
+    "format": " BAT {capacity}% ",
+    "format-charging": " BAT +{capacity}% ",
+    "format-plugged": " BAT {capacity}% ",
+    "states": { "warning": 30, "critical": 15 },
+    "tooltip-format": "Battery: {capacity}%\n{timeTo}"
+  },
+
+  "backlight": {
+    "format": " {icon} {percent}% ",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "on-scroll-up": "brightnessctl set 5%+",
+    "on-scroll-down": "brightnessctl set 5%-"
+  },
+
+  "pulseaudio": {
+    "format": " VOL {volume}% ",
+    "format-bluetooth": " BT {volume}% ",
+    "format-muted": " VOL — ",
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+  },
+
+  "network": {
+    "format-wifi": " 󰤨 {signalStrength}% ",
+    "format-ethernet": " 󰈀 LAN ",
+    "format-disconnected": " 󰤭 — ",
+    "tooltip-format": "{essid}\n{ifname} · {ipaddr}",
+    "on-click": "kitty --class soluk-network -e nmtui"
+  },
+
+  "tray": {
+    "icon-size": 15,
+    "spacing": 6,
+    "show-passive-items": true
+  },
+
+  "custom/power": {
+    "format": " 󰐥 ",
+    "tooltip": "Power menu",
+    "on-click": "soluk-powermenu"
+  }
 }

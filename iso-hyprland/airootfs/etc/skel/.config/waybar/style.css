@@ -1,91 +1,220 @@
-@import url("../soluk/current-theme/waybar-colors.css");
+@import url("colors.css");
+
+/* SolukOS — Harmonic Surface
+ * A single continuous bar inspired by the supplied reference.
+ */
 
 * {
-    font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
-    font-size: 13px;
-    min-height: 0;
+  font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+  font-size: 11px;
+  min-height: 0;
 }
 
 window#waybar {
-    background-color: @solukos_bg;
-    border-bottom: 1px solid alpha(@solukos_accent, 0.25);
+  color: @solukos_text;
+  background: alpha(@solukos_bg_solid, 0.94);
+  border: 1px solid alpha(@solukos_accent, 0.48);
+  border-radius: 13px;
+  box-shadow: 0 0 18px alpha(@solukos_accent, 0.10), inset 0 0 12px alpha(@solukos_accent, 0.035);
 }
 
-#waybar {
-    color: @solukos_text;
+#waybar > .modules-left,
+#waybar > .modules-center,
+#waybar > .modules-right {
+  background: transparent;
 }
 
+#waybar > .modules-left {
+  padding-left: 7px;
+}
+
+#waybar > .modules-right {
+  padding-right: 7px;
+}
+
+#custom-brand,
 #workspaces,
-#window,
-#clock,
-#network,
 #mpd,
-#backlight,
-#pulseaudio,
+#custom-equalizer,
+#custom-session,
+#clock,
+#custom-date,
+#custom-recording,
 #idle_inhibitor,
 #cpu,
 #memory,
 #battery,
-#tray {
-    padding: 0 12px;
-    border-left: 1px solid alpha(@solukos_accent, 0.15);
+#pulseaudio,
+#network,
+#tray,
+#custom-power {
+  margin: 0;
+  padding: 0 10px;
+  color: @solukos_text;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+#custom-brand {
+  min-width: 23px;
+  padding: 0 13px 0 13px;
+  color: @solukos_accent;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+#custom-brand:hover {
+  color: #ffffff;
+  background-color: alpha(@solukos_accent, 0.10);
 }
 
 #workspaces {
-    padding: 0 6px;
-    border-left: none;
+  padding: 0 7px;
+  border-left: 1px solid alpha(@solukos_accent, 0.20);
 }
 
 #workspaces button {
-    padding: 0 6px;
-    color: alpha(@solukos_accent, 0.6);
-    background: transparent;
-}
-
-#workspaces button.active {
-    color: @solukos_accent;
-    border-bottom: 2px solid @solukos_accent;
+  min-width: 22px;
+  min-height: 20px;
+  margin: 2px 1px;
+  padding: 0 3px;
+  color: alpha(@solukos_accent, 0.54);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
 }
 
 #workspaces button:hover {
-    color: @solukos_text;
+  color: @solukos_text;
+  background: alpha(@solukos_accent, 0.12);
 }
 
-#window {
-    color: alpha(@solukos_text, 0.75);
+#workspaces button.active {
+  color: @solukos_bg_solid;
+  background: @solukos_accent;
+  box-shadow: 0 0 9px alpha(@solukos_accent, 0.45);
 }
 
-#clock {
-    font-weight: 600;
-    color: @solukos_accent;
+#workspaces button.urgent {
+  color: @solukos_critical;
+  background: alpha(@solukos_critical, 0.12);
 }
 
 #mpd {
-    color: @solukos_accent;
+  min-width: 155px;
+  max-width: 240px;
+  color: @solukos_text;
+  border-left: 1px solid alpha(@solukos_accent, 0.20);
+}
+
+#mpd.playing {
+  color: @solukos_accent;
 }
 
 #mpd.stopped,
 #mpd.disconnected {
-    color: alpha(@solukos_text, 0.5);
+  color: alpha(@solukos_text, 0.40);
 }
 
-#battery.warning {
-    color: @solukos_warning;
+#custom-equalizer {
+  padding: 0 8px;
+  color: @solukos_accent;
+  letter-spacing: -2px;
 }
 
-#battery.critical {
-    color: @solukos_critical;
+#custom-session {
+  min-width: 137px;
+  color: alpha(@solukos_text, 0.68);
+  border-left: 1px solid alpha(@solukos_accent, 0.20);
 }
 
-#pulseaudio.muted {
-    color: #6b7280;
+#clock {
+  min-width: 65px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border-left: 1px solid alpha(@solukos_accent, 0.27);
+  border-right: 1px solid alpha(@solukos_accent, 0.27);
+}
+
+#custom-date {
+  color: @solukos_accent;
+}
+
+#custom-recording {
+  color: alpha(@solukos_text, 0.65);
+  border-left: 1px solid alpha(@solukos_accent, 0.20);
+}
+
+#custom-recording.recording {
+  color: @solukos_critical;
 }
 
 #idle_inhibitor.activated {
-    color: @solukos_accent;
+  color: @solukos_warning;
 }
 
-#tray {
-    border-left: none;
-    padding: 0 10px;
+#cpu,
+#memory,
+#battery,
+#pulseaudio,
+#network,
+#tray,
+#custom-power {
+  border-left: 1px solid alpha(@solukos_accent, 0.14);
+}
+
+#cpu.warning,
+#memory.warning,
+#battery.warning {
+  color: @solukos_warning;
+}
+
+#cpu.critical,
+#memory.critical,
+#battery.critical {
+  color: @solukos_critical;
+  font-weight: 800;
+}
+
+#network.disconnected,
+#pulseaudio.muted {
+  color: @solukos_warning;
+}
+
+#custom-power {
+  min-width: 18px;
+  padding: 0 11px;
+  color: @solukos_accent;
+}
+
+#clock:hover,
+#mpd:hover,
+#custom-session:hover,
+#custom-date:hover,
+#custom-recording:hover,
+#idle_inhibitor:hover,
+#cpu:hover,
+#memory:hover,
+#battery:hover,
+#pulseaudio:hover,
+#network:hover,
+#tray:hover,
+#custom-power:hover {
+  color: #ffffff;
+  background-color: alpha(@solukos_accent, 0.075);
+}
+
+tooltip {
+  color: @solukos_text;
+  background: alpha(@solukos_bg_solid, 0.98);
+  border: 1px solid alpha(@solukos_accent, 0.45);
+  border-radius: 8px;
+}
+
+tooltip label {
+  padding: 5px 7px;
 }
