@@ -19,7 +19,7 @@ fi
 # every 24h internally, so this is a no-op most days).
 ( bash "$SOLUK_BASE_DIR/scripts/lib/update_check.sh" __bg_check "$SOLUK_BASE_DIR" >/dev/null 2>&1 & ) 2>/dev/null
 
-PROMPT='%F{8}┌──(%F{6}Soluk%F{8}㉿%F{6}%m%F{8})-[%F{7}%~%F{8}]
+PROMPT='%F{8}┌──(%F{6}Soluk%F{8}@%F{6}%m%F{8})-[%F{7}%~%F{8}]
 └─$ %f'
 
 alias update='sudo pacman -Syu'
