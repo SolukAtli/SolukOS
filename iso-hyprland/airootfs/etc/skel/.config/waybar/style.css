@@ -104,7 +104,6 @@ window#waybar {
 
 #mpd {
   min-width: 155px;
-  max-width: 240px;
   color: @solukos_text;
   border-left: 1px solid alpha(@solukos_accent, 0.20);
 }
