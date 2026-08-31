@@ -70,7 +70,7 @@
   "custom/equalizer": {
     "exec": "printf '▂▅▇▆▃▅▇▂'",
     "interval": 2,
-    "format": "{}",
+    "format": "{text}",
     "tooltip": "System activity",
     "on-click": "kitty --class soluk-monitor -e btop"
   },
@@ -89,14 +89,14 @@
   "custom/date": {
     "exec": "date '+%d-%m'",
     "interval": 60,
-    "format": " 󰃭  {} ",
+    "format": " 󰃭  {text} ",
     "tooltip": "Calendar"
   },
 
   "custom/recording": {
     "exec": "if pgrep -x wf-recorder >/dev/null; then printf '● REC'; else printf '○ REC'; fi",
     "interval": 2,
-    "format": " {} ",
+    "format": " {text} ",
     "return-type": "string",
     "on-click": "soluk-screenshot"
   },
