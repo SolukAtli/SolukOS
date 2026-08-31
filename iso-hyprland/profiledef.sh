@@ -29,4 +29,5 @@ file_permissions=(
     ["/usr/local/bin/soluk-screenshot"]="0:0:755"
     ["/usr/local/bin/soluk-themepicker"]="0:0:755"
     ["/usr/local/bin/soluk-editconf"]="0:0:755"
+    ["/usr/local/bin/soluk-pacman-sync"]="0:0:755"
 )

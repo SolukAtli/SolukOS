@@ -28,3 +28,4 @@ ln -sf ../soluk/current-theme/yazi-theme.toml /etc/skel/.config/yazi/theme.toml
 mkdir -p /etc/systemd/system/multi-user.target.wants
 ln -sf /usr/lib/systemd/system/bluetooth.service /etc/systemd/system/multi-user.target.wants/bluetooth.service
 ln -sf /usr/lib/systemd/system/power-profiles-daemon.service /etc/systemd/system/multi-user.target.wants/power-profiles-daemon.service
+ln -sf /etc/systemd/system/solukos-pacman-sync.service /etc/systemd/system/multi-user.target.wants/solukos-pacman-sync.service

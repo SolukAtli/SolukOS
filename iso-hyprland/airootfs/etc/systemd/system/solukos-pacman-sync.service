@@ -1,0 +1,13 @@
+[Unit]
+Description=SolukOS - pacman veritabani senkronu ve keyring tazeleme
+After=network-online.target pacman-init.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/soluk-pacman-sync
+RemainAfterExit=yes
+TimeoutStartSec=60
+
+[Install]
+WantedBy=multi-user.target

@@ -106,3 +106,6 @@ wf-recorder
 
 # jq - soluk-screenshot pencere yakalama icin (python3 yerine, daha hafif)
 jq
+
+# AUR paketlerini elle derlemek icin gereken temel araclar (yay vb.)
+base-devel

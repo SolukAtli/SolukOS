@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# SolukOS - her acilista pacman veritabanini ve keyring'i tazeler.
+# Boylece "sudo pacman -S <paket>" kurmadan once elle "pacman -Sy"
+# yapma zorunlulugu ortadan kalkiyor. Internet yoksa sessizce gecer,
+# hicbir seyi bloklamiyor / hata vermiyor.
+
+pacman -Sy --noconfirm >/dev/null 2>&1
+pacman -S --noconfirm --needed archlinux-keyring >/dev/null 2>&1
+
+exit 0
